@@ -170,6 +170,23 @@ body{font-family:'Exo 2',sans-serif;background:var(--navy);color:#fff;min-height
 
 .school-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);margin-bottom:5px;}
 .school-item:hover{background:rgba(0,200,255,0.04);border-color:var(--border);}
+/* PENGESAHAN & ADUAN */
+.visit-pending{background:rgba(255,193,7,0.06);border:1px solid rgba(255,193,7,0.22);border-radius:9px;padding:12px;margin-bottom:8px;}
+.visit-pending-name{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;}
+.visit-pending-meta{font-size:10px;color:rgba(255,255,255,0.42);margin-bottom:8px;}
+.sah-btn{background:rgba(0,230,118,0.15);border:1px solid rgba(0,230,118,0.3);border-radius:7px;padding:6px 14px;color:var(--green);cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;transition:all .2s;margin-right:6px;}
+.sah-btn:hover{background:rgba(0,230,118,0.25);}
+.tolak-btn{background:rgba(255,23,68,0.12);border:1px solid rgba(255,23,68,0.28);border-radius:7px;padding:6px 14px;color:#ff7070;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;transition:all .2s;}
+.tolak-btn:hover{background:rgba(255,23,68,0.22);}
+.aduan-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:12px;margin-bottom:8px;}
+.aduan-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.aduan-title{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:#fff;}
+.aduan-meta{font-size:10px;color:rgba(255,255,255,0.38);margin-bottom:6px;line-height:1.6;}
+.aduan-desc{font-size:11px;color:rgba(255,255,255,0.65);line-height:1.5;margin-bottom:8px;}
+.status-select{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;cursor:pointer;outline:none;}
+.urgency-tinggi{border-left:3px solid var(--red);}
+.urgency-sederhana{border-left:3px solid var(--gold);}
+.urgency-rendah{border-left:3px solid var(--green);}
 /* CALENDAR */
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .cal-nav-btn{background:var(--glass);border:1px solid var(--border);border-radius:7px;padding:6px 14px;color:var(--cyan);cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;transition:all .2s;}
@@ -502,13 +519,61 @@ body{font-family:'Exo 2',sans-serif;background:var(--navy);color:#fff;min-height
       <div class="card"><div class="card-title">📈 AKTIVITI LAWATAN (6 BULAN)</div><div class="chart-container"><canvas id="pps-chart"></canvas></div></div>
     </div>
     <div id="pps-tab-lawatan" style="display:none;">
-      <div class="card">
-        <div class="card-title">📍 DAFTAR LAWATAN BAHARU</div>
+      <!-- Tab pilihan cara daftar -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div id="mode-qr-btn" onclick="setVisitMode('qr')" style="background:rgba(0,200,255,0.15);border:1px solid var(--cyan);border-radius:9px;padding:13px;text-align:center;cursor:pointer;transition:all .2s;">
+          <div style="font-size:22px;margin-bottom:4px;">⬛</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:1px;">IMBAS QR SEKOLAH</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:2px;">Imbas kod QR di sekolah</div>
+        </div>
+        <div id="mode-manual-btn" onclick="setVisitMode('manual')" style="background:var(--glass);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:13px;text-align:center;cursor:pointer;transition:all .2s;">
+          <div style="font-size:22px;margin-bottom:4px;">📝</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:1px;">MANUAL</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:2px;">Pilih sekolah dari senarai</div>
+        </div>
+      </div>
+
+      <!-- QR Mode -->
+      <div id="visit-mode-qr" class="card">
+        <div class="card-title">⬛ IMBAS KOD QR SEKOLAH</div>
+        <div id="visit-qr-alert" class="alert"></div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:13px;">
+          Masukkan kod dari QR yang ditunjukkan oleh pihak sekolah.
+        </p>
+        <div class="fg"><label class="fl">KOD QR SEKOLAH</label>
+          <input type="text" id="school-qr-input" class="fi" placeholder="Masukkan kod QR sekolah..." style="font-family:monospace;letter-spacing:2px;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+        </div>
+        <div class="fg"><label class="fl">TUJUAN LAWATAN</label>
+          <select id="visit-tujuan-qr" class="fs">
+            <option>Lawatan Berkala</option><option>Program Kesedaran Jenayah</option>
+            <option>Pembentangan Keselamatan</option><option>Perjumpaan Dengan Pengurusan</option>
+            <option>Program Anti Dadah</option><option>Kes Disiplin Pelajar</option>
+            <option>Program Buli Sifar</option><option>Bengkel Keselamatan Siber</option><option>Lain-lain</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">CATATAN</label>
+          <input type="text" id="visit-notes-qr" class="fi" placeholder="Catatan tambahan (optional)...">
+        </div>
+        <button class="btn-p" id="visit-qr-btn" onclick="daftarLawatanQR()">⬛ DAFTAR LAWATAN VIA QR</button>
+      </div>
+
+      <!-- Manual Mode -->
+      <div id="visit-mode-manual" class="card" style="display:none;">
+        <div class="card-title">📝 DAFTAR LAWATAN MANUAL</div>
         <div id="visit-alert" class="alert"></div>
         <div class="fg"><label class="fl">SEKOLAH YANG DILAWATI</label><select id="visit-sk" class="fs"></select></div>
-        <div class="fg"><label class="fl">TUJUAN LAWATAN</label><select id="visit-tujuan" class="fs"><option>Lawatan Berkala</option><option>Program Kesedaran Jenayah</option><option>Pembentangan Keselamatan</option><option>Perjumpaan Dengan Pengurusan</option><option>Program Anti Dadah</option><option>Kes Disiplin Pelajar</option><option>Program Buli Sifar</option><option>Bengkel Keselamatan Siber</option><option>Lain-lain</option></select></div>
-        <div class="fg"><label class="fl">CATATAN</label><input type="text" id="visit-notes" class="fi" placeholder="Catatan tambahan (optional)..."></div>
-        <button class="btn-p" id="visit-btn" onclick="daftarLawatan()">✓ DAFTAR LAWATAN</button>
+        <div class="fg"><label class="fl">TUJUAN LAWATAN</label>
+          <select id="visit-tujuan" class="fs">
+            <option>Lawatan Berkala</option><option>Program Kesedaran Jenayah</option>
+            <option>Pembentangan Keselamatan</option><option>Perjumpaan Dengan Pengurusan</option>
+            <option>Program Anti Dadah</option><option>Kes Disiplin Pelajar</option>
+            <option>Program Buli Sifar</option><option>Bengkel Keselamatan Siber</option><option>Lain-lain</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">CATATAN</label>
+          <input type="text" id="visit-notes" class="fi" placeholder="Catatan tambahan (optional)...">
+        </div>
+        <button class="btn-p" id="visit-btn" onclick="daftarLawatan()">✓ DAFTAR LAWATAN MANUAL</button>
       </div>
     </div>
     <div id="pps-tab-qr" style="display:none;">
@@ -591,7 +656,9 @@ body{font-family:'Exo 2',sans-serif;background:var(--navy);color:#fff;min-height
       <button class="tab-btn active" onclick="showTab('sk','profil',this)">🏫 PROFIL</button>
       <button class="tab-btn" onclick="showTab('sk','pps',this)">👮 PEGAWAI PPS</button>
       <button class="tab-btn" onclick="showTab('sk','rekod',this)">📋 REKOD</button>
-      <button class="tab-btn" onclick="showTab('sk','qr',this)">📷 IMBAS QR</button>
+      <button class="tab-btn" onclick="showTab('sk','qrsekolah',this);generateSchoolQR()">⬛ KOD QR</button>
+      <button class="tab-btn" onclick="showTab('sk','pengesahan',this);loadPendingVisits()">✅ PENGESAHAN</button>
+      <button class="tab-btn" onclick="showTab('sk','aduan',this);loadMyAduan()">📢 ADUAN</button>
     </div>
     <div id="sk-tab-profil">
       <div class="profile-card"><div class="profile-av">🏫</div><div><div class="profile-name" id="sk-pname">-</div><div class="profile-meta" id="sk-pjawatan">-</div><div class="profile-meta" id="sk-pkod">-</div><div class="profile-badge" id="sk-psk">-</div></div></div>
@@ -608,14 +675,101 @@ body{font-family:'Exo 2',sans-serif;background:var(--navy);color:#fff;min-height
         <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>BIL</th><th>PEGAWAI PPS</th><th>TUJUAN</th><th>TARIKH/MASA</th><th>KAEDAH</th></tr></thead><tbody id="sk-rekod-tbody"></tbody></table></div>
       </div>
     </div>
-    <div id="sk-tab-qr" style="display:none;">
+    <!-- KOD QR SEKOLAH -->
+    <div id="sk-tab-qrsekolah" style="display:none;">
       <div class="card">
-        <div class="card-title">📷 IMBAS KOD QR PPS</div>
-        <div id="qr-scan-alert" class="alert"></div>
-        <p style="font-size:11.5px;color:rgba(255,255,255,0.4);margin-bottom:13px;">Masukkan kod unik PPS dari skrin QR mereka.</p>
-        <div class="fg"><label class="fl">KOD UNIK PPS</label><input type="text" id="qr-input" class="fi" placeholder="Masukkan kod dari QR..." style="font-family:monospace;letter-spacing:2px;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()"></div>
-        <div class="fg"><label class="fl">TUJUAN LAWATAN</label><select id="qr-tujuan" class="fs"><option>Lawatan Berkala</option><option>Program Kesedaran Jenayah</option><option>Pembentangan Keselamatan</option><option>Perjumpaan Dengan Pengurusan</option><option>Program Anti Dadah</option><option>Program Buli Sifar</option></select></div>
-        <button class="btn-p" onclick="scanQR()">⬛ SAHKAN & DAFTAR LAWATAN</button>
+        <div class="card-title">⬛ KOD QR SEKOLAH SAYA</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:13px;">
+          <p style="font-size:11.5px;color:rgba(255,255,255,0.45);text-align:center;">
+            PPS akan <strong style="color:var(--cyan);">mengimbas</strong> kod QR ini semasa lawatan untuk mendaftar kedatangan mereka secara automatik.
+          </p>
+          <div class="qr-box"><div id="school-qr-display"></div></div>
+          <div style="text-align:center;">
+            <div style="font-family:'Rajdhani',sans-serif;font-size:11px;color:rgba(255,255,255,0.45);" id="school-qr-label">-</div>
+            <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-top:4px;">Kod QR ini unik untuk sekolah anda sahaja</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 ARAHAN PENGGUNAAN</div>
+        <div style="background:rgba(0,200,255,0.04);border:1px solid var(--border);border-radius:8px;padding:13px;">
+          <ol style="font-size:11px;color:rgba(255,255,255,0.55);padding-left:16px;line-height:2.3;">
+            <li>Cetak atau tunjuk kod QR ini kepada PPS yang datang melawat</li>
+            <li>PPS akan imbas kod QR ini melalui tab <strong style="color:var(--cyan);">📍 LAWATAN → IMBAS QR</strong></li>
+            <li>Lawatan akan didaftar secara automatik dalam sistem</li>
+            <li>Sekolah perlu <strong style="color:var(--gold);">SAH atau TOLAK</strong> lawatan dalam tab ✅ PENGESAHAN</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- PENGESAHAN LAWATAN -->
+    <div id="sk-tab-pengesahan" style="display:none;">
+      <div class="card">
+        <div class="card-title">✅ PENGESAHAN LAWATAN PPS <span class="rtbadge"><span class="pdot"></span>MASA NYATA</span></div>
+        <div id="pending-alert" class="alert"></div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:13px;">
+          Senarai lawatan PPS yang perlu disahkan oleh pihak sekolah.
+        </p>
+        <div id="pending-visits-list">
+          <div class="spinner"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 REKOD PENGESAHAN</div>
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead><tr><th>BIL</th><th>PPS</th><th>TUJUAN</th><th>TARIKH</th><th>STATUS</th></tr></thead>
+            <tbody id="sk-pengesahan-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADUAN SEKOLAH -->
+    <div id="sk-tab-aduan" style="display:none;">
+      <div class="card">
+        <div class="card-title">📢 HANTAR ADUAN / ISU SEKOLAH</div>
+        <div id="aduan-alert" class="alert"></div>
+        <div class="fg"><label class="fl">TAJUK ADUAN</label>
+          <input type="text" id="aduan-tajuk" class="fi" placeholder="Ringkasan isu atau aduan...">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="fg" style="margin:0;"><label class="fl">KATEGORI</label>
+            <select id="aduan-kategori" class="fs">
+              <option>Masalah Disiplin Pelajar</option>
+              <option>Buli / Pergaduhan</option>
+              <option>Dadah / Rokok</option>
+              <option>Ancaman Keselamatan</option>
+              <option>Jenayah Siber</option>
+              <option>Vandalisme</option>
+              <option>Peras Ugut</option>
+              <option>Keperluan Bantuan Polis</option>
+              <option>Aduan Umum</option>
+              <option>Lain-lain</option>
+            </select>
+          </div>
+          <div class="fg" style="margin:0;"><label class="fl">TAHAP KECEMASAN</label>
+            <select id="aduan-urgency" class="fs">
+              <option value="rendah">🟢 Rendah — Tidak Mendesak</option>
+              <option value="sederhana" selected>🟡 Sederhana — Perlu Perhatian</option>
+              <option value="tinggi">🔴 Tinggi — Mendesak</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg" style="margin-top:10px;"><label class="fl">KETERANGAN LANJUT</label>
+          <textarea id="aduan-desc" class="fi" rows="4" placeholder="Huraikan isu atau aduan dengan lebih terperinci..." style="resize:vertical;min-height:90px;"></textarea>
+        </div>
+        <div class="fg"><label class="fl">TINDAKAN YANG DIPERLUKAN (optional)</label>
+          <input type="text" id="aduan-action" class="fi" placeholder="Contoh: Mohon siasatan, mohon rondaan, mohon ceramah...">
+        </div>
+        <button class="btn-p" onclick="hantarAduan()">📢 HANTAR ADUAN</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 ADUAN SAYA</div>
+        <div id="my-aduan-list">
+          <p style="text-align:center;color:rgba(255,255,255,.25);font-size:12px;padding:18px;">Tiada aduan.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -634,6 +788,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--navy);color:#fff;min-height
       <button class="tab-btn" onclick="showTab('adm','pps',this)">👮 SENARAI PPS</button>
       <button class="tab-btn" onclick="showTab('adm','sekolah',this)">🏫 SEKOLAH</button>
       <button class="tab-btn" onclick="showTab('adm','kes',this)">📄 KES</button>
+      <button class="tab-btn" onclick="showTab('adm','aduan',this);loadAllAduan()">📢 ADUAN</button>
       <button class="tab-btn" onclick="showTab('adm','pdf',this)">🖨️ LAPORAN PDF</button>
     </div>
     <div id="adm-tab-dash">
@@ -683,6 +838,28 @@ body{font-family:'Exo 2',sans-serif;background:var(--navy);color:#fff;min-height
       </div>
       <div class="card"><div class="card-title">📄 SEMUA REKOD KES</div>
         <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>BIL</th><th>SEKOLAH</th><th>JENIS KES</th><th>KETERANGAN</th><th>TAHAP</th><th>TARIKH</th></tr></thead><tbody id="adm-kes-tbody"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ADUAN TAB -->
+    <div id="adm-tab-aduan" style="display:none;">
+      <div class="stats-grid" style="margin-bottom:14px;">
+        <div class="stat-card"><div class="stat-num" id="aduan-stat-total">-</div><div class="stat-label">Jumlah Aduan</div></div>
+        <div class="stat-card red"><div class="stat-num" id="aduan-stat-baharu">-</div><div class="stat-label">Baharu</div></div>
+        <div class="stat-card gold"><div class="stat-num" id="aduan-stat-proses">-</div><div class="stat-label">Dalam Tindakan</div></div>
+        <div class="stat-card green"><div class="stat-num" id="aduan-stat-selesai">-</div><div class="stat-label">Selesai</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📢 SEMUA LAPORAN ADUAN <span class="rtbadge"><span class="pdot"></span>MASA NYATA</span></div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+          <button onclick="filterAduan('semua')" class="tab-btn active" id="aduan-filter-semua" style="font-size:10px;padding:5px 12px;">SEMUA</button>
+          <button onclick="filterAduan('baharu')" class="tab-btn" id="aduan-filter-baharu" style="font-size:10px;padding:5px 12px;">🔴 BAHARU</button>
+          <button onclick="filterAduan('proses')" class="tab-btn" id="aduan-filter-proses" style="font-size:10px;padding:5px 12px;">🟡 DALAM TINDAKAN</button>
+          <button onclick="filterAduan('selesai')" class="tab-btn" id="aduan-filter-selesai" style="font-size:10px;padding:5px 12px;">🟢 SELESAI</button>
+        </div>
+        <div id="all-aduan-list">
+          <div class="spinner"></div>
+        </div>
       </div>
     </div>
 
@@ -1331,6 +1508,13 @@ async function initSekolahDash() {
   } catch(e) {}
 
   loadSKVisits();
+  // Pre-generate school QR code in Firebase
+  const skQrCode = 'SKL-' + u.sekolahKod + '-' + btoa(u.sekolahKod).replace(/=/g,'').toUpperCase().substring(0,8);
+  fbPut('/schoolQR/' + u.sekolahKod, {
+    qrCode: skQrCode,
+    sekolahKod: u.sekolahKod,
+    sekolahNama: u.sekolahNama
+  });
   pollInterval = setInterval(loadSKVisits, 15000);
 }
 
@@ -1406,6 +1590,12 @@ async function loadAdminData() {
     document.getElementById('as-skreg').textContent = sk.length;
     document.getElementById('as-bulan').textContent = bln.length;
     document.getElementById('as-kes').textContent = cases.length;
+    // Load aduan count for dashboard
+    fbGet('/aduan').then(ad => {
+      const aduanList = ad ? Object.values(ad) : [];
+      const baharu = aduanList.filter(a=>a.status==='baharu').length;
+      if (baharu > 0) addNotif('📢', baharu + ' aduan baharu dari sekolah', 'Semak tab ADUAN untuk tindakan');
+    });
 
     renderBarChart('adm-chart-m', visits, 'adm');
     renderDoughnut('adm-chart-t', visits);
@@ -1958,18 +2148,316 @@ function filterSchools(val) {
 }
 
 // ══════════════════════════════════════════
+// KOD QR SEKOLAH
+// ══════════════════════════════════════════
+function generateSchoolQR() {
+  if (!currentUser) return;
+  const container = document.getElementById('school-qr-display');
+  if (!container) return;
+  container.innerHTML = '';
+  // QR code = SKL- + sekolahKod + unique hash
+  const qrData = 'SKL-' + currentUser.sekolahKod + '-' + btoa(currentUser.sekolahKod).replace(/=/g,'').toUpperCase().substring(0,8);
+  try {
+    new QRCode(container, {
+      text: qrData, width: 180, height: 180,
+      colorDark: '#0a1628', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+    document.getElementById('school-qr-label').textContent = currentUser.sekolahNama + ' | KOD: ' + qrData;
+    // Save QR code to Firebase for PPS to validate
+    fbPut('/schoolQR/' + currentUser.sekolahKod, {
+      qrCode: qrData,
+      sekolahKod: currentUser.sekolahKod,
+      sekolahNama: currentUser.sekolahNama
+    });
+  } catch(e) {
+    container.innerHTML = '<p style="color:var(--red);font-size:12px;padding:10px;">QR library belum dimuatkan.</p>';
+  }
+}
+
+// ══════════════════════════════════════════
+// PPS - VISIT MODE TOGGLE
+// ══════════════════════════════════════════
+function setVisitMode(mode) {
+  const qrCard     = document.getElementById('visit-mode-qr');
+  const manualCard = document.getElementById('visit-mode-manual');
+  const qrBtn      = document.getElementById('mode-qr-btn');
+  const manBtn     = document.getElementById('mode-manual-btn');
+
+  if (mode === 'qr') {
+    qrCard.style.display     = 'block';
+    manualCard.style.display = 'none';
+    qrBtn.style.background   = 'rgba(0,200,255,0.15)';
+    qrBtn.style.border       = '1px solid var(--cyan)';
+    qrBtn.querySelector('div:nth-child(2)').style.color = 'var(--cyan)';
+    manBtn.style.background  = 'var(--glass)';
+    manBtn.style.border      = '1px solid rgba(255,255,255,0.1)';
+    manBtn.querySelector('div:nth-child(2)').style.color = 'rgba(255,255,255,0.5)';
+  } else {
+    qrCard.style.display     = 'none';
+    manualCard.style.display = 'block';
+    manBtn.style.background  = 'rgba(0,200,255,0.15)';
+    manBtn.style.border      = '1px solid var(--cyan)';
+    manBtn.querySelector('div:nth-child(2)').style.color = 'var(--cyan)';
+    qrBtn.style.background   = 'var(--glass)';
+    qrBtn.style.border       = '1px solid rgba(255,255,255,0.1)';
+    qrBtn.querySelector('div:nth-child(2)').style.color = 'rgba(255,255,255,0.5)';
+  }
+}
+
+// ══════════════════════════════════════════
+// PPS - DAFTAR LAWATAN VIA QR SEKOLAH
+// ══════════════════════════════════════════
+async function daftarLawatanQR() {
+  const qrCode = document.getElementById('school-qr-input').value.trim().toUpperCase();
+  const tujuan = document.getElementById('visit-tujuan-qr').value;
+  const notes  = document.getElementById('visit-notes-qr').value;
+
+  if (!qrCode) { showAlert('visit-qr-alert','err','Sila masukkan kod QR sekolah.'); return; }
+
+  const btn = document.getElementById('visit-qr-btn');
+  btn.disabled = true; btn.textContent = 'Mendaftar...';
+
+  try {
+    // Validate QR code against Firebase
+    const qrData = await fbGet('/schoolQR');
+    if (!qrData) { showAlert('visit-qr-alert','err','Tiada data QR sekolah. Sekolah perlu buka tab KOD QR terlebih dahulu.'); btn.disabled=false; btn.innerHTML='⬛ DAFTAR LAWATAN VIA QR'; return; }
+
+    // Find school by QR code
+    const schoolEntry = Object.values(qrData).find(s => s.qrCode === qrCode);
+    if (!schoolEntry) { showAlert('visit-qr-alert','err','❌ Kod QR tidak sah. Pastikan kod betul dari sekolah.'); btn.disabled=false; btn.innerHTML='⬛ DAFTAR LAWATAN VIA QR'; return; }
+
+    // Register visit with PENDING status
+    const ref = await fbPost('/visits', {
+      ppsId:      currentUser.userid,
+      ppsNama:    currentUser.nama,
+      ppsBadan:   currentUser.badanDisplay || currentUser.badan,
+      sekolahKod: schoolEntry.sekolahKod,
+      sekolahNama:schoolEntry.sekolahNama,
+      tujuan, notes,
+      timestamp:  new Date().toISOString(),
+      method:     'QR_SEKOLAH',
+      status:     'MENUNGGU' // Pending sekolah confirmation
+    });
+
+    btn.disabled=false; btn.innerHTML='⬛ DAFTAR LAWATAN VIA QR';
+    document.getElementById('modal-body').innerHTML = `
+      <strong style="color:var(--cyan);">⬛ Lawatan Didaftar via QR!</strong><br>
+      Pegawai: ${currentUser.nama} (${currentUser.badanDisplay||currentUser.badan})<br>
+      Sekolah: ${schoolEntry.sekolahNama}<br>
+      Tujuan: ${tujuan}<br>
+      Tarikh: ${new Date().toLocaleString('ms-MY')}<br>
+      Status: <span style="color:var(--gold);">⏳ Menunggu Pengesahan Sekolah</span><br>
+      No. Rujukan: ${ref.name}`;
+    document.getElementById('modal').classList.add('active');
+    document.getElementById('school-qr-input').value = '';
+    document.getElementById('visit-notes-qr').value  = '';
+    loadPPSVisits();
+  } catch(e) {
+    btn.disabled=false; btn.innerHTML='⬛ DAFTAR LAWATAN VIA QR';
+    showAlert('visit-qr-alert','err','Ralat: ' + e.message);
+  }
+}
+
+// ══════════════════════════════════════════
+// SEKOLAH - PENGESAHAN LAWATAN
+// ══════════════════════════════════════════
+async function loadPendingVisits() {
+  try {
+    const data = await fbGet('/visits');
+    const visits = data ? Object.entries(data).map(([k,v]) => ({id:k,...v})) : [];
+    const forThisSchool = visits.filter(v => v.sekolahKod === currentUser.sekolahKod)
+                                .sort((a,b) => b.timestamp.localeCompare(a.timestamp));
+    const pending  = forThisSchool.filter(v => v.status === 'MENUNGGU');
+    const confirmed= forThisSchool.filter(v => v.status && v.status !== 'MENUNGGU');
+
+    // Render pending
+    const pendingEl = document.getElementById('pending-visits-list');
+    if (!pending.length) {
+      pendingEl.innerHTML = '<div style="text-align:center;padding:20px;color:rgba(255,255,255,.28);font-size:12px;">✅ Tiada lawatan menunggu pengesahan.</div>';
+    } else {
+      pendingEl.innerHTML = pending.map(v => `
+        <div class="visit-pending">
+          <div class="visit-pending-name">👮 ${v.ppsNama}</div>
+          <div class="visit-pending-meta">
+            No. Badan: ${v.ppsBadan||'-'} &bull; ${v.tujuan}<br>
+            ${new Date(v.timestamp).toLocaleString('ms-MY')} &bull; <span style="color:var(--gold);">⏳ Menunggu Pengesahan</span>
+          </div>
+          <div>
+            <button class="sah-btn" onclick="sahLawatan('${v.id}','SAH')">✅ SAH</button>
+            <button class="tolak-btn" onclick="sahLawatan('${v.id}','TOLAK')">❌ TOLAK</button>
+          </div>
+        </div>`).join('');
+    }
+
+    // Render confirmed table
+    const tbody = document.getElementById('sk-pengesahan-tbody');
+    tbody.innerHTML = confirmed.length ? confirmed.map((v,i) => `<tr>
+      <td>${i+1}</td>
+      <td><div style="font-size:11px;">${v.ppsNama}</div><div style="font-size:9px;color:rgba(255,255,255,.35);">${v.ppsBadan||''}</div></td>
+      <td style="font-size:11px;">${v.tujuan}</td>
+      <td style="font-size:10px;color:rgba(255,255,255,.4);">${new Date(v.timestamp).toLocaleString('ms-MY')}</td>
+      <td><span class="badge ${v.status==='SAH'?'bg':'br'}">${v.status}</span></td>
+    </tr>`).join('') :
+    '<tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,.25);padding:18px;">Tiada rekod.</td></tr>';
+
+  } catch(e) { console.log('loadPendingVisits error:', e); }
+}
+
+async function sahLawatan(visitId, status) {
+  try {
+    await fbPut('/visits/' + visitId + '/status', status);
+    await fbPut('/visits/' + visitId + '/confirmedBy', currentUser.sekolahNama);
+    await fbPut('/visits/' + visitId + '/confirmedAt', new Date().toISOString());
+    showAlert('pending-alert', status==='SAH'?'ok':'err',
+      status==='SAH' ? '✅ Lawatan berjaya disahkan!' : '❌ Lawatan telah ditolak.');
+    loadPendingVisits();
+  } catch(e) { showAlert('pending-alert','err','Ralat: ' + e.message); }
+}
+
+// ══════════════════════════════════════════
+// SEKOLAH - HANTAR ADUAN
+// ══════════════════════════════════════════
+async function hantarAduan() {
+  const tajuk    = document.getElementById('aduan-tajuk').value.trim();
+  const kategori = document.getElementById('aduan-kategori').value;
+  const urgency  = document.getElementById('aduan-urgency').value;
+  const desc     = document.getElementById('aduan-desc').value.trim();
+  const action   = document.getElementById('aduan-action').value.trim();
+
+  if (!tajuk || !desc) { showAlert('aduan-alert','err','Sila isi Tajuk dan Keterangan aduan.'); return; }
+
+  try {
+    await fbPost('/aduan', {
+      sekolahKod:  currentUser.sekolahKod,
+      sekolahNama: currentUser.sekolahNama,
+      pengadu:     currentUser.nama,
+      jawatan:     currentUser.jawatan||'-',
+      tajuk, kategori, urgency, desc,
+      tindakanDiperlukan: action,
+      status:      'baharu',
+      timestamp:   new Date().toISOString()
+    });
+    showAlert('aduan-alert','ok','✅ Aduan berjaya dihantar! Admin akan menyemak dalam masa terdekat.');
+    document.getElementById('aduan-tajuk').value = '';
+    document.getElementById('aduan-desc').value  = '';
+    document.getElementById('aduan-action').value= '';
+    loadMyAduan();
+  } catch(e) { showAlert('aduan-alert','err','Ralat: ' + e.message); }
+}
+
+async function loadMyAduan() {
+  try {
+    const data  = await fbGet('/aduan');
+    const all   = data ? Object.entries(data).map(([k,v]) => ({id:k,...v})) : [];
+    const mine  = all.filter(a => a.sekolahKod === currentUser.sekolahKod)
+                     .sort((a,b) => b.timestamp.localeCompare(a.timestamp));
+    const el = document.getElementById('my-aduan-list');
+    if (!mine.length) { el.innerHTML='<p style="text-align:center;color:rgba(255,255,255,.25);font-size:12px;padding:18px;">Tiada aduan.</p>'; return; }
+    el.innerHTML = mine.map(a => `
+      <div class="aduan-item urgency-${a.urgency}">
+        <div class="aduan-header">
+          <div class="aduan-title">📢 ${a.tajuk}</div>
+          <span class="badge ${a.status==='baharu'?'br':a.status==='proses'?'by':'bg'}">${a.status==='baharu'?'BAHARU':a.status==='proses'?'DALAM TINDAKAN':'SELESAI'}</span>
+        </div>
+        <div class="aduan-meta">${a.kategori} &bull; ${new Date(a.timestamp).toLocaleString('ms-MY')}</div>
+        <div class="aduan-desc">${a.desc}</div>
+        ${a.tindakanDiperlukan?`<div style="font-size:10px;color:rgba(255,193,7,.7);">📌 Tindakan diperlukan: ${a.tindakanDiperlukan}</div>`:''}
+      </div>`).join('');
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════════
+// ADMIN - PANTAU ADUAN
+// ══════════════════════════════════════════
+let allAduanCache = [];
+let currentAduanFilter = 'semua';
+
+async function loadAllAduan() {
+  try {
+    const data = await fbGet('/aduan');
+    allAduanCache = data ? Object.entries(data).map(([k,v]) => ({id:k,...v})) : [];
+    allAduanCache.sort((a,b) => b.timestamp.localeCompare(a.timestamp));
+
+    // Update stats
+    document.getElementById('aduan-stat-total').textContent  = allAduanCache.length;
+    document.getElementById('aduan-stat-baharu').textContent = allAduanCache.filter(a=>a.status==='baharu').length;
+    document.getElementById('aduan-stat-proses').textContent = allAduanCache.filter(a=>a.status==='proses').length;
+    document.getElementById('aduan-stat-selesai').textContent= allAduanCache.filter(a=>a.status==='selesai').length;
+
+    renderAduanList(currentAduanFilter);
+  } catch(e) {}
+}
+
+function filterAduan(filter) {
+  currentAduanFilter = filter;
+  ['semua','baharu','proses','selesai'].forEach(f => {
+    const btn = document.getElementById('aduan-filter-'+f);
+    if (btn) btn.classList.toggle('active', f===filter);
+  });
+  renderAduanList(filter);
+}
+
+function renderAduanList(filter) {
+  const filtered = filter==='semua' ? allAduanCache :
+                   allAduanCache.filter(a => a.status === (filter==='proses'?'proses':filter));
+  const el = document.getElementById('all-aduan-list');
+  if (!filtered.length) {
+    el.innerHTML='<p style="text-align:center;color:rgba(255,255,255,.25);font-size:12px;padding:20px;">Tiada aduan.</p>';
+    return;
+  }
+  el.innerHTML = filtered.map(a => `
+    <div class="aduan-item urgency-${a.urgency}" style="margin-bottom:10px;">
+      <div class="aduan-header">
+        <div>
+          <div class="aduan-title">📢 ${a.tajuk}</div>
+          <div style="font-size:9.5px;color:rgba(255,255,255,.38);font-family:'Rajdhani',sans-serif;margin-top:2px;">
+            🏫 ${a.sekolahNama} &bull; ${a.pengadu} (${a.jawatan})
+          </div>
+        </div>
+        <span class="badge ${a.urgency==='tinggi'?'br':a.urgency==='sederhana'?'by':'bg'}">${a.urgency.toUpperCase()}</span>
+      </div>
+      <div class="aduan-meta">${a.kategori} &bull; ${new Date(a.timestamp).toLocaleString('ms-MY')}</div>
+      <div class="aduan-desc">${a.desc}</div>
+      ${a.tindakanDiperlukan?`<div style="font-size:10px;color:rgba(255,193,7,.7);margin-bottom:8px;">📌 ${a.tindakanDiperlukan}</div>`:''}
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <label style="font-family:'Rajdhani',sans-serif;font-size:9.5px;color:rgba(255,255,255,.4);letter-spacing:1px;">STATUS TINDAKAN:</label>
+        <select class="status-select" onchange="updateAduanStatus('${a.id}',this.value)">
+          <option value="baharu" ${a.status==='baharu'?'selected':''}>🔴 BAHARU</option>
+          <option value="proses" ${a.status==='proses'?'selected':''}>🟡 DALAM TINDAKAN</option>
+          <option value="selesai" ${a.status==='selesai'?'selected':''}>🟢 SELESAI</option>
+        </select>
+        <span class="badge ${a.status==='baharu'?'br':a.status==='proses'?'by':'bg'}" style="font-size:9px;">
+          ${a.status==='baharu'?'BAHARU':a.status==='proses'?'DALAM TINDAKAN':'SELESAI'}
+        </span>
+      </div>
+    </div>`).join('');
+}
+
+async function updateAduanStatus(aduanId, status) {
+  try {
+    await fbPut('/aduan/' + aduanId + '/status', status);
+    await fbPut('/aduan/' + aduanId + '/updatedAt', new Date().toISOString());
+    await fbPut('/aduan/' + aduanId + '/updatedBy', 'ADMIN');
+    // Update local cache
+    const idx = allAduanCache.findIndex(a => a.id === aduanId);
+    if (idx >= 0) allAduanCache[idx].status = status;
+    // Update stats
+    document.getElementById('aduan-stat-baharu').textContent = allAduanCache.filter(a=>a.status==='baharu').length;
+    document.getElementById('aduan-stat-proses').textContent = allAduanCache.filter(a=>a.status==='proses').length;
+    document.getElementById('aduan-stat-selesai').textContent= allAduanCache.filter(a=>a.status==='selesai').length;
+    showToast('✅', 'Status aduan dikemaskini: ' + (status==='baharu'?'Baharu':status==='proses'?'Dalam Tindakan':'Selesai'));
+  } catch(e) { showToast('❌', 'Ralat kemaskini status: ' + e.message); }
+}
+
+// ══════════════════════════════════════════
 // PWA - PROGRESSIVE WEB APP
 // ══════════════════════════════════════════
 let deferredPrompt = null;
 
-// Register Service Worker (sw.js)
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('✅ SW berdaftar:', reg.scope))
-      .catch(e => console.log('SW tidak aktif (OK untuk development):', e.message));
-  });
-}
+// Service Worker — tidak diperlukan untuk fungsi utama
+// PWA install masih berfungsi melalui manifest sahaja
+// (Service Worker blob tidak disokong dalam persekitaran ini)
 
 // Web App Manifest (inline)
 const manifestData = {
