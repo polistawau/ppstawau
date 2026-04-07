@@ -643,6 +643,7 @@ tr:hover td{background:rgba(0,200,255,0.04);}
   <div class="tab-bar">
     <button class="tab-btn active" onclick="showTab('adm','dash',this)" style="color:#ff7070;border-bottom-color:transparent;" id="adm-tab-dash-btn">📊 DASHBOARD</button>
     <button class="tab-btn" onclick="showTab('adm','pendaftaran',this)" id="adm-tab-pendaftaran-btn">📝 PENDAFTARAN</button>
+    <button class="tab-btn" onclick="showTab('adm','pemantauan',this)" id="adm-tab-pemantauan-btn">📊 PEMANTAUAN</button>
     <button class="tab-btn" onclick="showTab('adm','pengguna',this)" id="adm-tab-pengguna-btn">👥 PENGGUNA</button>
     <button class="tab-btn" onclick="showTab('adm','lawatan',this)" id="adm-tab-lawatan-btn">📍 LAWATAN</button>
     <button class="tab-btn" onclick="showTab('adm','kes',this)" id="adm-tab-kes-btn">⚠️ KES</button>
@@ -665,6 +666,46 @@ tr:hover td{background:rgba(0,200,255,0.04);}
       <div class="card">
         <div class="card-title">📋 AKTIVITI TERKINI</div>
         <div id="adm-activity"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- PEMANTAUAN -->
+    <div id="adm-pemantauan" class="tab-pane">
+      <!-- Stats Cards -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;" id="pmt-stats-grid">
+        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">JUMLAH PPS</div><div id="pmt-tot-pps" style="font-size:26px;font-weight:900;color:var(--cyan);">—</div></div>
+        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">JUMLAH SEKOLAH</div><div id="pmt-tot-sk" style="font-size:26px;font-weight:900;color:var(--gold);">—</div></div>
+        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">JUMLAH LAWATAN</div><div id="pmt-tot-law" style="font-size:26px;font-weight:900;color:#00e676;">—</div></div>
+        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">LAWATAN SAH</div><div id="pmt-tot-sah" style="font-size:26px;font-weight:900;color:#00e676;">—</div></div>
+        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">JUMLAH KES</div><div id="pmt-tot-kes" style="font-size:26px;font-weight:900;color:#ff6b35;">—</div></div>
+        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">JUMLAH ADUAN</div><div id="pmt-tot-aduan" style="font-size:26px;font-weight:900;color:#ff1744;">—</div></div>
+      </div>
+      <!-- Charts Row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+        <div class="card" style="padding:10px;">
+          <div style="font-size:10px;font-weight:700;color:var(--cyan);margin-bottom:8px;">📊 STATUS LAWATAN</div>
+          <canvas id="pmt-chart-status" width="280" height="160"></canvas>
+        </div>
+        <div class="card" style="padding:10px;">
+          <div style="font-size:10px;font-weight:700;color:var(--gold);margin-bottom:8px;">📊 LAWATAN BULANAN</div>
+          <canvas id="pmt-chart-bulan" width="280" height="160"></canvas>
+        </div>
+      </div>
+      <!-- PPS Performance Chart -->
+      <div class="card" style="padding:10px;margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:700;color:#00e676;margin-bottom:8px;">📊 PRESTASI LAWATAN PEGAWAI PPS</div>
+        <canvas id="pmt-chart-pps" width="560" height="180"></canvas>
+      </div>
+      <!-- 2 Tables -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="card" style="padding:10px;">
+          <div style="font-size:10px;font-weight:700;color:#ff1744;margin-bottom:8px;">🏫 SEKOLAH TIDAK DILAWATI</div>
+          <div id="pmt-sk-tiada" style="font-size:10px;"></div>
+        </div>
+        <div class="card" style="padding:10px;">
+          <div style="font-size:10px;font-weight:700;color:#ff6b35;margin-bottom:8px;">👮 PPS GAGAL MELAWAT</div>
+          <div id="pmt-pps-gagal" style="font-size:10px;"></div>
+        </div>
       </div>
     </div>
 
@@ -1056,6 +1097,7 @@ function showTab(prefix, name, btn) {
   if (prefix==='adm' && name==='lawatan')    loadAdmLawatan();
   if (prefix==='adm' && name==='kes')        loadAdmKes();
   if (prefix==='adm' && name==='aduan')      loadAdmAduan();
+  if (prefix==='adm' && name==='pemantauan')  loadAdmPemantauan();
 }
 function showAlert(id, type, msg) {
   const el = document.getElementById(id);
@@ -1646,46 +1688,50 @@ async function loadAdmDash() {
 async function loadAdmPengguna() {
   const tbody = document.getElementById('adm-pengguna-tbody');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr>';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr>';
   try {
     const uData = await fbGet('/users');
-    const users = uData ? Object.values(uData).filter(u=>u.role!=='ADMIN'&&u.userid!=='IPDTAWAU') : [];
+    if (!uData) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);">Tiada pengguna berdaftar.</td></tr>'; return; }
+    const users = Object.entries(uData)
+      .map(([k,v]) => ({...v, _key:k}))
+      .filter(u => u.role !== 'ADMIN' && u._key !== 'IPDTAWAU' && u.userid !== 'IPDTAWAU');
+    if (!users.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);">Tiada pengguna berdaftar.</td></tr>'; return; }
     users.sort((a,b) => {
-      const roleA = a.role || '';
-      const roleB = b.role || '';
-      if (roleA !== roleB) return roleA.localeCompare(roleB);
+      const rA = a.role||''; const rB = b.role||'';
+      if (rA !== rB) return rA.localeCompare(rB);
       return (a.nama||'').localeCompare(b.nama||'');
     });
     tbody.innerHTML = users.map((u,i) => {
-      const role = u.role==='PPS'
-        ? '<span style="color:var(--cyan);font-weight:700;">PPS</span>'
-        : '<span style="color:var(--gold);font-weight:700;">SEKOLAH</span>';
-      // PPS: tunjuk pangkat + nombor badan + nama
-      // SEKOLAH: tunjuk nama + jawatan
-      const namaCell = u.role==='PPS'
-        ? `<div style="font-size:9px;color:var(--gold);font-weight:700;">${(u.badanDisplay||u.pangkat+' '+u.badan||'').replace(/^RF\//, '').replace(/^G\//, '')}</div>
-           <div style="font-size:11px;font-weight:700;color:#fff;">${u.nama||'—'}</div>`
-        : `<div style="font-size:11px;font-weight:700;color:#fff;">${u.nama||'—'}</div>
-           <div style="font-size:9px;color:rgba(255,255,255,0.4);">${u.jawatan||''} ${u.gred||''}</div>`;
-      const infoCell = u.role==='PPS'
-        ? `<div style="font-size:10px;">${u.tugas||'—'}</div>`
-        : `<div style="font-size:10px;">${u.sekolahNama||'—'}</div>
-           <div style="font-size:9px;color:rgba(255,255,255,0.4);">${u.sekolahKod||''}</div>`;
-      const tel = u.role==='PPS' ? (u.telefon||'—') : (u.telPeribadi||'—');
-      return `<tr>
-        <td style="font-size:10px;">${i+1}</td>
-        <td>${namaCell}</td>
-        <td>${role}</td>
-        <td style="font-size:10px;">${infoCell}</td>
-        <td style="font-size:10px;">${tel}</td>
-        <td>
-          <button onclick="resetPwAdmin('${u.userid}')" style="display:block;width:100%;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:5px;padding:3px 8px;color:var(--gold);font-size:9px;cursor:pointer;margin-bottom:3px;">🔑 RESET PW</button>
-          <button onclick="padamPengguna('${u.userid}')" style="display:block;width:100%;background:rgba(255,23,68,0.1);border:1px solid rgba(255,23,68,0.3);border-radius:5px;padding:3px 8px;color:var(--red);font-size:9px;cursor:pointer;">🗑️ PADAM</button>
-        </td>
-      </tr>`;
-    }).join('') || '<tr><td colspan="6" style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);">Tiada pengguna berdaftar.</td></tr>';
+      const isPPS = u.role === 'PPS';
+      const role  = isPPS
+        ? '<span style="color:var(--cyan);font-weight:700;font-size:11px;">👮 PPS</span>'
+        : '<span style="color:var(--gold);font-weight:700;font-size:11px;">🏫 SEKOLAH</span>';
+      // Robust field extraction
+      const nama    = u.nama    || u.fullName || u.namaLengkap || '—';
+      const pangkat = u.pangkat || '';
+      const badan   = (u.badan  || u.noBadan  || '').replace(/^RF\//, '').replace(/^G\//, '');
+      const badanDisp = u.badanDisplay ? u.badanDisplay.replace(/^RF\//, '').replace(/^G\//, '') : '';
+      const fullPPS = badanDisp || [pangkat, badan, nama].filter(Boolean).join(' ');
+      const tugas   = u.tugas   || u.tempatTugas || u.unit || '—';
+      const skNama  = u.sekolahNama || u.namaSekolah || '—';
+      const skKod   = u.sekolahKod  || '';
+      const tel     = isPPS ? (u.telefon || u.tel || '—') : (u.telPeribadi || u.telefon || u.tel || '—');
+      const jawatan = u.jawatan || '';
+      const gred    = u.gred    || '';
+      const namaCell = isPPS
+        ? '<div style="font-size:10px;color:var(--gold);font-weight:700;">'+pangkat+' '+badan+'</div><div style="font-size:12px;font-weight:700;color:#fff;">'+nama+'</div>'
+        : '<div style="font-size:12px;font-weight:700;color:#fff;">'+nama+'</div><div style="font-size:9px;color:rgba(255,255,255,0.4);">'+jawatan+' '+gred+'</div>';
+      const unitCell = isPPS
+        ? '<div style="font-size:10px;">'+tugas+'</div>'
+        : '<div style="font-size:10px;">'+skNama+'</div><div style="font-size:9px;color:rgba(255,255,255,0.35);">'+skKod+'</div>';
+      const key = u._key;
+      return '<tr><td>'+(i+1)+'</td><td>'+namaCell+'</td><td>'+role+'</td><td>'+unitCell+'</td><td style="font-size:10px;">'+tel+'</td><td>'+
+        '<button onclick="resetPwAdmin(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:5px;padding:3px 8px;color:var(--gold);font-size:9px;cursor:pointer;margin-bottom:3px;">🔑 RESET PW</button>'+
+        '<button onclick="padamPengguna(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,23,68,0.1);border:1px solid rgba(255,23,68,0.3);border-radius:5px;padding:3px 8px;color:var(--red);font-size:9px;cursor:pointer;">🗑️ PADAM</button>'+
+        '</td></tr>';
+    }).join('');
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--red);">Ralat: ${e.message}</td></tr>`;
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--red);">Ralat: '+e.message+'</td></tr>';
   }
 }
 
@@ -2086,6 +2132,223 @@ function ppsDisplay(v) {
   const nama    = v.ppsNama    || '—';
   return [pangkat, badan, nama].filter(Boolean).join(' ');
 }
+
+
+// ═══════════════════════════════════════════════════════
+// PEMANTAUAN — ADMIN ANALYTICS
+// ═══════════════════════════════════════════════════════
+
+async function loadAdmPemantauan() {
+  try {
+    const [uData, vData, kData, aData] = await Promise.all([
+      fbGet('/users'), fbGet('/visits'), fbGet('/cases'), fbGet('/aduan')
+    ]);
+
+    const users   = uData ? Object.values(uData) : [];
+    const visits  = vData ? Object.values(vData) : [];
+    const cases   = kData ? Object.values(kData) : [];
+    const aduans  = aData ? Object.values(aData) : [];
+
+    const ppsList = users.filter(u => u.role === 'PPS');
+    const skList  = users.filter(u => u.role === 'SEKOLAH');
+
+    // ── STATS ────────────────────────────────────
+    const setEl = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    setEl('pmt-tot-pps',   ppsList.length);
+    setEl('pmt-tot-sk',    skList.length);
+    setEl('pmt-tot-law',   visits.length);
+    setEl('pmt-tot-sah',   visits.filter(v => v.status === 'SAH').length);
+    setEl('pmt-tot-kes',   cases.length);
+    setEl('pmt-tot-aduan', aduans.length);
+
+    // ── CHART 1: STATUS LAWATAN (Donut) ──────────
+    drawDonut('pmt-chart-status', [
+      { label: 'SAH',     val: visits.filter(v=>v.status==='SAH').length,     color: '#00e676' },
+      { label: 'MENUNGGU',val: visits.filter(v=>v.status==='MENUNGGU').length, color: '#ffc107' },
+      { label: 'TOLAK',   val: visits.filter(v=>v.status==='TOLAK').length,   color: '#ff1744' },
+    ]);
+
+    // ── CHART 2: LAWATAN BULANAN (Bar) ───────────
+    const bulanMap = {};
+    const BULAN = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
+    visits.forEach(v => {
+      if (!v.timestamp) return;
+      const d = new Date(v.timestamp);
+      const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+      bulanMap[key] = (bulanMap[key]||0) + 1;
+    });
+    const bulanKeys = Object.keys(bulanMap).sort().slice(-6);
+    drawBar('pmt-chart-bulan',
+      bulanKeys.map(k => BULAN[parseInt(k.split('-')[1])-1]+' '+k.split('-')[0].slice(2)),
+      bulanKeys.map(k => bulanMap[k]),
+      '#00c8ff'
+    );
+
+    // ── CHART 3: PRESTASI PPS (Bar) ───────────────
+    const ppsVisitCount = {};
+    ppsList.forEach(p => { ppsVisitCount[p.userid] = 0; });
+    visits.forEach(v => { if (v.ppsId) ppsVisitCount[v.ppsId] = (ppsVisitCount[v.ppsId]||0) + 1; });
+    const ppsLabels = ppsList.map(p => {
+      const badan = (p.badan||'').replace(/^RF\//,'').replace(/^G\//,'');
+      return (p.pangkat||'')+' '+badan;
+    });
+    const ppsVals = ppsList.map(p => ppsVisitCount[p.userid]||0);
+    drawBarHoriz('pmt-chart-pps', ppsLabels, ppsVals, '#00e676');
+
+    // ── TABLE 1: SEKOLAH TIDAK DILAWATI ──────────
+    const visitedSk = new Set(visits.map(v => v.sekolahKod).filter(Boolean));
+    const SKOLAH_ALL = typeof SCHOOLS !== 'undefined' ? SCHOOLS : [];
+    const tidakDilawati = SKOLAH_ALL.filter(s => !visitedSk.has(s.code));
+    const elSk = document.getElementById('pmt-sk-tiada');
+    if (elSk) {
+      if (!tidakDilawati.length) {
+        elSk.innerHTML = '<div style="color:#00e676;text-align:center;padding:10px;">✅ Semua sekolah telah dilawati!</div>';
+      } else {
+        elSk.innerHTML = '<div style="color:rgba(255,255,255,0.4);font-size:9px;margin-bottom:4px;">'+tidakDilawati.length+' sekolah belum dilawati:</div>' +
+          tidakDilawati.map((s,i) => '<div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;">' +
+            '<span style="color:rgba(255,255,255,0.7);">'+(i+1)+'. '+s.name+'</span>' +
+            '<span style="color:rgba(255,255,255,0.3);font-size:9px;">'+s.code+'</span></div>'
+          ).join('');
+      }
+    }
+
+    // ── TABLE 2: PPS GAGAL MELAWAT ────────────────
+    const gagal = ppsList.filter(p => !(ppsVisitCount[p.userid] > 0));
+    const elPPS = document.getElementById('pmt-pps-gagal');
+    if (elPPS) {
+      if (!gagal.length) {
+        elPPS.innerHTML = '<div style="color:#00e676;text-align:center;padding:10px;">✅ Semua PPS telah membuat lawatan!</div>';
+      } else {
+        elPPS.innerHTML = '<div style="color:rgba(255,255,255,0.4);font-size:9px;margin-bottom:4px;">'+gagal.length+' pegawai belum membuat lawatan:</div>' +
+          gagal.map((p,i) => {
+            const badan = (p.badan||'').replace(/^RF\//,'').replace(/^G\//,'');
+            return '<div style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);">' +
+              '<div style="color:var(--gold);font-size:10px;font-weight:700;">'+(i+1)+'. '+(p.pangkat||'')+' '+badan+'</div>' +
+              '<div style="color:#fff;font-size:11px;">'+(p.nama||'—')+'</div>' +
+              '<div style="color:rgba(255,255,255,0.4);font-size:9px;">'+(p.tugas||'—')+'</div>' +
+              '</div>';
+          }).join('');
+      }
+    }
+
+  } catch(e) {
+    console.warn('Pemantauan:', e.message);
+  }
+}
+
+// ── DRAW DONUT ────────────────────────────────────────
+function drawDonut(canvasId, data) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W/3, cy = H/2, r = Math.min(cx,cy)*0.8, rIn = r*0.55;
+  ctx.clearRect(0,0,W,H);
+  const total = data.reduce((s,d)=>s+d.val,0)||1;
+  let angle = -Math.PI/2;
+  data.forEach(d => {
+    const sweep = (d.val/total)*Math.PI*2;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,angle,angle+sweep);
+    ctx.closePath();
+    ctx.fillStyle = d.color;
+    ctx.fill();
+    angle += sweep;
+  });
+  // Hole
+  ctx.beginPath(); ctx.arc(cx,cy,rIn,0,Math.PI*2);
+  ctx.fillStyle = '#041020'; ctx.fill();
+  // Centre text
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 14px Orbitron,monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(total, cx, cy);
+  ctx.font = '8px Rajdhani,sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  ctx.fillText('JUMLAH', cx, cy+14);
+  // Legend
+  let ly = 20;
+  ctx.textAlign = 'left';
+  data.forEach(d => {
+    ctx.fillStyle = d.color;
+    ctx.fillRect(W/2+10, ly, 10, 10);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.font = '9px Rajdhani,sans-serif';
+    ctx.fillText(d.label+': '+d.val, W/2+26, ly+9);
+    ly += 20;
+  });
+}
+
+// ── DRAW BAR ──────────────────────────────────────────
+function drawBar(canvasId, labels, vals, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const pad = {t:15, b:30, l:10, r:10};
+  const maxVal = Math.max(...vals, 1);
+  const bW = (W - pad.l - pad.r) / (labels.length || 1);
+  ctx.clearRect(0,0,W,H);
+  labels.forEach((lbl, i) => {
+    const v = vals[i]||0;
+    const bH = ((H-pad.t-pad.b) * v/maxVal);
+    const x = pad.l + i*bW + bW*0.15;
+    const y = H - pad.b - bH;
+    const bWw = bW * 0.7;
+    // Bar
+    ctx.fillStyle = color;
+    ctx.globalAlpha = 0.8;
+    ctx.fillRect(x, y, bWw, bH);
+    ctx.globalAlpha = 1;
+    // Value
+    if (v > 0) {
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 9px Rajdhani,sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(v, x+bWw/2, y-4);
+    }
+    // Label
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = '8px Rajdhani,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(lbl, x+bWw/2, H-pad.b+12);
+  });
+}
+
+// ── DRAW HORIZONTAL BAR ───────────────────────────────
+function drawBarHoriz(canvasId, labels, vals, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const maxVal = Math.max(...vals, 1);
+  const n = labels.length || 1;
+  const rowH = H / n;
+  const lblW = 110;
+  ctx.clearRect(0,0,W,H);
+  labels.forEach((lbl, i) => {
+    const v = vals[i]||0;
+    const barMaxW = W - lblW - 30;
+    const bW = (v/maxVal)*barMaxW;
+    const y = i*rowH + rowH*0.2;
+    const bH = rowH * 0.6;
+    // Label
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.font = '8px Rajdhani,sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(lbl, lblW-4, y+bH/2+3);
+    // Bar
+    ctx.fillStyle = v > 0 ? color : 'rgba(255,23,68,0.3)';
+    ctx.globalAlpha = 0.85;
+    ctx.fillRect(lblW, y, bW||3, bH);
+    ctx.globalAlpha = 1;
+    // Value
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 9px Rajdhani,sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(v, lblW + bW + 5, y+bH/2+3);
+  });
+}
+
 
 window.addEventListener('load', function() {
   // Pre-populate all school selects
