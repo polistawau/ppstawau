@@ -712,7 +712,10 @@ tr:hover td{background:rgba(0,200,255,0.04);}
     <!-- PENDAFTARAN -->
     <div id="adm-pendaftaran" class="tab-pane">
       <div class="card">
-        <div class="card-title" style="color:#ff7070;">📝 PERMOHONAN PENDAFTARAN BAHARU</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="card-title" style="color:#ff7070;margin-bottom:0;">📝 PERMOHONAN PENDAFTARAN BAHARU</div>
+          <button onclick="lulusSemuaPermohonan()" style="background:rgba(0,230,118,0.15);border:1.5px solid var(--green);border-radius:8px;padding:6px 12px;color:var(--green);font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">✅ LULUS SEMUA</button>
+        </div>
         <div id="adm-pend-list"><div class="spinner"></div></div>
       </div>
     </div>
@@ -2540,6 +2543,36 @@ document.addEventListener('click', function(e) {
   const pw = el.dataset.pw || '—';
   togglePw(el.id, pw);
 });
+
+
+async function lulusSemuaPermohonan() {
+  if (!confirm('Luluskan SEMUA permohonan yang menunggu? Semua akaun akan diaktifkan sekarang.')) return;
+  try {
+    const data = await fbGet('/pending_users');
+    if (!data) { alert('Tiada permohonan menunggu.'); return; }
+    const pending = Object.entries(data)
+      .map(([k,v]) => ({id:k,...v}))
+      .filter(u => u.status === 'MENUNGGU');
+    if (!pending.length) { alert('Tiada permohonan menunggu.'); return; }
+    let berjaya = 0, gagal = 0;
+    for (const u of pending) {
+      try {
+        await fbPut('/users/'+u.userid, {
+          ...u,
+          status: 'AKTIF',
+          approvedBy: 'IPDTAWAU',
+          approvedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString()
+        });
+        await fbPut('/pending_users/'+u.id+'/status', 'LULUS');
+        berjaya++;
+      } catch(e) { gagal++; }
+    }
+    alert('✅ '+berjaya+' akaun berjaya diluluskan!' + (gagal?' ❌ '+gagal+' gagal.':''));
+    loadAdmPendaftaran();
+    loadAdmDash();
+  } catch(e) { alert('Ralat: '+e.message); }
+}
 
 window.addEventListener('load', function() {
   // Pre-populate all school selects
