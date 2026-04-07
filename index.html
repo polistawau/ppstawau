@@ -1276,9 +1276,16 @@ async function doLogin() {
       showAlert('login-alert','err','ID atau Kata Laluan Admin tidak sah.');
       btn.disabled=false; btn.innerHTML='&#9658; LOG MASUK SISTEM'; return;
     }
-    const cleanId = id.replace(/-/g,'');
-    let data = await fbGet('/users/'+cleanId);
-    if (!data) data = await fbGet('/users/'+id) || await fbGet('/users/'+id.toUpperCase());
+    // Cuba semua format key yang mungkin
+    const id1 = id;                                    // RF/160647 (input terus)
+    const id2 = id.replace(/\//g,'_');                // RF_160647 (format simpan baru)
+    const id3 = id.replace(/\//g,'-');                // RF-160647 (format lama)
+    const id4 = id.replace(/-/g,'');                   // RF160647  (tanpa pemisah)
+    let data = await fbGet('/users/'+id2);             // Cuba format baru dulu
+    if (!data) data = await fbGet('/users/'+id3);      // Cuba format lama
+    if (!data) data = await fbGet('/users/'+id1);      // Cuba input terus
+    if (!data) data = await fbGet('/users/'+id4);      // Cuba tanpa pemisah
+    if (!data) data = await fbGet('/users/'+id2.toUpperCase());  // Huruf besar
     if (!data) { showAlert('login-alert','err','ID Pengguna tidak dijumpai.'); btn.disabled=false; btn.innerHTML='&#9658; LOG MASUK SISTEM'; return; }
     if (!(await verifyPw(pw, data.password))) { showAlert('login-alert','err','Kata Laluan tidak sah.'); btn.disabled=false; btn.innerHTML='&#9658; LOG MASUK SISTEM'; return; }
     if (data.role !== currentRole) { showAlert('login-alert','err','Sila pilih peranan yang betul: '+data.role); btn.disabled=false; btn.innerHTML='&#9658; LOG MASUK SISTEM'; return; }
@@ -2114,48 +2121,75 @@ async function loadAdmPendaftaran() {
   if (!el) return;
   el.innerHTML = '<div class="spinner"></div>';
   try {
-    const data = await fbGet('/pending_users');
-    const list = data ? Object.entries(data).map(([k,v])=>({id:k,...v})) : [];
-    const pending = list.filter(u => u.status === 'MENUNGGU');
-    pending.sort((a,b) => (b.submittedAt||'').localeCompare(a.submittedAt||''));
-    if (!pending.length) {
-      el.innerHTML = '<div style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);font-size:12px;">✅ Tiada permohonan menunggu kelulusan.</div>';
+    const safeGet = async (p) => { try { return await fbGet(p); } catch(e) { return null; } };
+    const data = await safeGet('/pending_users');
+    if (!data) {
+      el.innerHTML = '<div style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);font-size:12px;">✅ Tiada permohonan menunggu.</div>';
       return;
     }
-    el.innerHTML = pending.map(u => {
+    // Show ALL entries (regardless of status) so admin can see and approve
+    const list = Object.entries(data).map(([k,v]) => ({_id:k, ...v}));
+    list.sort((a,b) => (b.submittedAt||'').localeCompare(a.submittedAt||''));
+
+    if (!list.length) {
+      el.innerHTML = '<div style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);font-size:12px;">✅ Tiada permohonan.</div>';
+      return;
+    }
+
+    el.innerHTML = list.map(u => {
       const isPPS = u.role === 'PPS';
-      const clr = isPPS ? 'var(--cyan)' : 'var(--gold)';
+      const clr   = isPPS ? 'var(--cyan)' : 'var(--gold)';
+      const status = u.status || 'MENUNGGU';
+      const stBadge = status === 'LULUS'
+        ? '<span style="background:rgba(0,230,118,0.15);color:#00e676;border:1px solid rgba(0,230,118,0.3);border-radius:8px;padding:2px 8px;font-size:9px;">✅ LULUS</span>'
+        : status === 'TOLAK'
+        ? '<span style="background:rgba(255,23,68,0.1);color:var(--red);border:1px solid rgba(255,23,68,0.3);border-radius:8px;padding:2px 8px;font-size:9px;">❌ DITOLAK</span>'
+        : '<span style="background:rgba(255,193,7,0.1);color:var(--gold);border:1px solid rgba(255,193,7,0.3);border-radius:8px;padding:2px 8px;font-size:9px;animation:blink 2s infinite;">⏳ MENUNGGU</span>';
+
+      const nama   = u.nama || '—';
+      const userid = u.userid || u._id || '—';
+
       const info = isPPS
-        ? `<div style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.8;">
-            Pangkat: <b style="color:#fff">${u.pangkat||'—'}</b> &nbsp;|&nbsp;
-            No. Badan: <b style="color:#fff">${u.badan||'—'}</b><br>
-            Tempat Tugas: <b style="color:#fff">${u.tugas||'—'}</b><br>
-            Sekolah Tanggungjawab: <b style="color:#fff">${u.sekolahNama||'—'}</b><br>
-            No. Tel: <b style="color:#fff">${u.telefon||'—'}</b>
-           </div>`
-        : `<div style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.8;">
-            MyKad: <b style="color:#fff">${u.mykad||'—'}</b><br>
-            Jawatan: <b style="color:#fff">${u.jawatan||'—'} ${u.gred||''}</b><br>
-            Sekolah: <b style="color:#fff">${u.sekolahNama||'—'} (${u.sekolahKod||'—'})</b><br>
-            Tel: <b style="color:#fff">${u.telPeribadi||'—'}</b>
-           </div>`;
-      return `<div style="background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;margin-bottom:10px;">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-          <div>
-            <span style="font-size:9px;font-weight:700;color:${clr};background:rgba(0,0,0,0.3);padding:2px 8px;border-radius:10px;border:1px solid ${clr};">${u.role}</span>
-            <div style="font-size:14px;font-weight:700;color:#fff;margin-top:5px;">${u.nama||'—'}</div>
-          </div>
-          <div style="font-size:9px;color:rgba(255,255,255,0.35);text-align:right;">${u.submittedAt?new Date(u.submittedAt).toLocaleString('ms-MY'):''}</div>
-        </div>
-        ${info}
-        <div style="display:flex;gap:8px;margin-top:10px;">
-          <button onclick="lulusPermohonan('${u.id}','${u.userid}')" style="flex:1;background:rgba(0,230,118,0.1);border:1.5px solid var(--green);border-radius:8px;padding:9px;color:var(--green);font-family:Rajdhani,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">✅ LULUSKAN</button>
-          <button onclick="tolakPermohonan('${u.id}','${u.userid}')" style="flex:1;background:rgba(255,23,68,0.08);border:1.5px solid var(--red);border-radius:8px;padding:9px;color:var(--red);font-family:Rajdhani,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">❌ TOLAK</button>
-        </div>
-      </div>`;
+        ? '<div style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.9;margin-top:5px;">'+
+            '👮 Pangkat: <b style="color:#fff;">'+(u.pangkat||'—')+'</b> &nbsp;|&nbsp; No. Badan: <b style="color:#fff;">'+(u.badan||'—')+'</b><br>'+
+            '🏢 Tempat Tugas: <b style="color:#fff;">'+(u.tugas||'—')+'</b><br>'+
+            '🏫 Sekolah: <b style="color:#fff;">'+(u.sekolahNama||'—')+'</b><br>'+
+            '📱 Tel: <b style="color:#fff;">'+(u.telefon||'—')+'</b>'+
+          '</div>'
+        : '<div style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.9;margin-top:5px;">'+
+            '🆔 MyKad: <b style="color:#fff;">'+(u.mykad||'—')+'</b><br>'+
+            '💼 Jawatan: <b style="color:#fff;">'+(u.jawatan||'—')+' '+(u.gred||'')+'</b><br>'+
+            '🏫 Sekolah: <b style="color:#fff;">'+(u.sekolahNama||'—')+'</b><br>'+
+            '📱 Tel: <b style="color:#fff;">'+(u.telPeribadi||'—')+'</b>'+
+          '</div>';
+
+      const btns = status !== 'LULUS'
+        ? '<div style="display:flex;gap:8px;margin-top:10px;">'+
+            '<button class="lulus-btn" data-id="'+u._id+'" data-uid="'+userid+'" style="flex:1;background:rgba(0,230,118,0.1);border:1.5px solid var(--green);border-radius:8px;padding:9px;color:var(--green);font-family:Rajdhani,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">\u2705 LULUSKAN</button>'+
+            '<button class="tolak-btn" data-id="'+u._id+'" data-uid="'+userid+'" style="flex:1;background:rgba(255,23,68,0.08);border:1.5px solid var(--red);border-radius:8px;padding:9px;color:var(--red);font-family:Rajdhani,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">\u274c TOLAK</button>'+
+          '</div>'
+        : '<div style="text-align:center;color:#00e676;font-size:11px;margin-top:8px;">✅ Akaun telah diluluskan</div>';
+
+      return '<div style="background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;margin-bottom:10px;">'+
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">'+
+          '<div>'+
+            '<span style="font-size:9px;font-weight:700;color:'+clr+';background:rgba(0,0,0,0.3);padding:2px 8px;border-radius:10px;border:1px solid '+clr+';">'+( u.role||'?')+'</span>'+
+            '<div style="font-size:14px;font-weight:700;color:#fff;margin-top:5px;">'+nama+'</div>'+
+            '<div style="font-size:9px;color:rgba(255,255,255,0.3);">ID: '+userid+'</div>'+
+          '</div>'+
+          '<div style="text-align:right;">'+stBadge+'<div style="font-size:9px;color:rgba(255,255,255,0.25);margin-top:4px;">'+(u.submittedAt?new Date(u.submittedAt).toLocaleString('ms-MY'):'')+'</div></div>'+
+        '</div>'+
+        info+btns+
+      '</div>';
     }).join('');
+
+    // Update badge
+    const waiting = list.filter(u => (u.status||'MENUNGGU') === 'MENUNGGU').length;
+    const pBtn = document.getElementById('adm-tab-pendaftaran-btn');
+    if (pBtn) pBtn.innerHTML = '📝 PENDAFTARAN' + (waiting > 0 ? ' <span style="background:var(--red);color:#fff;border-radius:10px;padding:1px 6px;font-size:9px;">'+waiting+'</span>' : '');
+
   } catch(e) {
-    el.innerHTML = '<div style="color:var(--red);padding:10px;">Ralat: '+e.message+'</div>';
+    el.innerHTML = '<div style="color:var(--red);padding:15px;text-align:center;">Ralat: '+e.message+'</div>';
   }
 }
 
@@ -2576,6 +2610,14 @@ async function lulusSemuaPermohonan() {
     loadAdmDash();
   } catch(e) { alert('Ralat: '+e.message); }
 }
+
+
+document.addEventListener('click', function(e) {
+  const lb = e.target.closest('.lulus-btn');
+  const tb = e.target.closest('.tolak-btn');
+  if (lb) { lulusPermohonan(lb.dataset.id, lb.dataset.uid); }
+  if (tb) { tolakPermohonan(tb.dataset.id, tb.dataset.uid); }
+});
 
 window.addEventListener('load', function() {
   // Pre-populate all school selects
