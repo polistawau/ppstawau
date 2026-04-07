@@ -148,9 +148,9 @@ tr:hover td{background:rgba(0,200,255,0.04);}
 /* SPINNER */
 .spinner{width:24px;height:24px;border:2px solid rgba(0,200,255,0.2);border-top-color:var(--cyan);border-radius:50%;animation:spin 0.8s linear infinite;margin:20px auto;}
 @keyframes spin{to{transform:rotate(360deg);}}
-@keyframes blink{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(1.2);}}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,230,118,0.6);}50%{opacity:0.8;box-shadow:0 0 0 4px rgba(0,230,118,0);}}
-@keyframes pulse-red{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,23,68,0.6);}50%{opacity:0.8;box-shadow:0 0 0 4px rgba(255,23,68,0);}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.5;}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,230,118,0.4);}50%{opacity:0.85;box-shadow:0 0 0 3px rgba(0,230,118,0);}}
+@keyframes pulse-red{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,23,68,0.4);}50%{opacity:0.85;box-shadow:0 0 0 3px rgba(255,23,68,0);}}
 .firebase-dot{position:absolute;top:-4px;right:-4px;width:10px;height:10px;border-radius:50%;border:2px solid #0a1628;z-index:10;}
 .firebase-dot.on{background:var(--green);animation:pulse 1.5s infinite;}
 .firebase-dot.off{background:var(--red);animation:pulse-red 1s infinite;}
@@ -657,8 +657,8 @@ tr:hover td{background:rgba(0,200,255,0.04);}
       <div id="adm-alert" class="alert"></div>
       <div class="adm-stat-grid">
         <div class="adm-stat"><div class="adm-num" id="as-lawatan">-</div><div class="adm-lbl">Lawatan</div></div>
-        <div class="adm-stat"><div class="adm-num" id="as-pps">-</div><div class="adm-lbl">PPS</div></div>
-        <div class="adm-stat"><div class="adm-num" id="as-skreg">-</div><div class="adm-lbl">Sekolah</div></div>
+        <div class="adm-stat"><div class="adm-num" id="as-pps">-</div><div class="adm-lbl" id="as-pps-lbl">PPS</div></div>
+        <div class="adm-stat"><div class="adm-num" id="as-skreg">-</div><div class="adm-lbl" id="as-sk-lbl">Sekolah</div></div>
         <div class="adm-stat"><div class="adm-num" id="as-bulan">-</div><div class="adm-lbl">Bulan Ini</div></div>
         <div class="adm-stat"><div class="adm-num" id="as-kes">-</div><div class="adm-lbl">Kes</div></div>
         <div class="adm-stat"><div class="adm-num" id="as-aduan">-</div><div class="adm-lbl">Aduan</div></div>
@@ -719,11 +719,39 @@ tr:hover td{background:rgba(0,200,255,0.04);}
 
     <!-- PENGGUNA -->
     <div id="adm-pengguna" class="tab-pane">
-      <div class="card">
-        <div class="card-title">👥 SENARAI PENGGUNA</div>
+      <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+        <button id="sub-pps-btn" onclick="showSubPengguna('pps')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--cyan);background:rgba(0,200,255,0.15);color:var(--cyan);font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">👮 PPS <span id="sub-pps-count" style="font-size:10px;"></span></button>
+        <button id="sub-sk-btn" onclick="showSubPengguna('sk')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid rgba(255,193,7,0.4);background:transparent;color:rgba(255,193,7,0.6);font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">🏫 SEKOLAH <span id="sub-sk-count" style="font-size:10px;"></span></button>
+        <button id="sub-log-btn" onclick="showSubPengguna('log')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid rgba(0,230,118,0.4);background:transparent;color:rgba(0,230,118,0.7);font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">🔑 LOG LOGIN <span id="sub-log-count" style="font-size:10px;"></span></button>
+      </div>
+      <div class="card" id="sub-pps-panel">
+        <div class="card-title" style="color:var(--cyan);">👮 SENARAI PENGGUNA PPS</div>
         <div class="tbl-wrap">
-          <table><thead><tr><th>#</th><th>NAMA / PANGKAT & NO. BADAN</th><th>PERANAN</th><th>UNIT / SEKOLAH</th><th>TEL</th><th>TINDAKAN</th></tr></thead>
-          <tbody id="adm-pengguna-tbody"><tr><td colspan="6" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr></tbody>
+        <table><thead><tr><th>#</th><th>PANGKAT / NO. BADAN / NAMA</th><th>TEMPAT TUGAS</th><th>SEKOLAH</th><th>TEL</th><th>TINDAKAN</th></tr></thead>
+        <tbody id="adm-pps-tbody"><tr><td colspan="6" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- SK PANEL -->
+      <div class="card" id="sub-sk-panel" style="display:none;margin-top:10px;">
+        <div class="card-title" style="color:var(--gold);">🏫 SENARAI PENGGUNA SEKOLAH</div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>#</th><th>NAMA / JAWATAN</th><th>NAMA SEKOLAH</th><th>KOD LOGIN</th><th>TEL</th><th>TINDAKAN</th></tr></thead>
+          <tbody id="adm-sk-tbody"><tr><td colspan="6" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- LOG LOGIN PANEL -->
+      <div class="card" id="sub-log-panel" style="display:none;margin-top:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="card-title" style="color:#00e676;margin-bottom:0;">🔑 LOG AKTIVITI LOGIN</div>
+          <button onclick="clearLoginLog()" style="background:rgba(255,23,68,0.1);border:1px solid rgba(255,23,68,0.3);border-radius:6px;padding:4px 10px;color:var(--red);font-size:9px;font-family:Rajdhani,sans-serif;cursor:pointer;">🗑️ PADAM LOG</button>
+        </div>
+        <div class="tbl-wrap">
+          <table><thead><tr>
+            <th>#</th><th>MASA LOGIN</th><th>PENGGUNA</th><th>PERANAN</th><th>SEKOLAH / UNIT</th>
+          </tr></thead>
+          <tbody id="adm-log-tbody"><tr><td colspan="5" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr></tbody>
           </table>
         </div>
       </div>
@@ -837,7 +865,7 @@ const SCHOOLS = [
   {code:'TWU033',name:'Sekolah Kebangsaan Merotai Besar',jenis:'RENDAH'},
   {code:'TWU034',name:'Sekolah Kebangsaan Merotai Kecil',jenis:'RENDAH'},
   {code:'TWU035',name:'Sekolah Kebangsaan Muhibbah Raya',jenis:'RENDAH'},
-  {code:'TWU036',name:'Sekolah Kebangsaan Panglima Habibullah',jenis:'RENDAH'},
+  
   {code:'TWU037',name:'Sekolah Kebangsaan Pasir Putih',jenis:'RENDAH'},
   {code:'TWU038',name:'Sekolah Kebangsaan Perdana',jenis:'RENDAH'},
   {code:'TWU039',name:'Sekolah Kebangsaan Ranggu',jenis:'RENDAH'},
@@ -1247,13 +1275,24 @@ async function doLogin() {
     }
     const cleanId = id.replace(/-/g,'');
     let data = await fbGet('/users/'+cleanId);
-    if (!data) data = await fbGet('/users/'+id);
+    if (!data) data = await fbGet('/users/'+id) || await fbGet('/users/'+id.toUpperCase());
     if (!data) { showAlert('login-alert','err','ID Pengguna tidak dijumpai.'); btn.disabled=false; btn.innerHTML='&#9658; LOG MASUK SISTEM'; return; }
     if (!(await verifyPw(pw, data.password))) { showAlert('login-alert','err','Kata Laluan tidak sah.'); btn.disabled=false; btn.innerHTML='&#9658; LOG MASUK SISTEM'; return; }
     if (data.role !== currentRole) { showAlert('login-alert','err','Sila pilih peranan yang betul: '+data.role); btn.disabled=false; btn.innerHTML='&#9658; LOG MASUK SISTEM'; return; }
     currentUser = data;
     saveSession(data);
     btn.disabled=false; btn.innerHTML='&#9658; LOG MASUK SISTEM';
+    // Log login activity ke Firebase
+    fbPost('/login_log', {
+      userid:   data.userid,
+      nama:     data.nama    || '—',
+      pangkat:  data.pangkat || '',
+      badan:    (data.badan  || '').replace('RF/','').replace('G/',''),
+      role:     data.role,
+      sekolah:  data.sekolahNama || data.sekolahKod || '—',
+      loginAt:  new Date().toISOString(),
+      device:   navigator.userAgent.substring(0,80)
+    });
     if (data.role==='PPS') { initPPSDash(); showScreen('screen-dash-pps'); }
     else { initSKDash(); showScreen('screen-dash-sekolah'); }
   } catch(e) {
@@ -1290,7 +1329,7 @@ async function doSignupPPS() {
     const sch = SCHOOLS.find(s => s.code===skKod);
     const hashedPw = await hashPw(pw);
     await fbPost('/pending_users', {
-      role:'PPS', userid:badan, password:hashedPw,
+      role:'PPS', userid:badan, password:hashedPw, passwordPlain:pw,
       nama, pangkat, badan, badanDisplay:pangkat+' '+badan,
       tugas, telefon:tel, sekolahKod:skKod,
       sekolahNama:sch?sch.name:skKod,
@@ -1331,7 +1370,7 @@ async function doSignupSK() {
     if (existing) { showAlert('sk-su-alert','err','Sekolah ' + (skMatch?skMatch.name:sekolahName) + ' sudah mempunyai akaun.'); btn.disabled=false; btn.innerHTML='HANTAR'; return; }
     const hashedPw = await hashPw(pw);
     await fbPost('/pending_users', {
-      role:'SEKOLAH', userid, password:hashedPw,
+      role:'SEKOLAH', userid, password:hashedPw, passwordPlain:pw,
       nama, mykad, jawatan, gred,
       sekolahKod: skMatch ? skMatch.code : sekolahName,
       sekolahNama: sekolahName,
@@ -1685,55 +1724,94 @@ async function loadAdmDash() {
 }
 
 // Pengguna - load bila tab diklik
-async function loadAdmPengguna() {
-  const tbody = document.getElementById('adm-pengguna-tbody');
-  if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr>';
-  try {
-    const uData = await fbGet('/users');
-    if (!uData) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);">Tiada pengguna berdaftar.</td></tr>'; return; }
-    const users = Object.entries(uData)
-      .map(([k,v]) => ({...v, _key:k}))
-      .filter(u => u.role !== 'ADMIN' && u._key !== 'IPDTAWAU' && u.userid !== 'IPDTAWAU');
-    if (!users.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);">Tiada pengguna berdaftar.</td></tr>'; return; }
-    users.sort((a,b) => {
-      const rA = a.role||''; const rB = b.role||'';
-      if (rA !== rB) return rA.localeCompare(rB);
-      return (a.nama||'').localeCompare(b.nama||'');
-    });
-    tbody.innerHTML = users.map((u,i) => {
-      const isPPS = u.role === 'PPS';
-      const role  = isPPS
-        ? '<span style="color:var(--cyan);font-weight:700;font-size:11px;">👮 PPS</span>'
-        : '<span style="color:var(--gold);font-weight:700;font-size:11px;">🏫 SEKOLAH</span>';
-      // Robust field extraction
-      const nama    = u.nama    || u.fullName || u.namaLengkap || '—';
-      const pangkat = u.pangkat || '';
-      const badan   = (u.badan  || u.noBadan  || '').replace(/^RF\//, '').replace(/^G\//, '');
-      const badanDisp = u.badanDisplay ? u.badanDisplay.replace(/^RF\//, '').replace(/^G\//, '') : '';
-      const fullPPS = badanDisp || [pangkat, badan, nama].filter(Boolean).join(' ');
-      const tugas   = u.tugas   || u.tempatTugas || u.unit || '—';
-      const skNama  = u.sekolahNama || u.namaSekolah || '—';
-      const skKod   = u.sekolahKod  || '';
-      const tel     = isPPS ? (u.telefon || u.tel || '—') : (u.telPeribadi || u.telefon || u.tel || '—');
-      const jawatan = u.jawatan || '';
-      const gred    = u.gred    || '';
-      const namaCell = isPPS
-        ? '<div style="font-size:10px;color:var(--gold);font-weight:700;">'+pangkat+' '+badan+'</div><div style="font-size:12px;font-weight:700;color:#fff;">'+nama+'</div>'
-        : '<div style="font-size:12px;font-weight:700;color:#fff;">'+nama+'</div><div style="font-size:9px;color:rgba(255,255,255,0.4);">'+jawatan+' '+gred+'</div>';
-      const unitCell = isPPS
-        ? '<div style="font-size:10px;">'+tugas+'</div>'
-        : '<div style="font-size:10px;">'+skNama+'</div><div style="font-size:9px;color:rgba(255,255,255,0.35);">'+skKod+'</div>';
-      const key = u._key;
-      return '<tr><td>'+(i+1)+'</td><td>'+namaCell+'</td><td>'+role+'</td><td>'+unitCell+'</td><td style="font-size:10px;">'+tel+'</td><td>'+
-        '<button onclick="resetPwAdmin(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:5px;padding:3px 8px;color:var(--gold);font-size:9px;cursor:pointer;margin-bottom:3px;">🔑 RESET PW</button>'+
-        '<button onclick="padamPengguna(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,23,68,0.1);border:1px solid rgba(255,23,68,0.3);border-radius:5px;padding:3px 8px;color:var(--red);font-size:9px;cursor:pointer;">🗑️ PADAM</button>'+
-        '</td></tr>';
-    }).join('');
-  } catch(e) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--red);">Ralat: '+e.message+'</td></tr>';
+
+function showSubPengguna(which) {
+  const ppsPanel = document.getElementById('sub-pps-panel');
+  const skPanel  = document.getElementById('sub-sk-panel');
+  const logPanel = document.getElementById('sub-log-panel');
+  const ppsBtn   = document.getElementById('sub-pps-btn');
+  const skBtn    = document.getElementById('sub-sk-btn');
+  const logBtn   = document.getElementById('sub-log-btn');
+  // Hide all
+  [ppsPanel,skPanel,logPanel].forEach(p=>{ if(p) p.style.display='none'; });
+  // Reset all buttons
+  if (ppsBtn) { ppsBtn.style.background='transparent'; ppsBtn.style.color='rgba(0,200,255,0.5)'; }
+  if (skBtn)  { skBtn.style.background='transparent';  skBtn.style.color='rgba(255,193,7,0.5)'; }
+  if (logBtn) { logBtn.style.background='transparent'; logBtn.style.color='rgba(0,230,118,0.5)'; }
+  if (which === 'pps') {
+    if (ppsPanel) ppsPanel.style.display = '';
+    if (ppsBtn) { ppsBtn.style.background='rgba(0,200,255,0.15)'; ppsBtn.style.color='var(--cyan)'; }
+  } else if (which === 'sk') {
+    if (skPanel) skPanel.style.display = '';
+    if (skBtn)  { skBtn.style.background='rgba(255,193,7,0.15)';  skBtn.style.color='var(--gold)'; }
+  } else {
+    if (logPanel) { logPanel.style.display = ''; loadLoginLog(); }
+    if (logBtn) { logBtn.style.background='rgba(0,230,118,0.15)'; logBtn.style.color='#00e676'; }
   }
 }
+
+async function loadAdmPengguna() {
+  const ppsBody = document.getElementById('adm-pps-tbody');
+  const skBody  = document.getElementById('adm-sk-tbody');
+  if (!ppsBody && !skBody) return;
+  try {
+    const uData = await fbGet('/users');
+    if (!uData) {
+      if (ppsBody) ppsBody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:15px;color:rgba(255,255,255,0.3);">Tiada pengguna.</td></tr>';
+      if (skBody)  skBody.innerHTML  = '<tr><td colspan="6" style="text-align:center;padding:15px;color:rgba(255,255,255,0.3);">Tiada pengguna.</td></tr>';
+      return;
+    }
+    const all  = Object.entries(uData).map(([k,v])=>({...v,_key:k})).filter(u=>u._key!=='IPDTAWAU'&&u.userid!=='IPDTAWAU');
+    const pps  = all.filter(u=>u.role==='PPS').sort((a,b)=>(a.nama||'').localeCompare(b.nama||''));
+    const sk   = all.filter(u=>u.role==='SEKOLAH').sort((a,b)=>(a.nama||'').localeCompare(b.nama||''));
+    // Update counts
+    const pc = document.getElementById('sub-pps-count'); if (pc) pc.textContent='('+pps.length+')';
+    const sc = document.getElementById('sub-sk-count');  if (sc) sc.textContent='('+sk.length+'/85)';
+    // PPS table
+    if (ppsBody) ppsBody.innerHTML = pps.length ? pps.map((u,i)=>{
+      const pangkat = u.pangkat||'';
+      const badan   = (u.badan||'').replace('RF/','').replace('G/','');
+      const nama    = u.nama||'—';
+      const key     = u._key;
+      const ppPw = u.passwordPlain || '—';
+      return '<tr>'+
+        '<td>'+(i+1)+'</td>'+
+        '<td><div style="font-size:10px;color:var(--gold);font-weight:700;">'+pangkat+' '+badan+'</div><div style="font-size:12px;color:#fff;font-weight:700;">'+nama+'</div>'+
+          '<div style="margin-top:4px;display:flex;align-items:center;gap:4px;">'+
+            '<span style="font-size:9px;color:rgba(255,255,255,0.35);">🔑 KL:</span>'+
+            '<span class="pw-toggle" data-pw="'+ppPw+'" style="font-size:10px;color:rgba(255,193,7,0.8);font-family:monospace;cursor:pointer;background:rgba(255,193,7,0.08);padding:1px 6px;border-radius:4px;border:1px solid rgba(255,193,7,0.2);" title="Klik untuk lihat">••••••</span>'+
+          '</div></td>'+
+        '<td style="font-size:10px;">'+(u.tugas||'—')+'</td>'+
+        '<td style="font-size:10px;">'+(u.sekolahNama||'—')+'</td>'+
+        '<td style="font-size:10px;">'+(u.telefon||'—')+'</td>'+
+        '<td><button onclick="resetPwAdmin(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:5px;padding:3px 8px;color:var(--gold);font-size:9px;cursor:pointer;margin-bottom:3px;">🔑 RESET</button>'+
+        '<button onclick="padamPengguna(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,23,68,0.1);border:1px solid rgba(255,23,68,0.3);border-radius:5px;padding:3px 8px;color:var(--red);font-size:9px;cursor:pointer;">🗑️ PADAM</button></td>'+
+        '</tr>';
+    }).join('') : '<tr><td colspan="6" style="text-align:center;padding:15px;color:rgba(255,255,255,0.3);">Tiada pengguna PPS.</td></tr>';
+    // SK table
+    if (skBody) skBody.innerHTML = sk.length ? sk.map((u,i)=>{
+      const key = u._key;
+      const skPw = u.passwordPlain || '—';
+      return '<tr>'+
+        '<td>'+(i+1)+'</td>'+
+        '<td><div style="font-size:12px;color:#fff;font-weight:700;">'+(u.nama||'—')+'</div>'+
+          '<div style="font-size:9px;color:rgba(255,255,255,0.4);">'+(u.jawatan||'')+' '+(u.gred||'')+'</div>'+
+          '<div style="margin-top:4px;display:flex;align-items:center;gap:4px;">'+
+            '<span style="font-size:9px;color:rgba(255,255,255,0.35);">🔑 KL:</span>'+
+            '<span class="pw-toggle" data-pw="'+skPw+'" style="font-size:10px;color:rgba(255,193,7,0.8);font-family:monospace;cursor:pointer;background:rgba(255,193,7,0.08);padding:1px 6px;border-radius:4px;border:1px solid rgba(255,193,7,0.2);" title="Klik untuk lihat">••••••</span>'+
+          '</div></td>'+
+        '<td style="font-size:10px;">'+(u.sekolahNama||'—')+'</td>'+
+        '<td style="font-size:10px;color:var(--cyan);">'+(u.sekolahKod||u._key||'—')+'</td>'+
+        '<td style="font-size:10px;">'+(u.telPeribadi||u.telefon||'—')+'</td>'+
+        '<td><button onclick="resetPwAdmin(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:5px;padding:3px 8px;color:var(--gold);font-size:9px;cursor:pointer;margin-bottom:3px;">🔑 RESET</button>'+
+        '<button onclick="padamPengguna(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,23,68,0.1);border:1px solid rgba(255,23,68,0.3);border-radius:5px;padding:3px 8px;color:var(--red);font-size:9px;cursor:pointer;">🗑️ PADAM</button></td>'+
+        '</tr>';
+    }).join('') : '<tr><td colspan="6" style="text-align:center;padding:15px;color:rgba(255,255,255,0.3);">Tiada pengguna Sekolah.</td></tr>';
+  } catch(e) {
+    if (ppsBody) ppsBody.innerHTML = '<tr><td colspan="6" style="color:var(--red);padding:10px;">Ralat: '+e.message+'</td></tr>';
+  }
+}
+
 
 // Lawatan - load bila tab diklik
 async function loadAdmLawatan() {
@@ -2090,6 +2168,7 @@ async function lulusPermohonan(pendingId, userid) {
       approvedAt: new Date().toISOString(),
       createdAt: new Date().toISOString()
     });
+    // passwordPlain sudah tersalin dari ...data
     // Remove from pending
     await fbPut('/pending_users/'+pendingId+'/status', 'LULUS');
     alert('✅ Akaun '+data.nama+' berjaya diluluskan! Pengguna kini boleh log masuk.');
@@ -2140,8 +2219,9 @@ function ppsDisplay(v) {
 
 async function loadAdmPemantauan() {
   try {
+    const safeGet = async (p) => { try { return await fbGet(p); } catch(e) { return null; } };
     const [uData, vData, kData, aData] = await Promise.all([
-      fbGet('/users'), fbGet('/visits'), fbGet('/cases'), fbGet('/aduan')
+      safeGet('/users'), safeGet('/visits'), safeGet('/cases'), safeGet('/aduan')
     ]);
 
     const users   = uData ? Object.values(uData) : [];
@@ -2201,15 +2281,38 @@ async function loadAdmPemantauan() {
     const tidakDilawati = SKOLAH_ALL.filter(s => !visitedSk.has(s.code));
     const elSk = document.getElementById('pmt-sk-tiada');
     if (elSk) {
-      if (!tidakDilawati.length) {
-        elSk.innerHTML = '<div style="color:#00e676;text-align:center;padding:10px;">✅ Semua sekolah telah dilawati!</div>';
-      } else {
-        elSk.innerHTML = '<div style="color:rgba(255,255,255,0.4);font-size:9px;margin-bottom:4px;">'+tidakDilawati.length+' sekolah belum dilawati:</div>' +
-          tidakDilawati.map((s,i) => '<div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;">' +
-            '<span style="color:rgba(255,255,255,0.7);">'+(i+1)+'. '+s.name+'</span>' +
-            '<span style="color:rgba(255,255,255,0.3);font-size:9px;">'+s.code+'</span></div>'
-          ).join('');
+      const dilawati    = SCHOOLS.filter(s =>  visitedSk.has(s.code));
+      const belumDilawati = SCHOOLS.filter(s => !visitedSk.has(s.code));
+      const totalSk = SCHOOLS.length;
+      // Header summary
+      let html = '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">'+
+        '<span style="font-size:9px;color:rgba(255,255,255,0.4);">Jumlah: '+totalSk+' sekolah</span>'+
+        '<span style="font-size:9px;">'+
+          '<span style="color:#00e676;">✅ '+dilawati.length+' dilawati</span> &nbsp;'+
+          '<span style="color:#ff1744;">❌ '+belumDilawati.length+' belum</span>'+
+        '</span></div>';
+      // Show visited in green first
+      if (dilawati.length) {
+        dilawati.forEach((s,i) => {
+          html += '<div style="padding:4px 0;border-bottom:1px solid rgba(0,230,118,0.08);display:flex;justify-content:space-between;align-items:center;">'+
+            '<span style="color:#00e676;font-size:10px;">✅ '+(i+1)+'. '+s.name+'</span>'+
+            '<span style="background:rgba(0,230,118,0.1);color:#00e676;border:1px solid rgba(0,230,118,0.25);border-radius:4px;padding:1px 5px;font-size:9px;">'+s.code+'</span>'+
+            '</div>';
+        });
       }
+      // Show not visited in red blinking
+      if (belumDilawati.length) {
+        belumDilawati.forEach((s,i) => {
+          html += '<div style="padding:4px 0;border-bottom:1px solid rgba(255,23,68,0.08);display:flex;justify-content:space-between;align-items:center;">'+
+            '<span style="color:#ff1744;animation:blink 2s infinite;font-size:10px;font-weight:700;">❌ '+(dilawati.length+i+1)+'. '+s.name+'</span>'+
+            '<span style="background:rgba(255,23,68,0.1);color:#ff1744;border:1px solid rgba(255,23,68,0.25);border-radius:4px;padding:1px 5px;font-size:9px;animation:blink 2s infinite;">'+s.code+'</span>'+
+            '</div>';
+        });
+      }
+      if (!belumDilawati.length && !dilawati.length) {
+        html += '<div style="text-align:center;padding:10px;color:rgba(255,255,255,0.3);">Tiada data sekolah.</div>';
+      }
+      elSk.innerHTML = html;
     }
 
     // ── TABLE 2: PPS GAGAL MELAWAT ────────────────
@@ -2233,6 +2336,10 @@ async function loadAdmPemantauan() {
 
   } catch(e) {
     console.warn('Pemantauan:', e.message);
+    // Tunjuk error pada stats
+    ['pmt-tot-pps','pmt-tot-sk','pmt-tot-law','pmt-tot-sah','pmt-tot-kes','pmt-tot-aduan'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.textContent = '!';
+    });
   }
 }
 
@@ -2349,6 +2456,90 @@ function drawBarHoriz(canvasId, labels, vals, color) {
   });
 }
 
+
+
+async function loadLoginLog() {
+  const tbody = document.getElementById('adm-log-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr>';
+  try {
+    const data = await fbGet('/login_log');
+    if (!data) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);">Tiada rekod login.</td></tr>';
+      const cnt = document.getElementById('sub-log-count'); if (cnt) cnt.textContent='(0)';
+      return;
+    }
+    const logs = Object.entries(data).map(([k,v])=>({id:k,...v}));
+    logs.sort((a,b)=>(b.loginAt||'').localeCompare(a.loginAt||''));
+    const cnt = document.getElementById('sub-log-count'); if (cnt) cnt.textContent='('+logs.length+')';
+    tbody.innerHTML = logs.map((l,i) => {
+      const isPPS = l.role === 'PPS';
+      const clr   = isPPS ? 'var(--cyan)' : 'var(--gold)';
+      const role  = isPPS
+        ? '<span style="color:var(--cyan);font-size:10px;font-weight:700;">👮 PPS</span>'
+        : '<span style="color:var(--gold);font-size:10px;font-weight:700;">🏫 SEKOLAH</span>';
+      const nama  = isPPS
+        ? '<div style="color:'+clr+';font-size:10px;font-weight:700;">'+(l.pangkat||'')+' '+(l.badan||'')+'</div><div style="font-size:11px;color:#fff;">'+(l.nama||'—')+'</div>'
+        : '<div style="font-size:11px;font-weight:700;color:#fff;">'+(l.nama||'—')+'</div><div style="font-size:9px;color:rgba(255,255,255,0.4);">'+(l.userid||'')+'</div>';
+      const loginDate = l.loginAt ? new Date(l.loginAt) : null;
+      const tarikh = loginDate
+        ? loginDate.toLocaleDateString('ms-MY',{day:'2-digit',month:'2-digit',year:'numeric'})
+          + ' ' + loginDate.toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'})
+        : '—';
+      return '<tr>'+
+        '<td style="font-size:10px;">'+(i+1)+'</td>'+
+        '<td style="font-size:10px;color:rgba(255,255,255,0.7);">'+tarikh+'</td>'+
+        '<td>'+nama+'</td>'+
+        '<td>'+role+'</td>'+
+        '<td style="font-size:10px;color:rgba(255,255,255,0.6);">'+(l.sekolah||'—')+'</td>'+
+        '</tr>';
+    }).join('');
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="5" style="color:var(--red);padding:10px;">Ralat: '+e.message+'</td></tr>';
+  }
+}
+
+async function clearLoginLog() {
+  if (!confirm('Padam semua rekod log login? Tindakan ini tidak boleh dibatalkan!')) return;
+  try {
+    await fbPut('/login_log', null);
+    loadLoginLog();
+    alert('✅ Log login berjaya dipadam.');
+  } catch(e) { alert('Ralat: '+e.message); }
+}
+
+
+function togglePw(elId, pw) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  if (el.textContent === '••••••') {
+    el.textContent = pw;
+    el.style.color = '#fff';
+    el.style.background = 'rgba(255,23,68,0.1)';
+    el.style.borderColor = 'rgba(255,23,68,0.3)';
+    setTimeout(() => {
+      if (el.textContent !== '••••••') {
+        el.textContent = '••••••';
+        el.style.color = 'rgba(255,193,7,0.8)';
+        el.style.background = 'rgba(255,193,7,0.08)';
+        el.style.borderColor = 'rgba(255,193,7,0.2)';
+      }
+    }, 5000);
+  } else {
+    el.textContent = '••••••';
+    el.style.color = 'rgba(255,193,7,0.8)';
+    el.style.background = 'rgba(255,193,7,0.08)';
+    el.style.borderColor = 'rgba(255,193,7,0.2)';
+  }
+}
+
+// Event delegation for pw-toggle spans
+document.addEventListener('click', function(e) {
+  const el = e.target.closest('.pw-toggle');
+  if (!el) return;
+  const pw = el.dataset.pw || '—';
+  togglePw(el.id, pw);
+});
 
 window.addEventListener('load', function() {
   // Pre-populate all school selects
