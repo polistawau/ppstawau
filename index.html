@@ -192,7 +192,7 @@ tr:hover td{background:rgba(0,200,255,0.04);}
       <div class="lupa-note">🔒 Lupa kata laluan? Hubungi Admin IPD Tawau untuk reset akaun.</div>
       <br>
       <input class="inp" id="login-id" placeholder="ID Pengguna (No. Badan / Kod Sekolah)" autocomplete="off" oninput="this.value=this.value.toUpperCase()" style="text-transform:uppercase;">
-      <input class="inp" id="login-pw" type="password" placeholder="Kata Laluan" autocomplete="off">
+      <input class="inp" id="login-pw" type="password" placeholder="KATA LALUAN" autocomplete="off">
       <button class="btn-main" id="login-btn" onclick="doLogin()">&#9658; LOG MASUK SISTEM</button>
       <button class="link-btn" onclick="goSignup()">Belum ada akaun? Daftar di sini</button>
       <div style="font-style:italic;font-size:9.5px;color:rgba(255,193,7,0.65);letter-spacing:0.5px;text-align:center;margin-top:6px;font-family:Rajdhani,sans-serif;">
@@ -291,11 +291,11 @@ tr:hover td{background:rgba(0,200,255,0.04);}
       <select class="fs" id="pps-sekolah"><option value="">-- Pilih Sekolah --</option></select>
     </div>
     <div class="fg"><label class="fl">NO. TELEFON BIMBIT </label>
-      <input class="fi" id="pps-tel" oninput="this.value=this.value.toUpperCase()" type="tel" placeholder="Cth: 0123456789" maxlength="11">
+      <input class="fi" id="pps-tel" oninput="this.value=this.value.toUpperCase()" type="tel" placeholder="CTH: 0123456789" maxlength="11">
     </div>
     <div class="sec-badge">🔐 KATA LALUAN</div>
     <div class="fg"><label class="fl">KATA LALUAN <span style="font-size:8px;color:rgba(255,255,255,0.3);">(min. 8 aksara, huruf besar, nombor & simbol)</span></label>
-      <input class="fi" id="pps-pw" type="password" placeholder="Kata laluan" style="text-transform:none;" oninput="checkPwStrength(this.value,'pps-pw-bar','pps-pw-txt')">
+      <input class="fi" id="pps-pw" type="password" placeholder="KATA LALUAN" style="text-transform:none;" oninput="checkPwStrength(this.value,'pps-pw-bar','pps-pw-txt')">
       <div class="pw-bar" id="pps-pw-bar"></div>
       <div class="pw-txt" id="pps-pw-txt"></div>
     </div>
@@ -323,7 +323,7 @@ tr:hover td{background:rgba(0,200,255,0.04);}
     </div>
     <div id="sk-su-alert" class="alert"></div>
     <div class="sec-badge">🏫 MAKLUMAT SEKOLAH</div>
-    <div class="fg"><label class="fl">NAMA PENUH</label><input class="fi" id="sk-nama" oninput="this.value=this.value.toUpperCase()" placeholder="Nama penuh"></div>
+    <div class="fg"><label class="fl">NAMA PENUH</label><input class="fi" id="sk-nama" oninput="this.value=this.value.toUpperCase()" placeholder="NAMA PENUH"></div>
     <div class="fg"><label class="fl">NO. KAD PENGENALAN (MyKad)</label><input class="fi" id="sk-mykad" placeholder="Cth: 900101-12-3456" oninput="fmtMykad(this);this.value=this.value.toUpperCase()"></div>
     <div class="grid2">
       <div class="fg"><label class="fl">JAWATAN</label>
@@ -350,7 +350,7 @@ tr:hover td{background:rgba(0,200,255,0.04);}
     </div>
     <div class="sec-badge">🔐 KATA LALUAN</div>
     <div class="fg"><label class="fl">KATA LALUAN</label>
-      <input class="fi" id="sk-pw" type="password" placeholder="Kata laluan" style="text-transform:none;" oninput="checkPwStrength(this.value,'sk-pw-bar','sk-pw-txt')">
+      <input class="fi" id="sk-pw" type="password" placeholder="KATA LALUAN" style="text-transform:none;" oninput="checkPwStrength(this.value,'sk-pw-bar','sk-pw-txt')">
       <div class="pw-bar" id="sk-pw-bar"></div>
       <div class="pw-txt" id="sk-pw-txt"></div>
     </div>
@@ -656,9 +656,9 @@ tr:hover td{background:rgba(0,200,255,0.04);}
     <div id="adm-dash" class="tab-pane active">
       <div id="adm-alert" class="alert"></div>
       <div class="adm-stat-grid">
-        <div class="adm-stat"><div class="adm-num" id="as-lawatan">-</div><div class="adm-lbl">Lawatan</div></div>
+        <div class="adm-stat"><div class="adm-num" id="as-lawatan">-</div><div class="adm-lbl">LAWATAN</div></div>
         <div class="adm-stat"><div class="adm-num" id="as-pps">-</div><div class="adm-lbl" id="as-pps-lbl">PPS</div></div>
-        <div class="adm-stat"><div class="adm-num" id="as-skreg">-</div><div class="adm-lbl" id="as-sk-lbl">Sekolah</div></div>
+        <div class="adm-stat"><div class="adm-num" id="as-skreg">-</div><div class="adm-lbl" id="as-sk-lbl">SEKOLAH</div></div>
         <div class="adm-stat"><div class="adm-num" id="as-bulan">-</div><div class="adm-lbl">Bulan Ini</div></div>
         <div class="adm-stat"><div class="adm-num" id="as-kes">-</div><div class="adm-lbl">Kes</div></div>
         <div class="adm-stat"><div class="adm-num" id="as-aduan">-</div><div class="adm-lbl">Aduan</div></div>
@@ -671,45 +671,85 @@ tr:hover td{background:rgba(0,200,255,0.04);}
 
     <!-- PEMANTAUAN -->
     <div id="adm-pemantauan" class="tab-pane">
-      <!-- Stats Cards -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;" id="pmt-stats-grid">
-        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">JUMLAH PPS</div><div id="pmt-tot-pps" style="font-size:26px;font-weight:900;color:var(--cyan);">—</div></div>
-        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">JUMLAH SEKOLAH</div><div id="pmt-tot-sk" style="font-size:26px;font-weight:900;color:var(--gold);">—</div></div>
-        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">JUMLAH LAWATAN</div><div id="pmt-tot-law" style="font-size:26px;font-weight:900;color:#00e676;">—</div></div>
-        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">LAWATAN SAH</div><div id="pmt-tot-sah" style="font-size:26px;font-weight:900;color:#00e676;">—</div></div>
-        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">JUMLAH KES</div><div id="pmt-tot-kes" style="font-size:26px;font-weight:900;color:#ff6b35;">—</div></div>
-        <div class="card" style="text-align:center;padding:10px;"><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">JUMLAH ADUAN</div><div id="pmt-tot-aduan" style="font-size:26px;font-weight:900;color:#ff1744;">—</div></div>
-      </div>
-      <!-- Charts Row -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
-        <div class="card" style="padding:10px;">
-          <div style="font-size:10px;font-weight:700;color:var(--cyan);margin-bottom:8px;">📊 STATUS LAWATAN</div>
-          <canvas id="pmt-chart-status" width="280" height="160"></canvas>
+
+      <!-- ① LAWATAN BULANAN + ② LIPUTAN SEKOLAH -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+        <!-- ① Lawatan Bulanan -->
+        <div class="card" style="padding:12px;">
+          <div style="font-size:10px;font-weight:700;color:var(--cyan);margin-bottom:4px;">1️⃣ JUMLAH LAWATAN PPS BULANAN</div>
+          <div style="display:flex;gap:10px;margin-bottom:8px;">
+            <div style="flex:1;text-align:center;background:rgba(0,200,255,0.08);border-radius:8px;padding:8px;">
+              <div style="font-size:9px;color:rgba(255,255,255,0.4);">BULAN INI</div>
+              <div id="pmt-law-bulan" style="font-size:28px;font-weight:900;color:var(--cyan);">—</div>
+            </div>
+            <div style="flex:1;text-align:center;background:rgba(255,193,7,0.08);border-radius:8px;padding:8px;">
+              <div style="font-size:9px;color:rgba(255,255,255,0.4);">BULAN LEPAS</div>
+              <div id="pmt-law-lepas" style="font-size:28px;font-weight:900;color:var(--gold);">—</div>
+            </div>
+          </div>
+          <canvas id="pmt-chart-bulan" width="280" height="130"></canvas>
         </div>
-        <div class="card" style="padding:10px;">
-          <div style="font-size:10px;font-weight:700;color:var(--gold);margin-bottom:8px;">📊 LAWATAN BULANAN</div>
-          <canvas id="pmt-chart-bulan" width="280" height="160"></canvas>
+        <!-- ② Liputan Sekolah -->
+        <div class="card" style="padding:12px;">
+          <div style="font-size:10px;font-weight:700;color:var(--gold);margin-bottom:4px;">2️⃣ LIPUTAN SEKOLAH DILAWATI</div>
+          <div style="display:flex;gap:10px;margin-bottom:8px;">
+            <div style="flex:1;text-align:center;background:rgba(0,230,118,0.08);border-radius:8px;padding:8px;">
+              <div style="font-size:9px;color:rgba(255,255,255,0.4);">DILAWATI</div>
+              <div id="pmt-sk-dilawati" style="font-size:28px;font-weight:900;color:#00e676;">—</div>
+            </div>
+            <div style="flex:1;text-align:center;background:rgba(255,23,68,0.08);border-radius:8px;padding:8px;">
+              <div style="font-size:9px;color:rgba(255,255,255,0.4);">BELUM</div>
+              <div id="pmt-sk-belum" style="font-size:28px;font-weight:900;color:#ff1744;">—</div>
+            </div>
+          </div>
+          <canvas id="pmt-chart-status" width="280" height="130"></canvas>
         </div>
       </div>
-      <!-- PPS Performance Chart -->
-      <div class="card" style="padding:10px;margin-bottom:12px;">
-        <div style="font-size:10px;font-weight:700;color:#00e676;margin-bottom:8px;">📊 PRESTASI LAWATAN PEGAWAI PPS</div>
-        <canvas id="pmt-chart-pps" width="560" height="180"></canvas>
+
+      <!-- ③ STATISTIK AKTIVITI + ⑤ PRESTASI PPS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+        <!-- ③ Aktiviti PPS -->
+        <div class="card" style="padding:12px;">
+          <div style="font-size:10px;font-weight:700;color:#00e676;margin-bottom:4px;">3️⃣ STATISTIK AKTIVITI PPS</div>
+          <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+            <div style="flex:1;text-align:center;background:rgba(0,200,255,0.08);border-radius:8px;padding:6px;">
+              <div style="font-size:8px;color:rgba(255,255,255,0.4);">CERAMAH</div>
+              <div id="pmt-akt-ceramah" style="font-size:22px;font-weight:900;color:var(--cyan);">—</div>
+            </div>
+            <div style="flex:1;text-align:center;background:rgba(255,193,7,0.08);border-radius:8px;padding:6px;">
+              <div style="font-size:8px;color:rgba(255,255,255,0.4);">PROGRAM</div>
+              <div id="pmt-akt-program" style="font-size:22px;font-weight:900;color:var(--gold);">—</div>
+            </div>
+            <div style="flex:1;text-align:center;background:rgba(0,230,118,0.08);border-radius:8px;padding:6px;">
+              <div style="font-size:8px;color:rgba(255,255,255,0.4);">LAWATAN</div>
+              <div id="pmt-akt-lawatan" style="font-size:22px;font-weight:900;color:#00e676;">—</div>
+            </div>
+          </div>
+          <canvas id="pmt-chart-aktiviti" width="280" height="120"></canvas>
+        </div>
+        <!-- ⑤ Prestasi PPS Ranking -->
+        <div class="card" style="padding:12px;">
+          <div style="font-size:10px;font-weight:700;color:var(--gold);margin-bottom:6px;">5️⃣ PRESTASI / RANKING PPS</div>
+          <div id="pmt-ranking-pps" style="font-size:10px;max-height:200px;overflow-y:auto;">
+            <div class="spinner"></div>
+          </div>
+        </div>
       </div>
-      <!-- 2 Tables -->
+
+      <!-- ④ SENARAI SEKOLAH BELUM DILAWATI + PPS GAGAL -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div class="card" style="padding:10px;">
-          <div style="font-size:10px;font-weight:700;color:#ff1744;margin-bottom:8px;">🏫 SEKOLAH TIDAK DILAWATI</div>
-          <div id="pmt-sk-tiada" style="font-size:10px;"></div>
+          <div style="font-size:10px;font-weight:700;color:#ff1744;margin-bottom:6px;">4️⃣ 🏫 SEKOLAH BELUM DILAWATI</div>
+          <div id="pmt-sk-tiada" style="font-size:10px;max-height:220px;overflow-y:auto;"></div>
         </div>
         <div class="card" style="padding:10px;">
-          <div style="font-size:10px;font-weight:700;color:#ff6b35;margin-bottom:8px;">👮 PPS GAGAL MELAWAT</div>
-          <div id="pmt-pps-gagal" style="font-size:10px;"></div>
+          <div style="font-size:10px;font-weight:700;color:#ff6b35;margin-bottom:6px;">👮 PPS GAGAL MELAWAT</div>
+          <div id="pmt-pps-gagal" style="font-size:10px;max-height:220px;overflow-y:auto;"></div>
         </div>
       </div>
     </div>
 
-    <!-- PENDAFTARAN -->
+    <!-- PENDAFTARAN --><!-- PENDAFTARAN -->
     <div id="adm-pendaftaran" class="tab-pane">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -815,8 +855,8 @@ tr:hover td{background:rgba(0,200,255,0.04);}
         </div>
         <div class="fg"><label class="fl">BULAN/TAHUN</label><input class="fi" id="pdf-month" type="month"></div>
         <div class="fg"><label class="fl">NO. RUJUKAN</label><input class="fi" id="pdf-rujukan" placeholder="Auto-jana jika kosong"></div>
-        <div class="fg"><label class="fl">DISEDIAKAN OLEH</label><input class="fi" id="pdf-disediakan" placeholder="Nama pegawai penyedia"></div>
-        <div class="fg"><label class="fl">DISAHKAN OLEH</label><input class="fi" id="pdf-diluluskan" placeholder="Nama pegawai pengesah"></div>
+        <div class="fg"><label class="fl">DISEDIAKAN OLEH</label><input class="fi" id="pdf-disediakan" placeholder="NAMA PEGAWAI PENYEDIA"></div>
+        <div class="fg"><label class="fl">DISAHKAN OLEH</label><input class="fi" id="pdf-diluluskan" placeholder="NAMA PEGAWAI PENGESAH"></div>
         <button class="btn-p" onclick="janaLaporan()">📄 JANA LAPORAN PDF</button>
       </div>
     </div>
@@ -2122,6 +2162,117 @@ ${tableHTML}
   <button class="btn-cetak" onclick="window.print()" style="background:#1a3a6e;color:#fff;border:none;padding:10px 28px;font-size:12pt;border-radius:6px;cursor:pointer;">🖨️ CETAK / SIMPAN PDF</button>
 </div>
 
+
+<!-- MODAL TAMBAH PENGGUNA -->
+<div id="tambah-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="background:#0d1f3c;border:1px solid rgba(0,200,255,0.25);border-radius:14px;margin:20px auto;max-width:430px;padding:20px;position:relative;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div id="modal-title" style="font-size:14px;font-weight:700;color:var(--cyan);font-family:Rajdhani,sans-serif;">➕ TAMBAH PENGGUNA PPS</div>
+      <button onclick="closeTambahModal()" style="background:rgba(255,23,68,0.15);border:1px solid rgba(255,23,68,0.3);border-radius:6px;color:#ff1744;font-size:16px;cursor:pointer;width:30px;height:30px;line-height:1;">✕</button>
+    </div>
+    <!-- PPS FIELDS -->
+    <div id="modal-pps-fields">
+      <div class="fg"><label class="fl">PANGKAT</label>
+        <select class="fs" id="m-pangkat" style="background:#0a1628;color:#fff;border:1px solid rgba(0,200,255,0.3);">
+          <option value="" style="background:#111;">-- PILIH PANGKAT --</option>
+          <option style="background:#111;color:#fff;">KONST</option>
+          <option style="background:#111;color:#fff;">L/KPL</option>
+          <option style="background:#111;color:#fff;">KPL</option>
+          <option style="background:#111;color:#fff;">SJN</option>
+          <option style="background:#111;color:#fff;">SM</option>
+          <option style="background:#111;color:#fff;">SI</option>
+          <option style="background:#111;color:#fff;">INSP</option>
+          <option style="background:#111;color:#fff;">ASP</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">NO. BADAN</label>
+        <input class="fi" id="m-badan" placeholder="CONTOH: 160647" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg"><label class="fl">NAMA PENUH</label>
+        <input class="fi" id="m-nama" placeholder="NAMA PENUH" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg"><label class="fl">TEMPAT TUGAS</label>
+        <select class="fs" id="m-tugas" style="background:#0a1628;color:#fff;">
+          <option value="">-- PILIH --</option>
+          <optgroup label="── BAHAGIAN IPD ──" style="background:#041020;color:rgba(0,200,255,0.7);">
+            <option style="background:#111;color:#fff;">BAHAGIAN PENGURUSAN</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN JENAYAH</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN JENAYAH NARKOTIK</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN JENAYAH KOMERSIL</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN DAN PENGUATKUASAAN TRAFIK</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN INTEGRITI DAN PEMATUHAN STANDARD</option>
+            <option style="background:#111;color:#fff;">CAWANGAN KHAS</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN LOGISTIK DAN TEKNOLOGI</option>
+          </optgroup>
+          <optgroup label="── BALAI POLIS ──" style="background:#041020;color:rgba(255,193,7,0.8);">
+            <option style="background:#111;color:#fff;">BALAI POLIS TAWAU</option>
+            <option style="background:#111;color:#fff;">BALAI POLIS BOMBALAI</option>
+            <option style="background:#111;color:#fff;">BALAI POLIS KALABAKAN</option>
+            <option style="background:#111;color:#fff;">BALAI POLIS BANDAR SRI INDAH</option>
+            <option style="background:#111;color:#fff;">BALAI POLIS BERGOSONG</option>
+            <option style="background:#111;color:#fff;">BALAI POLIS WALLACE BAY</option>
+          </optgroup>
+          <optgroup label="── PONDOK POLIS KAWASAN ──" style="background:#041020;color:rgba(0,230,118,0.8);">
+            <option style="background:#111;color:#fff;">PPK TITINGAN</option>
+            <option style="background:#111;color:#fff;">PPK KINABUTAN</option>
+            <option style="background:#111;color:#fff;">PPK TASS</option>
+            <option style="background:#111;color:#fff;">PPK APAS PARIT</option>
+            <option style="background:#111;color:#fff;">PPK BALUNG</option>
+            <option style="background:#111;color:#fff;">PPK BUKIT QUIN HILL</option>
+            <option style="background:#111;color:#fff;">PPK MEROTAI</option>
+            <option style="background:#111;color:#fff;">PPK BRUMAS</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">SEKOLAH TANGGUNGJAWAB</label>
+        <select class="fs" id="m-sekolah" style="background:#0a1628;color:#fff;">
+          <option value="">-- PILIH SEKOLAH --</option>
+          <optgroup label="── SEKOLAH RENDAH ──" style="background:#041020;color:rgba(0,200,255,0.7);"><option value="TWU001" style="background:#111;color:#fff;">Sekolah Kebangsaan Abaka</option><option value="TWU002" style="background:#111;color:#fff;">Sekolah Kebangsaan Andrassy</option><option value="TWU003" style="background:#111;color:#fff;">Sekolah Kebangsaan Bahagia</option><option value="TWU004" style="background:#111;color:#fff;">Sekolah Kebangsaan Balung</option><option value="TWU005" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau</option><option value="TWU006" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau II</option><option value="TWU007" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 4 Jalan Apas</option><option value="TWU008" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 22 Balung</option><option value="TWU009" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu Payong</option><option value="TWU010" style="background:#111;color:#fff;">Sekolah Kebangsaan Bergosong</option><option value="TWU011" style="background:#111;color:#fff;">Sekolah Kebangsaan Blok 31</option><option value="TWU012" style="background:#111;color:#fff;">Sekolah Kebangsaan Bombalai</option><option value="TWU013" style="background:#111;color:#fff;">Sekolah Kebangsaan Brantian</option><option value="TWU014" style="background:#111;color:#fff;">Sekolah Kebangsaan Brumas</option><option value="TWU015" style="background:#111;color:#fff;">Sekolah Kebangsaan Bukit Quoin</option><option value="TWU016" style="background:#111;color:#fff;">Sekolah Kebangsaan Desa Subur</option><option value="TWU017" style="background:#111;color:#fff;">Sekolah Kebangsaan Holy Trinity</option><option value="TWU018" style="background:#111;color:#fff;">Sekolah Kebangsaan Indersabah</option><option value="TWU019" style="background:#111;color:#fff;">Sekolah Kebangsaan Jambatan Putih</option><option value="TWU020" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Jawa</option><option value="TWU021" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Titingan</option><option value="TWU022" style="background:#111;color:#fff;">Sekolah Kebangsaan Kalabakan</option><option value="TWU023" style="background:#111;color:#fff;">Sekolah Kebangsaan Kem Kabota</option><option value="TWU024" style="background:#111;color:#fff;">Sekolah Kebangsaan Kinabutan Besar</option><option value="TWU025" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Apas</option><option value="TWU026" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Merotai</option><option value="TWU027" style="background:#111;color:#fff;">Sekolah Kebangsaan Kukusan</option><option value="TWU028" style="background:#111;color:#fff;">Sekolah Kebangsaan Ladang Tiger</option><option value="TWU029" style="background:#111;color:#fff;">Sekolah Kebangsaan Luasong</option><option value="TWU030" style="background:#111;color:#fff;">Sekolah Kebangsaan Melati</option><option value="TWU031" style="background:#111;color:#fff;">Sekolah Kebangsaan Melodi</option><option value="TWU032" style="background:#111;color:#fff;">Sekolah Kebangsaan Mentadak Baru</option><option value="TWU033" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Besar</option><option value="TWU034" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Kecil</option><option value="TWU035" style="background:#111;color:#fff;">Sekolah Kebangsaan Muhibbah Raya</option><option value="TWU037" style="background:#111;color:#fff;">Sekolah Kebangsaan Pasir Putih</option><option value="TWU038" style="background:#111;color:#fff;">Sekolah Kebangsaan Perdana</option><option value="TWU039" style="background:#111;color:#fff;">Sekolah Kebangsaan Ranggu</option><option value="TWU040" style="background:#111;color:#fff;">Sekolah Kebangsaan Sentosa</option><option value="TWU041" style="background:#111;color:#fff;">Sekolah Kebangsaan Serudong Baru</option><option value="TWU042" style="background:#111;color:#fff;">Sekolah Kebangsaan St. Patrick</option><option value="TWU043" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Hj Mahathir</option><option value="TWU044" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Imam</option><option value="TWU045" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Tongkang</option><option value="TWU046" style="background:#111;color:#fff;">Sekolah Kebangsaan Taman Tawau</option><option value="TWU047" style="background:#111;color:#fff;">Sekolah Kebangsaan Tanjong Batu</option><option value="TWU048" style="background:#111;color:#fff;">Sekolah Kebangsaan Tg Batu Keramat</option><option value="TWU049" style="background:#111;color:#fff;">Sekolah Kebangsaan Ulu Kalabakan</option><option value="TWU050" style="background:#111;color:#fff;">Sekolah Kebangsaan Umas-Umas</option><option value="TWU051" style="background:#111;color:#fff;">Sekolah Kebangsaan Wakuba</option><option value="TWU052" style="background:#111;color:#fff;">Sekolah Kebangsaan Wallace Bay</option><option value="TWU053" style="background:#111;color:#fff;">Sekolah Rendah Islamiah</option><option value="TWU054" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Chung Hwa</option><option value="TWU055" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Hing Hwa</option><option value="TWU056" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kung Ming</option><option value="TWU057" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kuok Ming</option><option value="TWU058" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Phui Yuk</option><option value="TWU059" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Sin Hwa</option><option value="TWU060" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Yuk Chin</option><option value="TWU061" style="background:#111;color:#fff;">Sekolah Rendah Agama Kinabutan</option><option value="TWU062" style="background:#111;color:#fff;">Sekolah Rendah Islam Al-Fateh, BSI</option></optgroup>
+          <optgroup label="── SEKOLAH MENENGAH ──" style="background:#041020;color:rgba(255,193,7,0.8);"><option value="TWU063" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Abaka</option><option value="TWU064" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Balung</option><option value="TWU065" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Holy Trinity</option><option value="TWU066" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jalan Apas</option><option value="TWU067" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jambatan Putih</option><option value="TWU068" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kalabakan</option><option value="TWU069" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan</option><option value="TWU070" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kuhara</option><option value="TWU071" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Merotai Besar</option><option value="TWU072" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Pasir Putih</option><option value="TWU073" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Patrick</option><option value="TWU074" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Ursula</option><option value="TWU075" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau</option><option value="TWU076" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau II</option><option value="TWU077" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Titingan</option><option value="TWU078" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Umas-Umas</option><option value="TWU079" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wakuba</option><option value="TWU080" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wallace Bay</option><option value="TWU081" style="background:#111;color:#fff;">Sekolah Menengah Islamiah Tawau</option><option value="TWU082" style="background:#111;color:#fff;">Pra-U Kolej Tingkatan Enam Tawau</option><option value="TWU083" style="background:#111;color:#fff;">Kolej Vokasional Tawau</option><option value="TWU084" style="background:#111;color:#fff;">MRSM Tun Mustapha Tawau</option><option value="TWU085" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan II</option></optgroup>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">NO. TELEFON</label>
+        <input class="fi" id="m-tel" type="tel" placeholder="0123456789">
+      </div>
+    </div>
+    <!-- SEKOLAH FIELDS -->
+    <div id="modal-sk-fields" style="display:none;">
+      <div class="fg"><label class="fl">NAMA PENUH</label>
+        <input class="fi" id="m-sk-nama" placeholder="NAMA PENUH" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg"><label class="fl">JAWATAN</label>
+        <select class="fs" id="m-sk-jawatan" style="background:#0a1628;color:#fff;">
+          <option value="">-- PILIH --</option>
+          <option style="background:#111;color:#fff;">GURU BESAR</option>
+          <option style="background:#111;color:#fff;">PENOLONG KANAN PENTADBIRAN</option>
+          <option style="background:#111;color:#fff;">PENOLONG KANAN HEM</option>
+          <option style="background:#111;color:#fff;">PENOLONG KANAN KOKURIKULUM</option>
+          <option style="background:#111;color:#fff;">GURU DISIPLIN</option>
+          <option style="background:#111;color:#fff;">GURU KAUNSELING</option>
+          <option style="background:#111;color:#fff;">GURU</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">GRED</label>
+        <input class="fi" id="m-sk-gred" placeholder="CONTOH: DGA48" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg"><label class="fl">NAMA SEKOLAH</label>
+        <select class="fs" id="m-sk-sekolah" style="background:#0a1628;color:#fff;">
+          <option value="">-- PILIH SEKOLAH --</option>
+          <optgroup label="── SEKOLAH RENDAH ──" style="background:#041020;color:rgba(0,200,255,0.7);"><option value="TWU001" style="background:#111;color:#fff;">Sekolah Kebangsaan Abaka</option><option value="TWU002" style="background:#111;color:#fff;">Sekolah Kebangsaan Andrassy</option><option value="TWU003" style="background:#111;color:#fff;">Sekolah Kebangsaan Bahagia</option><option value="TWU004" style="background:#111;color:#fff;">Sekolah Kebangsaan Balung</option><option value="TWU005" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau</option><option value="TWU006" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau II</option><option value="TWU007" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 4 Jalan Apas</option><option value="TWU008" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 22 Balung</option><option value="TWU009" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu Payong</option><option value="TWU010" style="background:#111;color:#fff;">Sekolah Kebangsaan Bergosong</option><option value="TWU011" style="background:#111;color:#fff;">Sekolah Kebangsaan Blok 31</option><option value="TWU012" style="background:#111;color:#fff;">Sekolah Kebangsaan Bombalai</option><option value="TWU013" style="background:#111;color:#fff;">Sekolah Kebangsaan Brantian</option><option value="TWU014" style="background:#111;color:#fff;">Sekolah Kebangsaan Brumas</option><option value="TWU015" style="background:#111;color:#fff;">Sekolah Kebangsaan Bukit Quoin</option><option value="TWU016" style="background:#111;color:#fff;">Sekolah Kebangsaan Desa Subur</option><option value="TWU017" style="background:#111;color:#fff;">Sekolah Kebangsaan Holy Trinity</option><option value="TWU018" style="background:#111;color:#fff;">Sekolah Kebangsaan Indersabah</option><option value="TWU019" style="background:#111;color:#fff;">Sekolah Kebangsaan Jambatan Putih</option><option value="TWU020" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Jawa</option><option value="TWU021" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Titingan</option><option value="TWU022" style="background:#111;color:#fff;">Sekolah Kebangsaan Kalabakan</option><option value="TWU023" style="background:#111;color:#fff;">Sekolah Kebangsaan Kem Kabota</option><option value="TWU024" style="background:#111;color:#fff;">Sekolah Kebangsaan Kinabutan Besar</option><option value="TWU025" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Apas</option><option value="TWU026" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Merotai</option><option value="TWU027" style="background:#111;color:#fff;">Sekolah Kebangsaan Kukusan</option><option value="TWU028" style="background:#111;color:#fff;">Sekolah Kebangsaan Ladang Tiger</option><option value="TWU029" style="background:#111;color:#fff;">Sekolah Kebangsaan Luasong</option><option value="TWU030" style="background:#111;color:#fff;">Sekolah Kebangsaan Melati</option><option value="TWU031" style="background:#111;color:#fff;">Sekolah Kebangsaan Melodi</option><option value="TWU032" style="background:#111;color:#fff;">Sekolah Kebangsaan Mentadak Baru</option><option value="TWU033" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Besar</option><option value="TWU034" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Kecil</option><option value="TWU035" style="background:#111;color:#fff;">Sekolah Kebangsaan Muhibbah Raya</option><option value="TWU037" style="background:#111;color:#fff;">Sekolah Kebangsaan Pasir Putih</option><option value="TWU038" style="background:#111;color:#fff;">Sekolah Kebangsaan Perdana</option><option value="TWU039" style="background:#111;color:#fff;">Sekolah Kebangsaan Ranggu</option><option value="TWU040" style="background:#111;color:#fff;">Sekolah Kebangsaan Sentosa</option><option value="TWU041" style="background:#111;color:#fff;">Sekolah Kebangsaan Serudong Baru</option><option value="TWU042" style="background:#111;color:#fff;">Sekolah Kebangsaan St. Patrick</option><option value="TWU043" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Hj Mahathir</option><option value="TWU044" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Imam</option><option value="TWU045" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Tongkang</option><option value="TWU046" style="background:#111;color:#fff;">Sekolah Kebangsaan Taman Tawau</option><option value="TWU047" style="background:#111;color:#fff;">Sekolah Kebangsaan Tanjong Batu</option><option value="TWU048" style="background:#111;color:#fff;">Sekolah Kebangsaan Tg Batu Keramat</option><option value="TWU049" style="background:#111;color:#fff;">Sekolah Kebangsaan Ulu Kalabakan</option><option value="TWU050" style="background:#111;color:#fff;">Sekolah Kebangsaan Umas-Umas</option><option value="TWU051" style="background:#111;color:#fff;">Sekolah Kebangsaan Wakuba</option><option value="TWU052" style="background:#111;color:#fff;">Sekolah Kebangsaan Wallace Bay</option><option value="TWU053" style="background:#111;color:#fff;">Sekolah Rendah Islamiah</option><option value="TWU054" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Chung Hwa</option><option value="TWU055" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Hing Hwa</option><option value="TWU056" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kung Ming</option><option value="TWU057" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kuok Ming</option><option value="TWU058" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Phui Yuk</option><option value="TWU059" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Sin Hwa</option><option value="TWU060" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Yuk Chin</option><option value="TWU061" style="background:#111;color:#fff;">Sekolah Rendah Agama Kinabutan</option><option value="TWU062" style="background:#111;color:#fff;">Sekolah Rendah Islam Al-Fateh, BSI</option></optgroup>
+          <optgroup label="── SEKOLAH MENENGAH ──" style="background:#041020;color:rgba(255,193,7,0.8);"><option value="TWU063" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Abaka</option><option value="TWU064" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Balung</option><option value="TWU065" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Holy Trinity</option><option value="TWU066" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jalan Apas</option><option value="TWU067" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jambatan Putih</option><option value="TWU068" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kalabakan</option><option value="TWU069" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan</option><option value="TWU070" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kuhara</option><option value="TWU071" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Merotai Besar</option><option value="TWU072" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Pasir Putih</option><option value="TWU073" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Patrick</option><option value="TWU074" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Ursula</option><option value="TWU075" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau</option><option value="TWU076" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau II</option><option value="TWU077" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Titingan</option><option value="TWU078" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Umas-Umas</option><option value="TWU079" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wakuba</option><option value="TWU080" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wallace Bay</option><option value="TWU081" style="background:#111;color:#fff;">Sekolah Menengah Islamiah Tawau</option><option value="TWU082" style="background:#111;color:#fff;">Pra-U Kolej Tingkatan Enam Tawau</option><option value="TWU083" style="background:#111;color:#fff;">Kolej Vokasional Tawau</option><option value="TWU084" style="background:#111;color:#fff;">MRSM Tun Mustapha Tawau</option><option value="TWU085" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan II</option></optgroup>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">NO. TELEFON</label>
+        <input class="fi" id="m-sk-tel" type="tel" placeholder="0123456789">
+      </div>
+    </div>
+    <div class="fg"><label class="fl">KATA LALUAN</label>
+      <input class="fi" id="m-pw" type="password" placeholder="MINIMUM 6 AKSARA">
+    </div>
+    <div id="modal-alert" class="alert" style="margin-bottom:8px;"></div>
+    <button id="modal-save-btn" onclick="simpanPengguna()" style="width:100%;background:rgba(0,200,255,0.15);border:1.5px solid var(--cyan);border-radius:10px;padding:13px;color:var(--cyan);font-family:Rajdhani,sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;">💾 SIMPAN PENGGUNA</button>
+  </div>
+</div>
 </body>
 </html>`);
     W.document.close();
@@ -2297,127 +2448,153 @@ function ppsDisplay(v) {
 async function loadAdmPemantauan() {
   try {
     const safeGet = async (p) => { try { return await fbGet(p); } catch(e) { return null; } };
-    const [uData, vData, kData, aData] = await Promise.all([
-      safeGet('/users'), safeGet('/visits'), safeGet('/cases'), safeGet('/aduan')
+    const [uData, vData, kData] = await Promise.all([
+      safeGet('/users'), safeGet('/visits'), safeGet('/cases')
     ]);
+    const users  = uData ? Object.values(uData).filter(u=>u._key!=='IPDTAWAU'&&u.userid!=='IPDTAWAU') : [];
+    const pps    = Object.entries(uData||{}).map(([k,v])=>({...v,_key:k})).filter(u=>u.role==='PPS'&&u._key!=='IPDTAWAU');
+    const visits = vData ? Object.entries(vData).map(([k,v])=>({id:k,...v})) : [];
+    const cases  = kData ? Object.values(kData) : [];
 
-    const users   = uData ? Object.values(uData) : [];
-    const visits  = vData ? Object.values(vData) : [];
-    const cases   = kData ? Object.values(kData) : [];
-    const aduans  = aData ? Object.values(aData) : [];
+    const now   = new Date();
+    const thisM = now.getMonth(), thisY = now.getFullYear();
+    const lastM = thisM===0 ? 11 : thisM-1;
+    const lastY = thisM===0 ? thisY-1 : thisY;
 
-    const ppsList = users.filter(u => u.role === 'PPS');
-    const skList  = users.filter(u => u.role === 'SEKOLAH');
+    const lawBulan = visits.filter(v=>{ const d=new Date(v.timestamp); return d.getMonth()===thisM&&d.getFullYear()===thisY; }).length;
+    const lawLepas = visits.filter(v=>{ const d=new Date(v.timestamp); return d.getMonth()===lastM&&d.getFullYear()===lastY; }).length;
 
-    // ── STATS ────────────────────────────────────
-    const setEl = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-    setEl('pmt-tot-pps',   ppsList.length);
-    setEl('pmt-tot-sk',    skList.length);
-    setEl('pmt-tot-law',   visits.length);
-    setEl('pmt-tot-sah',   visits.filter(v => v.status === 'SAH').length);
-    setEl('pmt-tot-kes',   cases.length);
-    setEl('pmt-tot-aduan', aduans.length);
+    // ① Lawatan bulanan
+    const elBulan = document.getElementById('pmt-law-bulan');
+    const elLepas = document.getElementById('pmt-law-lepas');
+    if (elBulan) elBulan.textContent = lawBulan;
+    if (elLepas) elLepas.textContent = lawLepas;
 
-    // ── CHART 1: STATUS LAWATAN (Donut) ──────────
-    drawDonut('pmt-chart-status', [
-      { label: 'SAH',     val: visits.filter(v=>v.status==='SAH').length,     color: '#00e676' },
-      { label: 'MENUNGGU',val: visits.filter(v=>v.status==='MENUNGGU').length, color: '#ffc107' },
-      { label: 'TOLAK',   val: visits.filter(v=>v.status==='TOLAK').length,   color: '#ff1744' },
-    ]);
+    // ② Liputan sekolah
+    const visitedSk = new Set(visits.map(v=>v.sekolahKod).filter(Boolean));
+    const dilawati  = SCHOOLS.filter(s => visitedSk.has(s.code)).length;
+    const belum     = SCHOOLS.length - dilawati;
+    const elDil = document.getElementById('pmt-sk-dilawati');
+    const elBel = document.getElementById('pmt-sk-belum');
+    if (elDil) elDil.textContent = dilawati;
+    if (elBel) elBel.textContent = belum;
 
-    // ── CHART 2: LAWATAN BULANAN (Bar) ───────────
-    const bulanMap = {};
-    const BULAN = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
+    // ③ Aktiviti PPS — dari tujuan lawatan
+    const ceramah = visits.filter(v=>(v.tujuan||'').toUpperCase().includes('CERAMAH')).length;
+    const program = visits.filter(v=>(v.tujuan||'').toUpperCase().includes('PROGRAM')).length;
+    const lawatan = visits.filter(v=>!(v.tujuan||'').toUpperCase().includes('CERAMAH')&&!(v.tujuan||'').toUpperCase().includes('PROGRAM')).length;
+    const elCer = document.getElementById('pmt-akt-ceramah');
+    const elProg = document.getElementById('pmt-akt-program');
+    const elLaw = document.getElementById('pmt-akt-lawatan');
+    if (elCer) elCer.textContent = ceramah;
+    if (elProg) elProg.textContent = program;
+    if (elLaw) elLaw.textContent = lawatan;
+
+    // ⑤ Ranking PPS
+    const ppsCounts = {};
     visits.forEach(v => {
-      if (!v.timestamp) return;
-      const d = new Date(v.timestamp);
-      const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
-      bulanMap[key] = (bulanMap[key]||0) + 1;
+      const k = v.ppsId||v.ppsNama||'—';
+      ppsCounts[k] = (ppsCounts[k]||0)+1;
     });
-    const bulanKeys = Object.keys(bulanMap).sort().slice(-6);
-    drawBar('pmt-chart-bulan',
-      bulanKeys.map(k => BULAN[parseInt(k.split('-')[1])-1]+' '+k.split('-')[0].slice(2)),
-      bulanKeys.map(k => bulanMap[k]),
-      '#00c8ff'
-    );
+    const ranked = Object.entries(ppsCounts).sort((a,b)=>b[1]-a[1]);
+    const rankEl = document.getElementById('pmt-ranking-pps');
+    if (rankEl) {
+      if (!ranked.length) {
+        rankEl.innerHTML = '<div style="text-align:center;padding:10px;color:rgba(255,255,255,0.3);">TIADA DATA LAWATAN</div>';
+      } else {
+        rankEl.innerHTML = ranked.map(([id, count], i) => {
+          const u = pps.find(p=>p._key===id||p.userid===id||p.badan===id);
+          const nama = u ? ppsDisplay({ppsId:id, pangkat:u.pangkat, badan:u.badan, ppsNama:u.nama}) : id;
+          const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'  ';
+          const pct = ranked[0][1]>0 ? (count/ranked[0][1]*100) : 0;
+          return '<div style="margin-bottom:8px;">'+
+            '<div style="display:flex;justify-content:space-between;margin-bottom:2px;">'+
+              '<span style="font-size:10px;color:#fff;">'+ medal +' '+ nama +'</span>'+
+              '<span style="font-size:10px;color:var(--cyan);font-weight:700;">'+ count +' LAWATAN</span>'+
+            '</div>'+
+            '<div style="background:rgba(255,255,255,0.08);border-radius:4px;height:5px;">'+
+              '<div style="background:var(--cyan);width:'+pct+'%;height:5px;border-radius:4px;"></div>'+
+            '</div></div>';
+        }).join('');
+      }
+    }
 
-    // ── CHART 3: PRESTASI PPS (Bar) ───────────────
-    const ppsVisitCount = {};
-    ppsList.forEach(p => { ppsVisitCount[p.userid] = 0; });
-    visits.forEach(v => { if (v.ppsId) ppsVisitCount[v.ppsId] = (ppsVisitCount[v.ppsId]||0) + 1; });
-    const ppsLabels = ppsList.map(p => {
-      const badan = (p.badan||'').replace(/^RF\//,'').replace(/^G\//,'');
-      return (p.pangkat||'')+' '+badan;
-    });
-    const ppsVals = ppsList.map(p => ppsVisitCount[p.userid]||0);
-    drawBarHoriz('pmt-chart-pps', ppsLabels, ppsVals, '#00e676');
-
-    // ── TABLE 1: SEKOLAH TIDAK DILAWATI ──────────
-    const visitedSk = new Set(visits.map(v => v.sekolahKod).filter(Boolean));
-    const SKOLAH_ALL = typeof SCHOOLS !== 'undefined' ? SCHOOLS : [];
-    const tidakDilawati = SKOLAH_ALL.filter(s => !visitedSk.has(s.code));
+    // ④ Sekolah belum dilawati (coloured list)
     const elSk = document.getElementById('pmt-sk-tiada');
     if (elSk) {
-      const dilawati    = SCHOOLS.filter(s =>  visitedSk.has(s.code));
-      const belumDilawati = SCHOOLS.filter(s => !visitedSk.has(s.code));
-      const totalSk = SCHOOLS.length;
-      // Header summary
-      let html = '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">'+
-        '<span style="font-size:9px;color:rgba(255,255,255,0.4);">Jumlah: '+totalSk+' sekolah</span>'+
-        '<span style="font-size:9px;">'+
-          '<span style="color:#00e676;">✅ '+dilawati.length+' dilawati</span> &nbsp;'+
-          '<span style="color:#ff1744;">❌ '+belumDilawati.length+' belum</span>'+
-        '</span></div>';
-      // Show visited in green first
-      if (dilawati.length) {
-        dilawati.forEach((s,i) => {
-          html += '<div style="padding:4px 0;border-bottom:1px solid rgba(0,230,118,0.08);display:flex;justify-content:space-between;align-items:center;">'+
-            '<span style="color:#00e676;font-size:10px;">✅ '+(i+1)+'. '+s.name+'</span>'+
-            '<span style="background:rgba(0,230,118,0.1);color:#00e676;border:1px solid rgba(0,230,118,0.25);border-radius:4px;padding:1px 5px;font-size:9px;">'+s.code+'</span>'+
-            '</div>';
-        });
-      }
-      // Show not visited in red blinking
-      if (belumDilawati.length) {
-        belumDilawati.forEach((s,i) => {
-          html += '<div style="padding:4px 0;border-bottom:1px solid rgba(255,23,68,0.08);display:flex;justify-content:space-between;align-items:center;">'+
-            '<span style="color:#ff1744;animation:blink 2s infinite;font-size:10px;font-weight:700;">❌ '+(dilawati.length+i+1)+'. '+s.name+'</span>'+
-            '<span style="background:rgba(255,23,68,0.1);color:#ff1744;border:1px solid rgba(255,23,68,0.25);border-radius:4px;padding:1px 5px;font-size:9px;animation:blink 2s infinite;">'+s.code+'</span>'+
-            '</div>';
-        });
-      }
-      if (!belumDilawati.length && !dilawati.length) {
-        html += '<div style="text-align:center;padding:10px;color:rgba(255,255,255,0.3);">Tiada data sekolah.</div>';
-      }
-      elSk.innerHTML = html;
+      const dilawatiList = SCHOOLS.filter(s => visitedSk.has(s.code));
+      const belumList    = SCHOOLS.filter(s => !visitedSk.has(s.code));
+      let html2 = '<div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:9px;">'+
+        '<span style="color:rgba(255,255,255,0.4);">JUMLAH: '+SCHOOLS.length+' SEKOLAH</span>'+
+        '<span><span style="color:#00e676;">✅ '+dilawatiList.length+'</span> &nbsp; <span style="color:#ff1744;">❌ '+belumList.length+'</span></span></div>';
+      dilawatiList.forEach((s,i)=>{
+        html2+='<div style="padding:3px 0;border-bottom:1px solid rgba(0,230,118,0.06);display:flex;justify-content:space-between;">'+
+          '<span style="color:#00e676;font-size:10px;">✅ '+(i+1)+'. '+s.name+'</span>'+
+          '<span style="background:rgba(0,230,118,0.1);color:#00e676;border-radius:3px;padding:0 4px;font-size:9px;">'+s.code+'</span></div>';
+      });
+      belumList.forEach((s,i)=>{
+        // Find PPS responsible
+        const ppsTgb = pps.find(p=>p.sekolahKod===s.code||p.sekolahNama===s.name);
+        const ppsInfo = ppsTgb ? ' — '+(ppsTgb.pangkat||'')+' '+(ppsTgb.badan||'') : '';
+        html2+='<div style="padding:3px 0;border-bottom:1px solid rgba(255,23,68,0.06);display:flex;justify-content:space-between;align-items:center;">'+
+          '<div><span style="color:#ff1744;animation:blink 2s infinite;font-size:10px;font-weight:700;">❌ '+(dilawatiList.length+i+1)+'. '+s.name+'</span>'+
+          (ppsInfo?'<div style="font-size:8px;color:rgba(255,255,255,0.35);">PPS: '+ppsInfo+'</div>':'')+'</div>'+
+          '<span style="background:rgba(255,23,68,0.1);color:#ff1744;border-radius:3px;padding:0 4px;font-size:9px;animation:blink 2s infinite;">'+s.code+'</span></div>';
+      });
+      elSk.innerHTML = html2;
     }
 
-    // ── TABLE 2: PPS GAGAL MELAWAT ────────────────
-    const gagal = ppsList.filter(p => !(ppsVisitCount[p.userid] > 0));
-    const elPPS = document.getElementById('pmt-pps-gagal');
-    if (elPPS) {
+    // PPS GAGAL MELAWAT
+    const gagalEl = document.getElementById('pmt-pps-gagal');
+    if (gagalEl) {
+      const visitedPps = new Set(visits.filter(v=>v.status==='SAH').map(v=>v.ppsId).filter(Boolean));
+      const gagal = pps.filter(p=>!visitedPps.has(p._key)&&!visitedPps.has(p.userid));
       if (!gagal.length) {
-        elPPS.innerHTML = '<div style="color:#00e676;text-align:center;padding:10px;">✅ Semua PPS telah membuat lawatan!</div>';
+        gagalEl.innerHTML = '<div style="color:#00e676;text-align:center;padding:10px;">✅ SEMUA PPS TELAH MEMBUAT LAWATAN</div>';
       } else {
-        elPPS.innerHTML = '<div style="color:rgba(255,255,255,0.4);font-size:9px;margin-bottom:4px;">'+gagal.length+' pegawai belum membuat lawatan:</div>' +
-          gagal.map((p,i) => {
-            const badan = (p.badan||'').replace(/^RF\//,'').replace(/^G\//,'');
-            return '<div style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);">' +
-              '<div style="color:var(--gold);font-size:10px;font-weight:700;">'+(i+1)+'. '+(p.pangkat||'')+' '+badan+'</div>' +
-              '<div style="color:#fff;font-size:11px;">'+(p.nama||'—')+'</div>' +
-              '<div style="color:rgba(255,255,255,0.4);font-size:9px;">'+(p.tugas||'—')+'</div>' +
-              '</div>';
-          }).join('');
+        gagalEl.innerHTML = gagal.map((p,i)=>'<div style="padding:4px 0;border-bottom:1px solid rgba(255,107,53,0.1);">'+
+          '<div style="font-size:10px;color:#ff6b35;font-weight:700;">'+(i+1)+'. '+(p.pangkat||'')+' '+(p.badan||'')+' '+(p.nama||'—')+'</div>'+
+          '<div style="font-size:9px;color:rgba(255,255,255,0.35);">'+(p.tugas||'—')+' • '+(p.sekolahNama||'—')+'</div>'+
+          '</div>').join('');
       }
     }
+
+    // Draw charts
+    const months = ['JAN','FEB','MAC','APR','MEI','JUN','JUL','OGO','SEP','OKT','NOV','DIS'];
+    const last6  = Array.from({length:6},(_,i)=>{ const m=(thisM-5+i+12)%12; const y=thisM-5+i<0?thisY-1:thisY; return {m,y,label:months[m]}; });
+    const barData = last6.map(({m,y})=> visits.filter(v=>{const d=new Date(v.timestamp);return d.getMonth()===m&&d.getFullYear()===y;}).length );
+    drawBar('pmt-chart-bulan', last6.map(x=>x.label), barData, 'var(--cyan)');
+    drawDonut('pmt-chart-status', dilawati, belum);
+
+    // Aktiviti bar chart
+    drawBarActiviti('pmt-chart-aktiviti', ['CERAMAH','PROGRAM','LAWATAN'], [ceramah, program, lawatan]);
 
   } catch(e) {
     console.warn('Pemantauan:', e.message);
-    // Tunjuk error pada stats
-    ['pmt-tot-pps','pmt-tot-sk','pmt-tot-law','pmt-tot-sah','pmt-tot-kes','pmt-tot-aduan'].forEach(id => {
-      const el = document.getElementById(id); if (el) el.textContent = '!';
-    });
   }
+}
+
+function drawBarActiviti(id, labels, data) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth||280, H = canvas.height||120;
+  canvas.width = W;
+  ctx.clearRect(0,0,W,H);
+  const max = Math.max(...data, 1);
+  const bw = Math.floor(W/labels.length*0.5), gap = Math.floor(W/labels.length);
+  const colors = ['rgba(0,200,255,0.8)','rgba(255,193,7,0.8)','rgba(0,230,118,0.8)'];
+  labels.forEach((lbl,i)=>{
+    const x = gap*i + (gap-bw)/2;
+    const bh = Math.max(4, Math.floor((data[i]/max)*(H-30)));
+    ctx.fillStyle = colors[i]||'rgba(100,200,255,0.8)';
+    ctx.fillRect(x, H-25-bh, bw, bh);
+    ctx.fillStyle='rgba(255,255,255,0.6)';
+    ctx.font='9px Arial'; ctx.textAlign='center';
+    ctx.fillText(lbl, x+bw/2, H-10);
+    ctx.fillStyle=colors[i]||'rgba(100,200,255,0.8)';
+    ctx.fillText(data[i], x+bw/2, H-28-bh);
+  });
 }
 
 // ── DRAW DONUT ────────────────────────────────────────
