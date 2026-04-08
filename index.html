@@ -728,7 +728,10 @@ tr:hover td{background:rgba(0,200,255,0.04);}
         <button id="sub-log-btn" onclick="showSubPengguna('log')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid rgba(0,230,118,0.4);background:transparent;color:rgba(0,230,118,0.7);font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">🔑 LOG LOGIN <span id="sub-log-count" style="font-size:10px;"></span></button>
       </div>
       <div class="card" id="sub-pps-panel">
-        <div class="card-title" style="color:var(--cyan);">👮 SENARAI PENGGUNA PPS</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="card-title" style="color:var(--cyan);margin-bottom:0;">👮 SENARAI PENGGUNA PPS</div>
+          <button onclick="showTambahModal('PPS')" style="background:rgba(0,200,255,0.15);border:1.5px solid var(--cyan);border-radius:8px;padding:6px 12px;color:var(--cyan);font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">➕ TAMBAH PPS</button>
+        </div>
         <div class="tbl-wrap">
         <table><thead><tr><th>#</th><th>PANGKAT / NO. BADAN / NAMA</th><th>TEMPAT TUGAS</th><th>SEKOLAH</th><th>TEL</th><th>TINDAKAN</th></tr></thead>
         <tbody id="adm-pps-tbody"><tr><td colspan="6" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr></tbody>
@@ -737,7 +740,10 @@ tr:hover td{background:rgba(0,200,255,0.04);}
       </div>
       <!-- SK PANEL -->
       <div class="card" id="sub-sk-panel" style="display:none;margin-top:10px;">
-        <div class="card-title" style="color:var(--gold);">🏫 SENARAI PENGGUNA SEKOLAH</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="card-title" style="color:var(--gold);margin-bottom:0;">🏫 SENARAI PENGGUNA SEKOLAH</div>
+          <button onclick="showTambahModal('SEKOLAH')" style="background:rgba(255,193,7,0.15);border:1.5px solid var(--gold);border-radius:8px;padding:6px 12px;color:var(--gold);font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">➕ TAMBAH SEKOLAH</button>
+        </div>
         <div class="tbl-wrap">
           <table><thead><tr><th>#</th><th>NAMA / JAWATAN</th><th>NAMA SEKOLAH</th><th>KOD LOGIN</th><th>TEL</th><th>TINDAKAN</th></tr></thead>
           <tbody id="adm-sk-tbody"><tr><td colspan="6" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr></tbody>
@@ -1948,7 +1954,7 @@ async function janaLaporan() {
   const ruj        = (document.getElementById('pdf-rujukan')||{value:''}).value ||
                      ('IPD.TW/SPPS/'+String(new Date().getMonth()+1).padStart(2,'0')+'/'+new Date().getFullYear()+'/'+String(Math.floor(Math.random()*900)+100));
   const disediakan = (document.getElementById('pdf-disediakan')||{value:''}).value || 'PEGAWAI PENYEDIA BPJKK';
-  const diluluskan = (document.getElementById('pdf-diluluskan')||{value:''}).value || 'KETUA POLIS DAERAH TAWAU';
+  const diluluskan = (document.getElementById('pdf-diluluskan')||{value:''}).value || 'KETUA BAHAGIAN PENCEGAHAN JENAYAH DAN KESELAMATAN KOMUNITI';
   const tarikh     = new Date().toLocaleDateString('ms-MY', {day:'2-digit',month:'long',year:'numeric'});
   const bulanLabel = monthVal ? new Date(monthVal+'-01').toLocaleDateString('ms-MY',{month:'long',year:'numeric'}) : 'Semua Bulan';
 
@@ -1981,7 +1987,20 @@ async function janaLaporan() {
     if (type === 'lawatan') {
       tajukLaporan = 'LAPORAN LAWATAN PEGAWAI PERHUBUNGAN SEKOLAH (PPS)';
       tableHTML = `<table><thead><tr><th>Bil.</th><th>Pegawai PPS</th><th>Sekolah Dilawati</th><th>Guru Ditemui</th><th>Tujuan Lawatan</th><th>Tarikh & Masa</th><th>Status</th></tr></thead><tbody>` +
-        (visits.length ? visits.map((v,i) => `<tr><td>${i+1}</td><td>${ppsDisplay(v)}</td><td>${v.sekolahNama||'—'}<br><small>${v.sekolahKod||''}</small></td><td>${v.namaGuru||'—'}<br><small>${v.jawatanGuru||''}</small></td><td>${v.tujuan||'—'}</td><td>${dt(v.timestamp)}</td><td><b>${v.status||'MENUNGGU'}</b></td></tr>`).join('') :
+        (visits.length ? visits.map((v,i) => {
+          const photoHtml = (v.photos && v.photos.length)
+            ? `<tr><td colspan="7" style="padding:8px 12px;background:#f9f9f9;border-bottom:2px solid #ddd;">
+                <div style="font-size:8pt;color:#555;font-weight:bold;margin-bottom:6px;">📷 BUKTI GAMBAR LAWATAN (${v.photos.length} gambar):</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  ${v.photos.map((p,pi) => `<div style="text-align:center;">
+                    <img src="${p}" style="width:140px;height:105px;object-fit:cover;border:1px solid #ccc;border-radius:4px;">
+                    <div style="font-size:7pt;color:#888;">Gambar ${pi+1}</div>
+                  </div>`).join('')}
+                </div>
+              </td></tr>`
+            : '';
+          return `<tr><td>${i+1}</td><td>${ppsDisplay(v)}</td><td>${v.sekolahNama||'—'}<br><small>${v.sekolahKod||''}</small></td><td>${v.namaGuru||'—'}<br><small>${v.jawatanGuru||''}</small></td><td>${v.tujuan||'—'}</td><td>${dt(v.timestamp)}</td><td><b>${v.status||'MENUNGGU'}</b></td></tr>${photoHtml}`;
+        }).join('') :
         '<tr><td colspan="7" style="text-align:center;">Tiada rekod lawatan.</td></tr>') +
         `</tbody></table>`;
     } else if (type === 'pps') {
@@ -1996,7 +2015,20 @@ async function janaLaporan() {
     } else if (type === 'kes') {
       tajukLaporan = 'LAPORAN KES PELAJAR';
       tableHTML = `<table><thead><tr><th>Bil.</th><th>Sekolah</th><th>Nama Pelajar</th><th>Jenis Kes</th><th>Keutamaan</th><th>Pelapor</th><th>Tarikh Laporan</th></tr></thead><tbody>` +
-        (cases.length ? cases.map((k,i) => `<tr><td>${i+1}</td><td>${k.sekolahNama||'—'}</td><td>${k.namaPelajar||'—'}</td><td>${k.jenisKes||'—'}</td><td><b>${(k.keutamaan||'').toUpperCase()}</b></td><td>${k.pelapor||'—'}</td><td>${dt(k.timestamp)}</td></tr>`).join('') :
+        (cases.length ? cases.map((k,i) => {
+          const photoHtml = (k.photos && k.photos.length)
+            ? `<tr><td colspan="7" style="padding:8px 12px;background:#f9f9f9;border-bottom:2px solid #ddd;">
+                <div style="font-size:8pt;color:#555;font-weight:bold;margin-bottom:6px;">📷 BUKTI GAMBAR KES (${k.photos.length} gambar):</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  ${k.photos.map((p,pi) => `<div style="text-align:center;">
+                    <img src="${p}" style="width:140px;height:105px;object-fit:cover;border:1px solid #ccc;border-radius:4px;">
+                    <div style="font-size:7pt;color:#888;">Gambar ${pi+1}</div>
+                  </div>`).join('')}
+                </div>
+              </td></tr>`
+            : '';
+          return `<tr><td>${i+1}</td><td>${k.sekolahNama||'—'}</td><td>${k.namaPelajar||'—'}</td><td>${k.jenisKes||'—'}</td><td><b>${(k.keutamaan||'').toUpperCase()}</b></td><td>${k.pelapor||'—'}</td><td>${dt(k.timestamp)}</td></tr>${photoHtml}`;
+        }).join('') :
         '<tr><td colspan="7" style="text-align:center;">Tiada rekod kes.</td></tr>') +
         '</tbody></table>';
     }
@@ -2037,19 +2069,22 @@ async function janaLaporan() {
   .tt-box .garis { border-top:1px solid #000; padding-top:6px; margin-top:50px; font-weight:bold; font-size:10pt; }
   .tt-box .jawatan { font-size:9pt; color:#333; }
   .footer-doc { margin-top:20px; border-top:1px solid #ccc; padding-top:8px; text-align:center; font-size:8pt; color:#666; }
+  @page { size: A4 portrait; margin: 15mm 20mm; }
   @media print {
-    body { padding:15mm 20mm; }
+    body { padding:0; width:210mm; }
     .btn-cetak { display:none !important; }
     thead { display:table-header-group; }
+    img { max-width:140px !important; page-break-inside:avoid; }
+    tr { page-break-inside:avoid; }
   }
 </style>
 </head>
 <body>
 <div class="kop">
   <div class="agensi">POLIS DIRAJA MALAYSIA</div>
-  <div class="jabatan">Ibu Pejabat Polis Daerah Tawau</div>
-  <div class="jabatan" style="font-size:11pt;">Bahagian Pengurusan Jenayah dan Keselamatan Komuniti (BPJKK)</div>
-  <div class="alamat">KM 3, Jalan Sin On, 91000 Tawau, Sabah &nbsp;|&nbsp; Tel: 089-XXXXXX</div>
+  <div class="jabatan">IBU PEJABAT POLIS DAERAH TAWAU</div>
+  <div class="jabatan" style="font-size:11pt;font-weight:600;">BAHAGIAN PENCEGAHAN JENAYAH DAN KESELAMATAN KOMUNITI</div>
+  <div class="alamat">Peti Surat 70, 91007 Tawau, Sabah &nbsp;|&nbsp; Tel: 089-752222</div>
 </div>
 
 <div class="tajuk-surat">
@@ -2067,7 +2102,7 @@ ${tableHTML}
 <div class="tandatangan">
   <div class="tt-box">
     <div class="garis">${disediakan}</div>
-    <div class="jawatan">Pegawai Penyedia<br>Bahagian BPJKK<br>IPD Tawau</div>
+    <div class="jawatan">Pegawai Penyedia<br>Bahagian Pencegahan Jenayah Dan<br>Keselamatan Komuniti, IPD Tawau</div>
   </div>
   <div class="tt-box">
     <div class="garis">${diluluskan}</div>
@@ -2618,6 +2653,113 @@ document.addEventListener('click', function(e) {
   if (lb) { lulusPermohonan(lb.dataset.id, lb.dataset.uid); }
   if (tb) { tolakPermohonan(tb.dataset.id, tb.dataset.uid); }
 });
+
+
+let _tambahRole = 'PPS';
+
+function showTambahModal(role) {
+  _tambahRole = role;
+  const modal = document.getElementById('tambah-modal');
+  const title = document.getElementById('modal-title');
+  const ppsF  = document.getElementById('modal-pps-fields');
+  const skF   = document.getElementById('modal-sk-fields');
+  const saveBtn = document.getElementById('modal-save-btn');
+  if (!modal) return;
+  if (role === 'PPS') {
+    if (title) title.innerHTML = '➕ TAMBAH PENGGUNA PPS';
+    if (ppsF) ppsF.style.display = '';
+    if (skF)  skF.style.display  = 'none';
+    if (saveBtn) saveBtn.style.borderColor = 'var(--cyan)';
+    // Populate sekolah dropdown
+    populateSelect('m-sekolah');
+  } else {
+    if (title) title.innerHTML = '<span style="color:var(--gold);">➕ TAMBAH PENGGUNA SEKOLAH</span>';
+    if (ppsF) ppsF.style.display = 'none';
+    if (skF)  skF.style.display  = '';
+    if (saveBtn) { saveBtn.style.borderColor = 'var(--gold)'; saveBtn.style.color = 'var(--gold)'; }
+    populateSelect('m-sk-sekolah');
+  }
+  // Clear fields
+  ['m-pangkat','m-badan','m-nama','m-tugas','m-sekolah','m-tel',
+   'm-sk-nama','m-sk-jawatan','m-sk-gred','m-sk-sekolah','m-sk-tel','m-pw'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const alt = document.getElementById('modal-alert');
+  if (alt) { alt.textContent=''; alt.className='alert'; }
+  modal.style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+function closeTambahModal() {
+  const modal = document.getElementById('tambah-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function simpanPengguna() {
+  const btn = document.getElementById('modal-save-btn');
+  const showErr = (msg) => {
+    const a = document.getElementById('modal-alert');
+    if (a) { a.textContent = msg; a.className = 'alert err'; }
+  };
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+  try {
+    const pw = (document.getElementById('m-pw')||{value:''}).value;
+    if (!pw || pw.length < 6) { showErr('Kata laluan min 6 aksara.'); btn.disabled=false; btn.textContent='💾 SIMPAN PENGGUNA'; return; }
+    const hashedPw = await hashPw(pw);
+
+    if (_tambahRole === 'PPS') {
+      const pangkat = (document.getElementById('m-pangkat')||{value:''}).value;
+      const badan   = (document.getElementById('m-badan')||{value:''}).value.trim().toUpperCase();
+      const nama    = (document.getElementById('m-nama')||{value:''}).value.trim().toUpperCase();
+      const tugas   = (document.getElementById('m-tugas')||{value:''}).value;
+      const skKod   = (document.getElementById('m-sekolah')||{value:''}).value;
+      const tel     = (document.getElementById('m-tel')||{value:''}).value.trim();
+      if (!pangkat||!badan||!nama||!tugas||!skKod) { showErr('Sila lengkapkan semua maklumat.'); btn.disabled=false; btn.textContent='💾 SIMPAN PENGGUNA'; return; }
+      const sch = SCHOOLS.find(s => s.code===skKod);
+      const userid = badan.replace(/\//g,'_').replace(/[.#$\[\]]/g,'_');
+      const existing = await fbGet('/users/'+userid);
+      if (existing) { showErr('No. Badan '+badan+' sudah berdaftar!'); btn.disabled=false; btn.textContent='💾 SIMPAN PENGGUNA'; return; }
+      await fbPut('/users/'+userid, {
+        role:'PPS', userid, password:hashedPw, passwordPlain:pw,
+        nama, pangkat, badan, badanDisplay:pangkat+' '+badan,
+        tugas, telefon:tel, sekolahKod:skKod,
+        sekolahNama:sch?sch.name:skKod,
+        status:'AKTIF', createdAt:new Date().toISOString(),
+        approvedBy:'ADMIN-IPDTAWAU'
+      });
+      const a = document.getElementById('modal-alert');
+      if (a) { a.textContent='✅ PPS '+pangkat+' '+badan+' '+nama+' berjaya ditambah!'; a.className='alert ok'; }
+    } else {
+      const nama    = (document.getElementById('m-sk-nama')||{value:''}).value.trim().toUpperCase();
+      const jawatan = (document.getElementById('m-sk-jawatan')||{value:''}).value;
+      const gred    = (document.getElementById('m-sk-gred')||{value:''}).value.trim().toUpperCase();
+      const skSel   = (document.getElementById('m-sk-sekolah')||{value:''}).value;
+      const tel     = (document.getElementById('m-sk-tel')||{value:''}).value.trim();
+      if (!nama||!jawatan||!skSel) { showErr('Sila lengkapkan semua maklumat.'); btn.disabled=false; btn.textContent='💾 SIMPAN PENGGUNA'; return; }
+      const sch   = SCHOOLS.find(s => s.code===skSel);
+      const userid = skSel;
+      const existing = await fbGet('/users/'+userid);
+      if (existing) { showErr('Sekolah '+(sch?sch.name:skSel)+' sudah ada akaun!'); btn.disabled=false; btn.textContent='💾 SIMPAN PENGGUNA'; return; }
+      await fbPut('/users/'+userid, {
+        role:'SEKOLAH', userid, password:hashedPw, passwordPlain:pw,
+        nama, jawatan, gred, sekolahKod:skSel,
+        sekolahNama:sch?sch.name:skSel,
+        telPeribadi:tel, status:'AKTIF',
+        createdAt:new Date().toISOString(), approvedBy:'ADMIN-IPDTAWAU'
+      });
+      const a = document.getElementById('modal-alert');
+      if (a) { a.textContent='✅ Sekolah '+(sch?sch.name:skSel)+' berjaya ditambah!'; a.className='alert ok'; }
+    }
+    btn.disabled=false; btn.textContent='💾 SIMPAN PENGGUNA';
+    loadAdmPengguna();
+    loadAdmDash();
+    setTimeout(closeTambahModal, 2000);
+  } catch(e) {
+    showErr('Ralat: '+e.message);
+    btn.disabled=false; btn.textContent='💾 SIMPAN PENGGUNA';
+  }
+}
 
 window.addEventListener('load', function() {
   // Pre-populate all school selects
