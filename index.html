@@ -1618,7 +1618,7 @@ async function loadPPSVisits() {
         ? '<span class="badge tolak">❌ DITOLAK</span>'
         : '<span class="badge menunggu">⏳ MENUNGGU PENGESAHAN SEKOLAH</span>';
       const photos = v.photos && v.photos.length
-        ? `<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;">${v.photos.slice(0,3).map(p=>`<img src="${p}" style="width:36px;height:36px;object-fit:cover;border-radius:3px;cursor:pointer;" onclick="window.open('${p}','_blank')">`).join('')}${v.photos.length>3?`<span style="font-size:9px;color:rgba(255,255,255,0.4);">+${v.photos.length-3}</span>`:''}</div>`
+        ? `<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;">${v.photos.slice(0,4).map((p,pi)=>`<img src="${p}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;cursor:pointer;border:1.5px solid rgba(0,200,255,0.3);" onclick="openLightbox(${JSON.stringify(v.photos)},${pi},'GAMBAR LAWATAN')">`).join('')}${v.photos.length>4?`<span style="font-size:9px;color:var(--cyan);cursor:pointer;" onclick="openLightbox(${JSON.stringify(v.photos)},0,'GAMBAR LAWATAN')">+${v.photos.length-4} lagi</span>`:''}</div>`
         : '<div style="font-size:9px;color:rgba(255,100,100,0.6);">⚠ Tiada gambar</div>';
       return `<tr><td>${i+1}</td><td><div style="font-size:11px;">${v.sekolahNama}</div></td><td style="font-size:10px;">${v.namaGuru||'—'}</td><td style="font-size:10px;">${v.tujuan}</td><td style="font-size:10px;">${dt(v.timestamp)}${photos}</td><td>${st}</td></tr>`;
     }).join('') : '<tr><td colspan="6" style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);">Tiada rekod.</td></tr>';
@@ -1722,7 +1722,7 @@ async function loadSKData() {
     const pList = document.getElementById('sk-pending-list');
     if (pList) {
       pList.innerHTML = pending.length ? pending.map(v => {
-        const photos = v.photos && v.photos.length ? '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;">'+v.photos.slice(0,10).map(p=>`<img src="${p}" style="width:54px;height:54px;object-fit:cover;border-radius:5px;border:1px solid rgba(0,200,255,0.3);">`).join('')+'</div>' : '<div style="font-size:10px;color:rgba(255,100,100,0.7);margin-bottom:7px;">⚠ Tiada gambar dilampirkan</div>';
+        const photos = v.photos && v.photos.length ? '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;">'+v.photos.map((p,pi)=>`<img src="${p}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;border:2px solid rgba(0,200,255,0.35);cursor:pointer;transition:transform 0.15s;" onclick="openLightbox(${JSON.stringify(v.photos)},${pi},'GAMBAR LAWATAN - '+ppsDisplay(v))">`).join('')+'</div>' : '<div style="font-size:10px;color:rgba(255,100,100,0.7);margin-bottom:7px;">⚠ Tiada gambar dilampirkan</div>';
         return `<div class="pending-card"><div style="font-size:13px;font-weight:700;color:var(--cyan);margin-bottom:5px;">👮 ${v.ppsNama}</div><div style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:7px;">No. Badan: <b style="color:#fff">${v.ppsBadan}</b> • Tujuan: <b style="color:#fff">${v.tujuan}</b>${v.namaGuru?'<br>Guru: <b style="color:#fff">'+v.namaGuru+'</b>':''}<br>${dt(v.timestamp)} • <span style="color:var(--gold);">⏳ Menunggu Pengesahan</span></div>${photos}<div style="display:flex;gap:8px;"><button class="btn-sah" onclick="sahLawatan('${v.id}','SAH')">✅ SAHKAN LAWATAN</button><button class="btn-tolak" onclick="sahLawatan('${v.id}','TOLAK')">❌ TOLAK</button></div></div>`;
       }).join('') : '<div style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);">✅ Tiada lawatan menunggu.</div>';
     }
@@ -2009,7 +2009,7 @@ async function loadAdmLawatan() {
         : '<span class="badge menunggu">⏳ MENUNGGU SEKOLAH</span>';
       const photos = v.photos && v.photos.length
         ? '<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;">'+
-          v.photos.slice(0,5).map(p=>`<img src="${p}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid rgba(0,200,255,0.3);cursor:pointer;" onclick="window.open('${p}','_blank')">`).join('')+
+          v.photos.map((p,pi)=>`<img src="${p}" style="width:50px;height:50px;object-fit:cover;border-radius:5px;border:2px solid rgba(0,200,255,0.35);cursor:pointer;" onclick="openLightbox(${JSON.stringify(v.photos)},${pi},'BUKTI GAMBAR LAWATAN')">`).join('')+
           (v.photos.length>5?`<div style="width:40px;height:40px;background:rgba(0,0,0,0.4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;">+${v.photos.length-5}</div>`:'')+
           '</div>'
         : '<div style="font-size:9px;color:rgba(255,100,100,0.7);">⚠ Tiada gambar</div>';
@@ -3002,6 +3002,69 @@ function installPWA() {
   }
 }
 
+
+// ── LIGHTBOX VIEWER ──
+let _lbPhotos = [];
+let _lbIndex  = 0;
+
+function openLightbox(photos, index, title) {
+  _lbPhotos = Array.isArray(photos) ? photos : [photos];
+  _lbIndex  = index || 0;
+  const lb = document.getElementById('lightbox');
+  if (!lb) return;
+  if (lb.parentElement !== document.body) document.body.appendChild(lb);
+  document.body.style.overflow = 'hidden';
+  lb.style.display = 'flex';
+  const titleEl = document.getElementById('lb-title');
+  if (titleEl && title) titleEl.textContent = title;
+  lbUpdate();
+}
+
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  if (lb) lb.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function lbNav(dir) {
+  _lbIndex = (_lbIndex + dir + _lbPhotos.length) % _lbPhotos.length;
+  lbUpdate();
+}
+
+function lbUpdate() {
+  const img     = document.getElementById('lb-img');
+  const counter = document.getElementById('lb-counter');
+  const thumbs  = document.getElementById('lb-thumbs');
+  const prev    = document.getElementById('lb-prev');
+  const next    = document.getElementById('lb-next');
+  if (img)     img.src = _lbPhotos[_lbIndex];
+  if (counter) counter.textContent = (_lbIndex+1) + ' / ' + _lbPhotos.length;
+  if (prev) prev.style.display = _lbPhotos.length > 1 ? 'flex' : 'none';
+  if (next) next.style.display = _lbPhotos.length > 1 ? 'flex' : 'none';
+  // Thumbnails
+  if (thumbs) {
+    thumbs.innerHTML = _lbPhotos.map((p,i) =>
+      `<img src="${p}" onclick="event.stopPropagation();_lbIndex=${i};lbUpdate()"
+        style="width:50px;height:50px;object-fit:cover;border-radius:4px;cursor:pointer;
+        border:2px solid ${i===_lbIndex?'#FFD700':'rgba(255,255,255,0.2)'};
+        opacity:${i===_lbIndex?'1':'0.5'};transition:all 0.2s;">`
+    ).join('');
+  }
+}
+
+// Swipe support for mobile
+(function() {
+  let startX = 0;
+  document.addEventListener('touchstart', e => {
+    if (document.getElementById('lightbox').style.display==='flex') startX = e.touches[0].clientX;
+  }, {passive:true});
+  document.addEventListener('touchend', e => {
+    if (document.getElementById('lightbox').style.display!=='flex') return;
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) lbNav(diff > 0 ? 1 : -1);
+  }, {passive:true});
+})();
+
 window.addEventListener('load', function() {
   // Pindah modal ke body level untuk pastikan position:fixed berfungsi
   const modal = document.getElementById('tambah-modal');
@@ -3016,9 +3079,13 @@ window.addEventListener('load', function() {
   populateSelect('plan-sk');
   // Unregister SW lama
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(rs) {
-      rs.forEach(function(r) { r.unregister(); });
-    });
+    navigator.serviceWorker.register('/sw.js', {scope: '/'})
+      .then(function(reg) {
+        console.log('✅ SPPS PWA Service Worker berjaya didaftar:', reg.scope);
+      })
+      .catch(function(err) {
+        console.warn('SW gagal daftar:', err);
+      });
   }
   // DB_URL sudah hardcoded - terus sambung
   updateConnBar(true);
