@@ -210,6 +210,119 @@ tr:hover td{background:rgba(0,200,255,0.04);}
   </div>
 </div>
 
+<!-- MODAL TAMBAH PENGGUNA -->
+<div id="tambah-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="background:#0d1f3c;border:1px solid rgba(0,200,255,0.25);border-radius:14px;margin:20px auto;max-width:430px;padding:20px;position:relative;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div id="modal-title" style="font-size:14px;font-weight:700;color:var(--cyan);font-family:Rajdhani,sans-serif;">➕ TAMBAH PENGGUNA PPS</div>
+      <button onclick="closeTambahModal()" style="background:rgba(255,23,68,0.15);border:1px solid rgba(255,23,68,0.3);border-radius:6px;color:#ff1744;font-size:16px;cursor:pointer;width:30px;height:30px;line-height:1;">✕</button>
+    </div>
+    <!-- PPS FIELDS -->
+    <div id="modal-pps-fields">
+      <div class="fg"><label class="fl">PANGKAT</label>
+        <select class="fs" id="m-pangkat" style="background:#0a1628;color:#fff;border:1px solid rgba(0,200,255,0.3);">
+          <option value="" style="background:#111;">-- PILIH PANGKAT --</option>
+          <option style="background:#111;color:#fff;">KONST</option>
+          <option style="background:#111;color:#fff;">L/KPL</option>
+          <option style="background:#111;color:#fff;">KPL</option>
+          <option style="background:#111;color:#fff;">SJN</option>
+          <option style="background:#111;color:#fff;">SM</option>
+          <option style="background:#111;color:#fff;">SI</option>
+          <option style="background:#111;color:#fff;">INSP</option>
+          <option style="background:#111;color:#fff;">ASP</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">NO. BADAN</label>
+        <input class="fi" id="m-badan" placeholder="CONTOH: 160647" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg"><label class="fl">NAMA PENUH</label>
+        <input class="fi" id="m-nama" placeholder="NAMA PENUH" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg"><label class="fl">TEMPAT TUGAS</label>
+        <select class="fs" id="m-tugas" style="background:#0a1628;color:#fff;">
+          <option value="">-- PILIH --</option>
+          <optgroup label="── BAHAGIAN IPD ──" style="background:#041020;color:rgba(0,200,255,0.7);">
+            <option style="background:#111;color:#fff;">BAHAGIAN PENGURUSAN</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN JENAYAH</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN JENAYAH NARKOTIK</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN JENAYAH KOMERSIL</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN DAN PENGUATKUASAAN TRAFIK</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN INTEGRITI DAN PEMATUHAN STANDARD</option>
+            <option style="background:#111;color:#fff;">CAWANGAN KHAS</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN LOGISTIK DAN TEKNOLOGI</option>
+          </optgroup>
+          <optgroup label="── BALAI POLIS ──" style="background:#041020;color:rgba(255,193,7,0.8);">
+            <option style="background:#111;color:#fff;">BALAI POLIS TAWAU</option>
+            <option style="background:#111;color:#fff;">BALAI POLIS BOMBALAI</option>
+            <option style="background:#111;color:#fff;">BALAI POLIS KALABAKAN</option>
+            <option style="background:#111;color:#fff;">BALAI POLIS BANDAR SRI INDAH</option>
+            <option style="background:#111;color:#fff;">BALAI POLIS BERGOSONG</option>
+            <option style="background:#111;color:#fff;">BALAI POLIS WALLACE BAY</option>
+          </optgroup>
+          <optgroup label="── PONDOK POLIS KAWASAN ──" style="background:#041020;color:rgba(0,230,118,0.8);">
+            <option style="background:#111;color:#fff;">PPK TITINGAN</option>
+            <option style="background:#111;color:#fff;">PPK KINABUTAN</option>
+            <option style="background:#111;color:#fff;">PPK TASS</option>
+            <option style="background:#111;color:#fff;">PPK APAS PARIT</option>
+            <option style="background:#111;color:#fff;">PPK BALUNG</option>
+            <option style="background:#111;color:#fff;">PPK BUKIT QUIN HILL</option>
+            <option style="background:#111;color:#fff;">PPK MEROTAI</option>
+            <option style="background:#111;color:#fff;">PPK BRUMAS</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">SEKOLAH TANGGUNGJAWAB</label>
+        <select class="fs" id="m-sekolah" style="background:#0a1628;color:#fff;">
+          <option value="">-- PILIH SEKOLAH --</option>
+          <optgroup label="── SEKOLAH RENDAH ──" style="background:#041020;color:rgba(0,200,255,0.7);"><option value="TWU001" style="background:#111;color:#fff;">Sekolah Kebangsaan Abaka</option><option value="TWU002" style="background:#111;color:#fff;">Sekolah Kebangsaan Andrassy</option><option value="TWU003" style="background:#111;color:#fff;">Sekolah Kebangsaan Bahagia</option><option value="TWU004" style="background:#111;color:#fff;">Sekolah Kebangsaan Balung</option><option value="TWU005" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau</option><option value="TWU006" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau II</option><option value="TWU007" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 4 Jalan Apas</option><option value="TWU008" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 22 Balung</option><option value="TWU009" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu Payong</option><option value="TWU010" style="background:#111;color:#fff;">Sekolah Kebangsaan Bergosong</option><option value="TWU011" style="background:#111;color:#fff;">Sekolah Kebangsaan Blok 31</option><option value="TWU012" style="background:#111;color:#fff;">Sekolah Kebangsaan Bombalai</option><option value="TWU013" style="background:#111;color:#fff;">Sekolah Kebangsaan Brantian</option><option value="TWU014" style="background:#111;color:#fff;">Sekolah Kebangsaan Brumas</option><option value="TWU015" style="background:#111;color:#fff;">Sekolah Kebangsaan Bukit Quoin</option><option value="TWU016" style="background:#111;color:#fff;">Sekolah Kebangsaan Desa Subur</option><option value="TWU017" style="background:#111;color:#fff;">Sekolah Kebangsaan Holy Trinity</option><option value="TWU018" style="background:#111;color:#fff;">Sekolah Kebangsaan Indersabah</option><option value="TWU019" style="background:#111;color:#fff;">Sekolah Kebangsaan Jambatan Putih</option><option value="TWU020" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Jawa</option><option value="TWU021" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Titingan</option><option value="TWU022" style="background:#111;color:#fff;">Sekolah Kebangsaan Kalabakan</option><option value="TWU023" style="background:#111;color:#fff;">Sekolah Kebangsaan Kem Kabota</option><option value="TWU024" style="background:#111;color:#fff;">Sekolah Kebangsaan Kinabutan Besar</option><option value="TWU025" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Apas</option><option value="TWU026" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Merotai</option><option value="TWU027" style="background:#111;color:#fff;">Sekolah Kebangsaan Kukusan</option><option value="TWU028" style="background:#111;color:#fff;">Sekolah Kebangsaan Ladang Tiger</option><option value="TWU029" style="background:#111;color:#fff;">Sekolah Kebangsaan Luasong</option><option value="TWU030" style="background:#111;color:#fff;">Sekolah Kebangsaan Melati</option><option value="TWU031" style="background:#111;color:#fff;">Sekolah Kebangsaan Melodi</option><option value="TWU032" style="background:#111;color:#fff;">Sekolah Kebangsaan Mentadak Baru</option><option value="TWU033" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Besar</option><option value="TWU034" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Kecil</option><option value="TWU035" style="background:#111;color:#fff;">Sekolah Kebangsaan Muhibbah Raya</option><option value="TWU037" style="background:#111;color:#fff;">Sekolah Kebangsaan Pasir Putih</option><option value="TWU038" style="background:#111;color:#fff;">Sekolah Kebangsaan Perdana</option><option value="TWU039" style="background:#111;color:#fff;">Sekolah Kebangsaan Ranggu</option><option value="TWU040" style="background:#111;color:#fff;">Sekolah Kebangsaan Sentosa</option><option value="TWU041" style="background:#111;color:#fff;">Sekolah Kebangsaan Serudong Baru</option><option value="TWU042" style="background:#111;color:#fff;">Sekolah Kebangsaan St. Patrick</option><option value="TWU043" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Hj Mahathir</option><option value="TWU044" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Imam</option><option value="TWU045" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Tongkang</option><option value="TWU046" style="background:#111;color:#fff;">Sekolah Kebangsaan Taman Tawau</option><option value="TWU047" style="background:#111;color:#fff;">Sekolah Kebangsaan Tanjong Batu</option><option value="TWU048" style="background:#111;color:#fff;">Sekolah Kebangsaan Tg Batu Keramat</option><option value="TWU049" style="background:#111;color:#fff;">Sekolah Kebangsaan Ulu Kalabakan</option><option value="TWU050" style="background:#111;color:#fff;">Sekolah Kebangsaan Umas-Umas</option><option value="TWU051" style="background:#111;color:#fff;">Sekolah Kebangsaan Wakuba</option><option value="TWU052" style="background:#111;color:#fff;">Sekolah Kebangsaan Wallace Bay</option><option value="TWU053" style="background:#111;color:#fff;">Sekolah Rendah Islamiah</option><option value="TWU054" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Chung Hwa</option><option value="TWU055" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Hing Hwa</option><option value="TWU056" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kung Ming</option><option value="TWU057" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kuok Ming</option><option value="TWU058" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Phui Yuk</option><option value="TWU059" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Sin Hwa</option><option value="TWU060" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Yuk Chin</option><option value="TWU061" style="background:#111;color:#fff;">Sekolah Rendah Agama Kinabutan</option><option value="TWU062" style="background:#111;color:#fff;">Sekolah Rendah Islam Al-Fateh, BSI</option></optgroup>
+          <optgroup label="── SEKOLAH MENENGAH ──" style="background:#041020;color:rgba(255,193,7,0.8);"><option value="TWU063" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Abaka</option><option value="TWU064" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Balung</option><option value="TWU065" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Holy Trinity</option><option value="TWU066" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jalan Apas</option><option value="TWU067" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jambatan Putih</option><option value="TWU068" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kalabakan</option><option value="TWU069" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan</option><option value="TWU070" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kuhara</option><option value="TWU071" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Merotai Besar</option><option value="TWU072" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Pasir Putih</option><option value="TWU073" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Patrick</option><option value="TWU074" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Ursula</option><option value="TWU075" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau</option><option value="TWU076" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau II</option><option value="TWU077" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Titingan</option><option value="TWU078" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Umas-Umas</option><option value="TWU079" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wakuba</option><option value="TWU080" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wallace Bay</option><option value="TWU081" style="background:#111;color:#fff;">Sekolah Menengah Islamiah Tawau</option><option value="TWU082" style="background:#111;color:#fff;">Pra-U Kolej Tingkatan Enam Tawau</option><option value="TWU083" style="background:#111;color:#fff;">Kolej Vokasional Tawau</option><option value="TWU084" style="background:#111;color:#fff;">MRSM Tun Mustapha Tawau</option><option value="TWU085" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan II</option></optgroup>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">NO. TELEFON</label>
+        <input class="fi" id="m-tel" type="tel" placeholder="0123456789">
+      </div>
+    </div>
+    <!-- SEKOLAH FIELDS -->
+    <div id="modal-sk-fields" style="display:none;">
+      <div class="fg"><label class="fl">NAMA PENUH</label>
+        <input class="fi" id="m-sk-nama" placeholder="NAMA PENUH" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg"><label class="fl">JAWATAN</label>
+        <select class="fs" id="m-sk-jawatan" style="background:#0a1628;color:#fff;">
+          <option value="">-- PILIH --</option>
+          <option style="background:#111;color:#fff;">GURU BESAR</option>
+          <option style="background:#111;color:#fff;">PENOLONG KANAN PENTADBIRAN</option>
+          <option style="background:#111;color:#fff;">PENOLONG KANAN HEM</option>
+          <option style="background:#111;color:#fff;">PENOLONG KANAN KOKURIKULUM</option>
+          <option style="background:#111;color:#fff;">GURU DISIPLIN</option>
+          <option style="background:#111;color:#fff;">GURU KAUNSELING</option>
+          <option style="background:#111;color:#fff;">GURU</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">GRED</label>
+        <input class="fi" id="m-sk-gred" placeholder="CONTOH: DGA48" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg"><label class="fl">NAMA SEKOLAH</label>
+        <select class="fs" id="m-sk-sekolah" style="background:#0a1628;color:#fff;">
+          <option value="">-- PILIH SEKOLAH --</option>
+          <optgroup label="── SEKOLAH RENDAH ──" style="background:#041020;color:rgba(0,200,255,0.7);"><option value="TWU001" style="background:#111;color:#fff;">Sekolah Kebangsaan Abaka</option><option value="TWU002" style="background:#111;color:#fff;">Sekolah Kebangsaan Andrassy</option><option value="TWU003" style="background:#111;color:#fff;">Sekolah Kebangsaan Bahagia</option><option value="TWU004" style="background:#111;color:#fff;">Sekolah Kebangsaan Balung</option><option value="TWU005" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau</option><option value="TWU006" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau II</option><option value="TWU007" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 4 Jalan Apas</option><option value="TWU008" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 22 Balung</option><option value="TWU009" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu Payong</option><option value="TWU010" style="background:#111;color:#fff;">Sekolah Kebangsaan Bergosong</option><option value="TWU011" style="background:#111;color:#fff;">Sekolah Kebangsaan Blok 31</option><option value="TWU012" style="background:#111;color:#fff;">Sekolah Kebangsaan Bombalai</option><option value="TWU013" style="background:#111;color:#fff;">Sekolah Kebangsaan Brantian</option><option value="TWU014" style="background:#111;color:#fff;">Sekolah Kebangsaan Brumas</option><option value="TWU015" style="background:#111;color:#fff;">Sekolah Kebangsaan Bukit Quoin</option><option value="TWU016" style="background:#111;color:#fff;">Sekolah Kebangsaan Desa Subur</option><option value="TWU017" style="background:#111;color:#fff;">Sekolah Kebangsaan Holy Trinity</option><option value="TWU018" style="background:#111;color:#fff;">Sekolah Kebangsaan Indersabah</option><option value="TWU019" style="background:#111;color:#fff;">Sekolah Kebangsaan Jambatan Putih</option><option value="TWU020" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Jawa</option><option value="TWU021" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Titingan</option><option value="TWU022" style="background:#111;color:#fff;">Sekolah Kebangsaan Kalabakan</option><option value="TWU023" style="background:#111;color:#fff;">Sekolah Kebangsaan Kem Kabota</option><option value="TWU024" style="background:#111;color:#fff;">Sekolah Kebangsaan Kinabutan Besar</option><option value="TWU025" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Apas</option><option value="TWU026" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Merotai</option><option value="TWU027" style="background:#111;color:#fff;">Sekolah Kebangsaan Kukusan</option><option value="TWU028" style="background:#111;color:#fff;">Sekolah Kebangsaan Ladang Tiger</option><option value="TWU029" style="background:#111;color:#fff;">Sekolah Kebangsaan Luasong</option><option value="TWU030" style="background:#111;color:#fff;">Sekolah Kebangsaan Melati</option><option value="TWU031" style="background:#111;color:#fff;">Sekolah Kebangsaan Melodi</option><option value="TWU032" style="background:#111;color:#fff;">Sekolah Kebangsaan Mentadak Baru</option><option value="TWU033" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Besar</option><option value="TWU034" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Kecil</option><option value="TWU035" style="background:#111;color:#fff;">Sekolah Kebangsaan Muhibbah Raya</option><option value="TWU037" style="background:#111;color:#fff;">Sekolah Kebangsaan Pasir Putih</option><option value="TWU038" style="background:#111;color:#fff;">Sekolah Kebangsaan Perdana</option><option value="TWU039" style="background:#111;color:#fff;">Sekolah Kebangsaan Ranggu</option><option value="TWU040" style="background:#111;color:#fff;">Sekolah Kebangsaan Sentosa</option><option value="TWU041" style="background:#111;color:#fff;">Sekolah Kebangsaan Serudong Baru</option><option value="TWU042" style="background:#111;color:#fff;">Sekolah Kebangsaan St. Patrick</option><option value="TWU043" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Hj Mahathir</option><option value="TWU044" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Imam</option><option value="TWU045" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Tongkang</option><option value="TWU046" style="background:#111;color:#fff;">Sekolah Kebangsaan Taman Tawau</option><option value="TWU047" style="background:#111;color:#fff;">Sekolah Kebangsaan Tanjong Batu</option><option value="TWU048" style="background:#111;color:#fff;">Sekolah Kebangsaan Tg Batu Keramat</option><option value="TWU049" style="background:#111;color:#fff;">Sekolah Kebangsaan Ulu Kalabakan</option><option value="TWU050" style="background:#111;color:#fff;">Sekolah Kebangsaan Umas-Umas</option><option value="TWU051" style="background:#111;color:#fff;">Sekolah Kebangsaan Wakuba</option><option value="TWU052" style="background:#111;color:#fff;">Sekolah Kebangsaan Wallace Bay</option><option value="TWU053" style="background:#111;color:#fff;">Sekolah Rendah Islamiah</option><option value="TWU054" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Chung Hwa</option><option value="TWU055" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Hing Hwa</option><option value="TWU056" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kung Ming</option><option value="TWU057" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kuok Ming</option><option value="TWU058" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Phui Yuk</option><option value="TWU059" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Sin Hwa</option><option value="TWU060" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Yuk Chin</option><option value="TWU061" style="background:#111;color:#fff;">Sekolah Rendah Agama Kinabutan</option><option value="TWU062" style="background:#111;color:#fff;">Sekolah Rendah Islam Al-Fateh, BSI</option></optgroup>
+          <optgroup label="── SEKOLAH MENENGAH ──" style="background:#041020;color:rgba(255,193,7,0.8);"><option value="TWU063" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Abaka</option><option value="TWU064" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Balung</option><option value="TWU065" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Holy Trinity</option><option value="TWU066" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jalan Apas</option><option value="TWU067" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jambatan Putih</option><option value="TWU068" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kalabakan</option><option value="TWU069" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan</option><option value="TWU070" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kuhara</option><option value="TWU071" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Merotai Besar</option><option value="TWU072" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Pasir Putih</option><option value="TWU073" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Patrick</option><option value="TWU074" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Ursula</option><option value="TWU075" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau</option><option value="TWU076" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau II</option><option value="TWU077" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Titingan</option><option value="TWU078" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Umas-Umas</option><option value="TWU079" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wakuba</option><option value="TWU080" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wallace Bay</option><option value="TWU081" style="background:#111;color:#fff;">Sekolah Menengah Islamiah Tawau</option><option value="TWU082" style="background:#111;color:#fff;">Pra-U Kolej Tingkatan Enam Tawau</option><option value="TWU083" style="background:#111;color:#fff;">Kolej Vokasional Tawau</option><option value="TWU084" style="background:#111;color:#fff;">MRSM Tun Mustapha Tawau</option><option value="TWU085" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan II</option></optgroup>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">NO. TELEFON</label>
+        <input class="fi" id="m-sk-tel" type="tel" placeholder="0123456789">
+      </div>
+    </div>
+    <div class="fg"><label class="fl">KATA LALUAN</label>
+      <input class="fi" id="m-pw" type="password" placeholder="MINIMUM 6 AKSARA">
+    </div>
+    <div id="modal-alert" class="alert" style="margin-bottom:8px;"></div>
+    <button id="modal-save-btn" onclick="simpanPengguna()" style="width:100%;background:rgba(0,200,255,0.15);border:1.5px solid var(--cyan);border-radius:10px;padding:13px;color:var(--cyan);font-family:Rajdhani,sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;">💾 SIMPAN PENGGUNA</button>
+  </div>
+</div>
+
+
+
 <!-- ████ SIGNUP PILIH ████ -->
 <div id="screen-signup" class="screen">
   <div class="su-wrap">
@@ -878,6 +991,8 @@ tr:hover td{background:rgba(0,200,255,0.04);}
       </div>
     </div>
 </div>
+
+
 
 <script>
 const SCHOOLS = [
@@ -2166,116 +2281,8 @@ ${tableHTML}
 </div>
 
 
-<!-- MODAL TAMBAH PENGGUNA -->
-<div id="tambah-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="background:#0d1f3c;border:1px solid rgba(0,200,255,0.25);border-radius:14px;margin:20px auto;max-width:430px;padding:20px;position:relative;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-      <div id="modal-title" style="font-size:14px;font-weight:700;color:var(--cyan);font-family:Rajdhani,sans-serif;">➕ TAMBAH PENGGUNA PPS</div>
-      <button onclick="closeTambahModal()" style="background:rgba(255,23,68,0.15);border:1px solid rgba(255,23,68,0.3);border-radius:6px;color:#ff1744;font-size:16px;cursor:pointer;width:30px;height:30px;line-height:1;">✕</button>
-    </div>
-    <!-- PPS FIELDS -->
-    <div id="modal-pps-fields">
-      <div class="fg"><label class="fl">PANGKAT</label>
-        <select class="fs" id="m-pangkat" style="background:#0a1628;color:#fff;border:1px solid rgba(0,200,255,0.3);">
-          <option value="" style="background:#111;">-- PILIH PANGKAT --</option>
-          <option style="background:#111;color:#fff;">KONST</option>
-          <option style="background:#111;color:#fff;">L/KPL</option>
-          <option style="background:#111;color:#fff;">KPL</option>
-          <option style="background:#111;color:#fff;">SJN</option>
-          <option style="background:#111;color:#fff;">SM</option>
-          <option style="background:#111;color:#fff;">SI</option>
-          <option style="background:#111;color:#fff;">INSP</option>
-          <option style="background:#111;color:#fff;">ASP</option>
-        </select>
-      </div>
-      <div class="fg"><label class="fl">NO. BADAN</label>
-        <input class="fi" id="m-badan" placeholder="CONTOH: 160647" oninput="this.value=this.value.toUpperCase()">
-      </div>
-      <div class="fg"><label class="fl">NAMA PENUH</label>
-        <input class="fi" id="m-nama" placeholder="NAMA PENUH" oninput="this.value=this.value.toUpperCase()">
-      </div>
-      <div class="fg"><label class="fl">TEMPAT TUGAS</label>
-        <select class="fs" id="m-tugas" style="background:#0a1628;color:#fff;">
-          <option value="">-- PILIH --</option>
-          <optgroup label="── BAHAGIAN IPD ──" style="background:#041020;color:rgba(0,200,255,0.7);">
-            <option style="background:#111;color:#fff;">BAHAGIAN PENGURUSAN</option>
-            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN JENAYAH</option>
-            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN JENAYAH NARKOTIK</option>
-            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN JENAYAH KOMERSIL</option>
-            <option style="background:#111;color:#fff;">BAHAGIAN SIASATAN DAN PENGUATKUASAAN TRAFIK</option>
-            <option style="background:#111;color:#fff;">BAHAGIAN INTEGRITI DAN PEMATUHAN STANDARD</option>
-            <option style="background:#111;color:#fff;">CAWANGAN KHAS</option>
-            <option style="background:#111;color:#fff;">BAHAGIAN LOGISTIK DAN TEKNOLOGI</option>
-          </optgroup>
-          <optgroup label="── BALAI POLIS ──" style="background:#041020;color:rgba(255,193,7,0.8);">
-            <option style="background:#111;color:#fff;">BALAI POLIS TAWAU</option>
-            <option style="background:#111;color:#fff;">BALAI POLIS BOMBALAI</option>
-            <option style="background:#111;color:#fff;">BALAI POLIS KALABAKAN</option>
-            <option style="background:#111;color:#fff;">BALAI POLIS BANDAR SRI INDAH</option>
-            <option style="background:#111;color:#fff;">BALAI POLIS BERGOSONG</option>
-            <option style="background:#111;color:#fff;">BALAI POLIS WALLACE BAY</option>
-          </optgroup>
-          <optgroup label="── PONDOK POLIS KAWASAN ──" style="background:#041020;color:rgba(0,230,118,0.8);">
-            <option style="background:#111;color:#fff;">PPK TITINGAN</option>
-            <option style="background:#111;color:#fff;">PPK KINABUTAN</option>
-            <option style="background:#111;color:#fff;">PPK TASS</option>
-            <option style="background:#111;color:#fff;">PPK APAS PARIT</option>
-            <option style="background:#111;color:#fff;">PPK BALUNG</option>
-            <option style="background:#111;color:#fff;">PPK BUKIT QUIN HILL</option>
-            <option style="background:#111;color:#fff;">PPK MEROTAI</option>
-            <option style="background:#111;color:#fff;">PPK BRUMAS</option>
-          </optgroup>
-        </select>
-      </div>
-      <div class="fg"><label class="fl">SEKOLAH TANGGUNGJAWAB</label>
-        <select class="fs" id="m-sekolah" style="background:#0a1628;color:#fff;">
-          <option value="">-- PILIH SEKOLAH --</option>
-          <optgroup label="── SEKOLAH RENDAH ──" style="background:#041020;color:rgba(0,200,255,0.7);"><option value="TWU001" style="background:#111;color:#fff;">Sekolah Kebangsaan Abaka</option><option value="TWU002" style="background:#111;color:#fff;">Sekolah Kebangsaan Andrassy</option><option value="TWU003" style="background:#111;color:#fff;">Sekolah Kebangsaan Bahagia</option><option value="TWU004" style="background:#111;color:#fff;">Sekolah Kebangsaan Balung</option><option value="TWU005" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau</option><option value="TWU006" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau II</option><option value="TWU007" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 4 Jalan Apas</option><option value="TWU008" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 22 Balung</option><option value="TWU009" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu Payong</option><option value="TWU010" style="background:#111;color:#fff;">Sekolah Kebangsaan Bergosong</option><option value="TWU011" style="background:#111;color:#fff;">Sekolah Kebangsaan Blok 31</option><option value="TWU012" style="background:#111;color:#fff;">Sekolah Kebangsaan Bombalai</option><option value="TWU013" style="background:#111;color:#fff;">Sekolah Kebangsaan Brantian</option><option value="TWU014" style="background:#111;color:#fff;">Sekolah Kebangsaan Brumas</option><option value="TWU015" style="background:#111;color:#fff;">Sekolah Kebangsaan Bukit Quoin</option><option value="TWU016" style="background:#111;color:#fff;">Sekolah Kebangsaan Desa Subur</option><option value="TWU017" style="background:#111;color:#fff;">Sekolah Kebangsaan Holy Trinity</option><option value="TWU018" style="background:#111;color:#fff;">Sekolah Kebangsaan Indersabah</option><option value="TWU019" style="background:#111;color:#fff;">Sekolah Kebangsaan Jambatan Putih</option><option value="TWU020" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Jawa</option><option value="TWU021" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Titingan</option><option value="TWU022" style="background:#111;color:#fff;">Sekolah Kebangsaan Kalabakan</option><option value="TWU023" style="background:#111;color:#fff;">Sekolah Kebangsaan Kem Kabota</option><option value="TWU024" style="background:#111;color:#fff;">Sekolah Kebangsaan Kinabutan Besar</option><option value="TWU025" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Apas</option><option value="TWU026" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Merotai</option><option value="TWU027" style="background:#111;color:#fff;">Sekolah Kebangsaan Kukusan</option><option value="TWU028" style="background:#111;color:#fff;">Sekolah Kebangsaan Ladang Tiger</option><option value="TWU029" style="background:#111;color:#fff;">Sekolah Kebangsaan Luasong</option><option value="TWU030" style="background:#111;color:#fff;">Sekolah Kebangsaan Melati</option><option value="TWU031" style="background:#111;color:#fff;">Sekolah Kebangsaan Melodi</option><option value="TWU032" style="background:#111;color:#fff;">Sekolah Kebangsaan Mentadak Baru</option><option value="TWU033" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Besar</option><option value="TWU034" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Kecil</option><option value="TWU035" style="background:#111;color:#fff;">Sekolah Kebangsaan Muhibbah Raya</option><option value="TWU037" style="background:#111;color:#fff;">Sekolah Kebangsaan Pasir Putih</option><option value="TWU038" style="background:#111;color:#fff;">Sekolah Kebangsaan Perdana</option><option value="TWU039" style="background:#111;color:#fff;">Sekolah Kebangsaan Ranggu</option><option value="TWU040" style="background:#111;color:#fff;">Sekolah Kebangsaan Sentosa</option><option value="TWU041" style="background:#111;color:#fff;">Sekolah Kebangsaan Serudong Baru</option><option value="TWU042" style="background:#111;color:#fff;">Sekolah Kebangsaan St. Patrick</option><option value="TWU043" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Hj Mahathir</option><option value="TWU044" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Imam</option><option value="TWU045" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Tongkang</option><option value="TWU046" style="background:#111;color:#fff;">Sekolah Kebangsaan Taman Tawau</option><option value="TWU047" style="background:#111;color:#fff;">Sekolah Kebangsaan Tanjong Batu</option><option value="TWU048" style="background:#111;color:#fff;">Sekolah Kebangsaan Tg Batu Keramat</option><option value="TWU049" style="background:#111;color:#fff;">Sekolah Kebangsaan Ulu Kalabakan</option><option value="TWU050" style="background:#111;color:#fff;">Sekolah Kebangsaan Umas-Umas</option><option value="TWU051" style="background:#111;color:#fff;">Sekolah Kebangsaan Wakuba</option><option value="TWU052" style="background:#111;color:#fff;">Sekolah Kebangsaan Wallace Bay</option><option value="TWU053" style="background:#111;color:#fff;">Sekolah Rendah Islamiah</option><option value="TWU054" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Chung Hwa</option><option value="TWU055" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Hing Hwa</option><option value="TWU056" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kung Ming</option><option value="TWU057" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kuok Ming</option><option value="TWU058" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Phui Yuk</option><option value="TWU059" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Sin Hwa</option><option value="TWU060" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Yuk Chin</option><option value="TWU061" style="background:#111;color:#fff;">Sekolah Rendah Agama Kinabutan</option><option value="TWU062" style="background:#111;color:#fff;">Sekolah Rendah Islam Al-Fateh, BSI</option></optgroup>
-          <optgroup label="── SEKOLAH MENENGAH ──" style="background:#041020;color:rgba(255,193,7,0.8);"><option value="TWU063" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Abaka</option><option value="TWU064" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Balung</option><option value="TWU065" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Holy Trinity</option><option value="TWU066" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jalan Apas</option><option value="TWU067" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jambatan Putih</option><option value="TWU068" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kalabakan</option><option value="TWU069" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan</option><option value="TWU070" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kuhara</option><option value="TWU071" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Merotai Besar</option><option value="TWU072" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Pasir Putih</option><option value="TWU073" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Patrick</option><option value="TWU074" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Ursula</option><option value="TWU075" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau</option><option value="TWU076" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau II</option><option value="TWU077" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Titingan</option><option value="TWU078" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Umas-Umas</option><option value="TWU079" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wakuba</option><option value="TWU080" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wallace Bay</option><option value="TWU081" style="background:#111;color:#fff;">Sekolah Menengah Islamiah Tawau</option><option value="TWU082" style="background:#111;color:#fff;">Pra-U Kolej Tingkatan Enam Tawau</option><option value="TWU083" style="background:#111;color:#fff;">Kolej Vokasional Tawau</option><option value="TWU084" style="background:#111;color:#fff;">MRSM Tun Mustapha Tawau</option><option value="TWU085" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan II</option></optgroup>
-        </select>
-      </div>
-      <div class="fg"><label class="fl">NO. TELEFON</label>
-        <input class="fi" id="m-tel" type="tel" placeholder="0123456789">
-      </div>
-    </div>
-    <!-- SEKOLAH FIELDS -->
-    <div id="modal-sk-fields" style="display:none;">
-      <div class="fg"><label class="fl">NAMA PENUH</label>
-        <input class="fi" id="m-sk-nama" placeholder="NAMA PENUH" oninput="this.value=this.value.toUpperCase()">
-      </div>
-      <div class="fg"><label class="fl">JAWATAN</label>
-        <select class="fs" id="m-sk-jawatan" style="background:#0a1628;color:#fff;">
-          <option value="">-- PILIH --</option>
-          <option style="background:#111;color:#fff;">GURU BESAR</option>
-          <option style="background:#111;color:#fff;">PENOLONG KANAN PENTADBIRAN</option>
-          <option style="background:#111;color:#fff;">PENOLONG KANAN HEM</option>
-          <option style="background:#111;color:#fff;">PENOLONG KANAN KOKURIKULUM</option>
-          <option style="background:#111;color:#fff;">GURU DISIPLIN</option>
-          <option style="background:#111;color:#fff;">GURU KAUNSELING</option>
-          <option style="background:#111;color:#fff;">GURU</option>
-        </select>
-      </div>
-      <div class="fg"><label class="fl">GRED</label>
-        <input class="fi" id="m-sk-gred" placeholder="CONTOH: DGA48" oninput="this.value=this.value.toUpperCase()">
-      </div>
-      <div class="fg"><label class="fl">NAMA SEKOLAH</label>
-        <select class="fs" id="m-sk-sekolah" style="background:#0a1628;color:#fff;">
-          <option value="">-- PILIH SEKOLAH --</option>
-          <optgroup label="── SEKOLAH RENDAH ──" style="background:#041020;color:rgba(0,200,255,0.7);"><option value="TWU001" style="background:#111;color:#fff;">Sekolah Kebangsaan Abaka</option><option value="TWU002" style="background:#111;color:#fff;">Sekolah Kebangsaan Andrassy</option><option value="TWU003" style="background:#111;color:#fff;">Sekolah Kebangsaan Bahagia</option><option value="TWU004" style="background:#111;color:#fff;">Sekolah Kebangsaan Balung</option><option value="TWU005" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau</option><option value="TWU006" style="background:#111;color:#fff;">Sekolah Kebangsaan Bandar Tawau II</option><option value="TWU007" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 4 Jalan Apas</option><option value="TWU008" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu 22 Balung</option><option value="TWU009" style="background:#111;color:#fff;">Sekolah Kebangsaan Batu Payong</option><option value="TWU010" style="background:#111;color:#fff;">Sekolah Kebangsaan Bergosong</option><option value="TWU011" style="background:#111;color:#fff;">Sekolah Kebangsaan Blok 31</option><option value="TWU012" style="background:#111;color:#fff;">Sekolah Kebangsaan Bombalai</option><option value="TWU013" style="background:#111;color:#fff;">Sekolah Kebangsaan Brantian</option><option value="TWU014" style="background:#111;color:#fff;">Sekolah Kebangsaan Brumas</option><option value="TWU015" style="background:#111;color:#fff;">Sekolah Kebangsaan Bukit Quoin</option><option value="TWU016" style="background:#111;color:#fff;">Sekolah Kebangsaan Desa Subur</option><option value="TWU017" style="background:#111;color:#fff;">Sekolah Kebangsaan Holy Trinity</option><option value="TWU018" style="background:#111;color:#fff;">Sekolah Kebangsaan Indersabah</option><option value="TWU019" style="background:#111;color:#fff;">Sekolah Kebangsaan Jambatan Putih</option><option value="TWU020" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Jawa</option><option value="TWU021" style="background:#111;color:#fff;">Sekolah Kebangsaan Kg Titingan</option><option value="TWU022" style="background:#111;color:#fff;">Sekolah Kebangsaan Kalabakan</option><option value="TWU023" style="background:#111;color:#fff;">Sekolah Kebangsaan Kem Kabota</option><option value="TWU024" style="background:#111;color:#fff;">Sekolah Kebangsaan Kinabutan Besar</option><option value="TWU025" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Apas</option><option value="TWU026" style="background:#111;color:#fff;">Sekolah Kebangsaan Kuala Merotai</option><option value="TWU027" style="background:#111;color:#fff;">Sekolah Kebangsaan Kukusan</option><option value="TWU028" style="background:#111;color:#fff;">Sekolah Kebangsaan Ladang Tiger</option><option value="TWU029" style="background:#111;color:#fff;">Sekolah Kebangsaan Luasong</option><option value="TWU030" style="background:#111;color:#fff;">Sekolah Kebangsaan Melati</option><option value="TWU031" style="background:#111;color:#fff;">Sekolah Kebangsaan Melodi</option><option value="TWU032" style="background:#111;color:#fff;">Sekolah Kebangsaan Mentadak Baru</option><option value="TWU033" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Besar</option><option value="TWU034" style="background:#111;color:#fff;">Sekolah Kebangsaan Merotai Kecil</option><option value="TWU035" style="background:#111;color:#fff;">Sekolah Kebangsaan Muhibbah Raya</option><option value="TWU037" style="background:#111;color:#fff;">Sekolah Kebangsaan Pasir Putih</option><option value="TWU038" style="background:#111;color:#fff;">Sekolah Kebangsaan Perdana</option><option value="TWU039" style="background:#111;color:#fff;">Sekolah Kebangsaan Ranggu</option><option value="TWU040" style="background:#111;color:#fff;">Sekolah Kebangsaan Sentosa</option><option value="TWU041" style="background:#111;color:#fff;">Sekolah Kebangsaan Serudong Baru</option><option value="TWU042" style="background:#111;color:#fff;">Sekolah Kebangsaan St. Patrick</option><option value="TWU043" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Hj Mahathir</option><option value="TWU044" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Imam</option><option value="TWU045" style="background:#111;color:#fff;">Sekolah Kebangsaan Sungai Tongkang</option><option value="TWU046" style="background:#111;color:#fff;">Sekolah Kebangsaan Taman Tawau</option><option value="TWU047" style="background:#111;color:#fff;">Sekolah Kebangsaan Tanjong Batu</option><option value="TWU048" style="background:#111;color:#fff;">Sekolah Kebangsaan Tg Batu Keramat</option><option value="TWU049" style="background:#111;color:#fff;">Sekolah Kebangsaan Ulu Kalabakan</option><option value="TWU050" style="background:#111;color:#fff;">Sekolah Kebangsaan Umas-Umas</option><option value="TWU051" style="background:#111;color:#fff;">Sekolah Kebangsaan Wakuba</option><option value="TWU052" style="background:#111;color:#fff;">Sekolah Kebangsaan Wallace Bay</option><option value="TWU053" style="background:#111;color:#fff;">Sekolah Rendah Islamiah</option><option value="TWU054" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Chung Hwa</option><option value="TWU055" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Hing Hwa</option><option value="TWU056" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kung Ming</option><option value="TWU057" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Kuok Ming</option><option value="TWU058" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Phui Yuk</option><option value="TWU059" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Sin Hwa</option><option value="TWU060" style="background:#111;color:#fff;">Sekolah Jenis Kebangsaan (Cina) Yuk Chin</option><option value="TWU061" style="background:#111;color:#fff;">Sekolah Rendah Agama Kinabutan</option><option value="TWU062" style="background:#111;color:#fff;">Sekolah Rendah Islam Al-Fateh, BSI</option></optgroup>
-          <optgroup label="── SEKOLAH MENENGAH ──" style="background:#041020;color:rgba(255,193,7,0.8);"><option value="TWU063" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Abaka</option><option value="TWU064" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Balung</option><option value="TWU065" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Holy Trinity</option><option value="TWU066" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jalan Apas</option><option value="TWU067" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Jambatan Putih</option><option value="TWU068" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kalabakan</option><option value="TWU069" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan</option><option value="TWU070" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kuhara</option><option value="TWU071" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Merotai Besar</option><option value="TWU072" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Pasir Putih</option><option value="TWU073" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Patrick</option><option value="TWU074" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan St. Ursula</option><option value="TWU075" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau</option><option value="TWU076" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Tawau II</option><option value="TWU077" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Titingan</option><option value="TWU078" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Umas-Umas</option><option value="TWU079" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wakuba</option><option value="TWU080" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Wallace Bay</option><option value="TWU081" style="background:#111;color:#fff;">Sekolah Menengah Islamiah Tawau</option><option value="TWU082" style="background:#111;color:#fff;">Pra-U Kolej Tingkatan Enam Tawau</option><option value="TWU083" style="background:#111;color:#fff;">Kolej Vokasional Tawau</option><option value="TWU084" style="background:#111;color:#fff;">MRSM Tun Mustapha Tawau</option><option value="TWU085" style="background:#111;color:#fff;">Sekolah Menengah Kebangsaan Kinabutan II</option></optgroup>
-        </select>
-      </div>
-      <div class="fg"><label class="fl">NO. TELEFON</label>
-        <input class="fi" id="m-sk-tel" type="tel" placeholder="0123456789">
-      </div>
-    </div>
-    <div class="fg"><label class="fl">KATA LALUAN</label>
-      <input class="fi" id="m-pw" type="password" placeholder="MINIMUM 6 AKSARA">
-    </div>
-    <div id="modal-alert" class="alert" style="margin-bottom:8px;"></div>
-    <button id="modal-save-btn" onclick="simpanPengguna()" style="width:100%;background:rgba(0,200,255,0.15);border:1.5px solid var(--cyan);border-radius:10px;padding:13px;color:var(--cyan);font-family:Rajdhani,sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;">💾 SIMPAN PENGGUNA</button>
-  </div>
-</div>
+
+
 </body>
 </html>`);
     W.document.close();
@@ -2567,7 +2574,10 @@ async function loadAdmPemantauan() {
     const last6  = Array.from({length:6},(_,i)=>{ const m=(thisM-5+i+12)%12; const y=thisM-5+i<0?thisY-1:thisY; return {m,y,label:months[m]}; });
     const barData = last6.map(({m,y})=> visits.filter(v=>{const d=new Date(v.timestamp);return d.getMonth()===m&&d.getFullYear()===y;}).length );
     drawBar('pmt-chart-bulan', last6.map(x=>x.label), barData, 'var(--cyan)');
-    drawDonut('pmt-chart-status', dilawati, belum);
+    drawDonut('pmt-chart-status', [
+      {val:dilawati, color:'#00e676', label:'DILAWATI'},
+      {val:belum,    color:'#ff1744', label:'BELUM'}
+    ]);
 
     // Aktiviti bar chart
     drawBarActiviti('pmt-chart-aktiviti', ['CERAMAH','PROGRAM','LAWATAN'], [ceramah, program, lawatan]);
@@ -2842,12 +2852,16 @@ let _tambahRole = 'PPS';
 
 function showTambahModal(role) {
   _tambahRole = role;
-  const modal = document.getElementById('tambah-modal');
+  // Pastikan modal sebagai direct child of body
+  let modal = document.getElementById('tambah-modal');
+  if (!modal) { console.error('Modal tidak dijumpai!'); return; }
+  if (modal.parentElement !== document.body) {
+    document.body.appendChild(modal);
+  }
   const title = document.getElementById('modal-title');
   const ppsF  = document.getElementById('modal-pps-fields');
   const skF   = document.getElementById('modal-sk-fields');
   const saveBtn = document.getElementById('modal-save-btn');
-  if (!modal) return;
   if (role === 'PPS') {
     if (title) title.innerHTML = '➕ TAMBAH PENGGUNA PPS';
     if (ppsF) ppsF.style.display = '';
@@ -2870,13 +2884,24 @@ function showTambahModal(role) {
   });
   const alt = document.getElementById('modal-alert');
   if (alt) { alt.textContent=''; alt.className='alert'; }
+  // Force show modal
+  modal.style.cssText = modal.style.cssText.replace('display:none','').replace('display: none','');
   modal.style.display = 'block';
-  window.scrollTo(0,0);
+  modal.style.position = 'fixed';
+  modal.style.top = '0';
+  modal.style.left = '0';
+  modal.style.width = '100%';
+  modal.style.height = '100%';
+  modal.style.zIndex = '999999';
+  modal.style.overflowY = 'auto';
+  modal.style.background = 'rgba(0,0,0,0.88)';
+  document.body.style.overflow = 'hidden'; // Prevent background scroll
 }
 
 function closeTambahModal() {
   const modal = document.getElementById('tambah-modal');
   if (modal) modal.style.display = 'none';
+  document.body.style.overflow = ''; // Restore scroll
 }
 
 async function simpanPengguna() {
@@ -2945,6 +2970,13 @@ async function simpanPengguna() {
 }
 
 window.addEventListener('load', function() {
+  // Pindah modal ke body level untuk pastikan position:fixed berfungsi
+  const modal = document.getElementById('tambah-modal');
+  if (modal && modal.parentElement !== document.body) {
+    document.body.appendChild(modal);
+    console.log('Modal dipindah ke body level ✅');
+  }
+
   // Pre-populate all school selects
   populateSelect('pps-sekolah');
   populateSelect('visit-sk');
