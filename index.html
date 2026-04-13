@@ -289,6 +289,17 @@ tr:hover td{background:rgba(0,200,255,0.04);}
       <div class="fg"><label class="fl">NO. TELEFON</label>
         <input class="fi" id="m-tel" type="tel" placeholder="0123456789">
       </div>
+      <div class="fg">
+        <label class="fl">📸 GAMBAR RASMI (BERUNIFORM)</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+          <div id="m-avatar-preview" style="width:70px;height:70px;border-radius:50%;border:2px solid var(--cyan);background:rgba(0,200,255,0.08);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;overflow:hidden;">👮</div>
+          <div style="flex:1;">
+            <input type="file" id="m-foto" accept="image/*" style="display:none" onchange="previewAvatar('m-foto','m-avatar-preview')">
+            <button type="button" onclick="document.getElementById('m-foto').click()" style="width:100%;background:rgba(0,200,255,0.1);border:1px solid var(--cyan);border-radius:8px;padding:8px;color:var(--cyan);font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">📷 PILIH GAMBAR</button>
+            <div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:4px;">Gambar berseragam rasmi PDRM • Max 2MB</div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- SEKOLAH FIELDS -->
     <div id="modal-sk-fields" style="display:none;">
@@ -319,6 +330,17 @@ tr:hover td{background:rgba(0,200,255,0.04);}
       </div>
       <div class="fg"><label class="fl">NO. TELEFON</label>
         <input class="fi" id="m-sk-tel" type="tel" placeholder="0123456789">
+      </div>
+      <div class="fg">
+        <label class="fl">📸 GAMBAR RASMI (FORMAL)</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+          <div id="m-sk-avatar-preview" style="width:70px;height:70px;border-radius:50%;border:2px solid var(--gold);background:rgba(255,193,7,0.08);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;overflow:hidden;">🏫</div>
+          <div style="flex:1;">
+            <input type="file" id="m-sk-foto" accept="image/*" style="display:none" onchange="previewAvatar('m-sk-foto','m-sk-avatar-preview')">
+            <button type="button" onclick="document.getElementById('m-sk-foto').click()" style="width:100%;background:rgba(255,193,7,0.1);border:1px solid var(--gold);border-radius:8px;padding:8px;color:var(--gold);font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">📷 PILIH GAMBAR</button>
+            <div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:4px;">Gambar pakaian formal • Max 2MB</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="fg"><label class="fl">KATA LALUAN</label>
@@ -432,6 +454,18 @@ tr:hover td{background:rgba(0,200,255,0.04);}
         </div>
       </div>
     </div>
+    <!-- Gambar Rasmi PPS - WAJIB -->
+    <div class="fg" style="background:rgba(0,200,255,0.05);border:1px solid rgba(0,200,255,0.2);border-radius:10px;padding:12px;margin-bottom:10px;">
+      <label class="fl" style="color:var(--cyan);">📸 GAMBAR RASMI (BERUNIFORM) <span style="color:var(--red);">*WAJIB</span></label>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:8px;">
+        <div id="pps-avatar-preview" style="width:80px;height:80px;border-radius:50%;border:2px solid var(--cyan);background:rgba(0,200,255,0.08);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;overflow:hidden;">👮</div>
+        <div style="flex:1;">
+          <input type="file" id="pps-foto" accept="image/*" style="display:none" onchange="previewAvatar('pps-foto','pps-avatar-preview')">
+          <button type="button" onclick="document.getElementById('pps-foto').click()" style="width:100%;background:rgba(0,200,255,0.1);border:1.5px solid var(--cyan);border-radius:8px;padding:10px;color:var(--cyan);font-family:Rajdhani,sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;">📷 PILIH GAMBAR BERUNIFORM</button>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:5px;">⚠️ Gambar WAJIB dimasukkan • Berseragam rasmi PDRM • Max 3MB</div>
+        </div>
+      </div>
+    </div>
     <button class="btn-p" id="pps-su-btn" onclick="doSignupPPS()">HANTAR</button>
     <button class="link-btn" onclick="showScreen('screen-login')">KEMBALI KE LOG MASUK</button>
   </div>
@@ -484,6 +518,18 @@ tr:hover td{background:rgba(0,200,255,0.04);}
         <div id="sk-otp-info" style="font-size:10px;color:rgba(255,255,255,0.55);margin-bottom:8px;"></div>
         <div class="fg"><label class="fl">MASUKKAN TAC/OTP (6 DIGIT)</label>
           <input class="fi" id="sk-otp-inp" type="tel" maxlength="6" placeholder="_ _ _ _ _ _" style="letter-spacing:8px;text-align:center;font-size:18px;font-family:monospace;" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+        </div>
+      </div>
+    </div>
+    <!-- Gambar Rasmi Sekolah - WAJIB -->
+    <div class="fg" style="background:rgba(255,193,7,0.05);border:1px solid rgba(255,193,7,0.2);border-radius:10px;padding:12px;margin-bottom:10px;">
+      <label class="fl" style="color:var(--gold);">📸 GAMBAR RASMI (PAKAIAN FORMAL) <span style="color:var(--red);">*WAJIB</span></label>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:8px;">
+        <div id="sk-avatar-preview" style="width:80px;height:80px;border-radius:50%;border:2px solid var(--gold);background:rgba(255,193,7,0.08);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;overflow:hidden;">🏫</div>
+        <div style="flex:1;">
+          <input type="file" id="sk-foto" accept="image/*" style="display:none" onchange="previewAvatar('sk-foto','sk-avatar-preview')">
+          <button type="button" onclick="document.getElementById('sk-foto').click()" style="width:100%;background:rgba(255,193,7,0.1);border:1.5px solid var(--gold);border-radius:8px;padding:10px;color:var(--gold);font-family:Rajdhani,sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;">📷 PILIH GAMBAR FORMAL</button>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:5px;">⚠️ Gambar WAJIB dimasukkan • Pakaian formal • Max 3MB</div>
         </div>
       </div>
     </div>
@@ -1514,7 +1560,10 @@ async function doSignupPPS() {
   const tel     = (document.getElementById('pps-tel')||{value:''}).value.trim();
   const pw      = (document.getElementById('pps-pw')||{value:''}).value;
   const pw2     = (document.getElementById('pps-pw2')||{value:''}).value;
+  const ppsFotoInput = document.getElementById('pps-foto');
+  const ppsFotoB64   = ppsFotoInput && ppsFotoInput.dataset.b64 ? ppsFotoInput.dataset.b64 : '';
   if (!nama||!pangkat||!badan||!tugas||!skKod) { showAlert('pps-su-alert','err','Sila lengkapkan semua maklumat.'); return; }
+  if (!ppsFotoB64) { showAlert('pps-su-alert','err','⚠️ Gambar rasmi berseragam WAJIB dimasukkan!'); return; }
   if (!tel||tel.length<10) { showAlert('pps-su-alert','err','Nombor telefon tidak sah.'); return; }
   if (!validatePw(pw,'pps-su-alert')) return;
   if (pw!==pw2) { showAlert('pps-su-alert','err','Kata laluan tidak sepadan.'); return; }
@@ -1531,6 +1580,7 @@ async function doSignupPPS() {
       nama, pangkat, badan, badanDisplay:pangkat+' '+badan,
       tugas, telefon:tel, sekolahKod:skKod,
       sekolahNama:sch?sch.name:skKod,
+      foto: ppsFotoB64,
       status:'MENUNGGU', submittedAt:new Date().toISOString()
     });
     showAlert('pps-su-alert','ok','✅ Permohonan dihantar! Sila tunggu kelulusan Admin IPD Tawau.');
@@ -1557,7 +1607,11 @@ async function doSignupSK() {
   const pw      = (document.getElementById('sk-pw')||{value:''}).value;
   const pw2     = (document.getElementById('sk-pw2')||{value:''}).value;
   const userid  = skMatch ? skMatch.code : sekolahName.replace(/\s+/g,'').toUpperCase();
+  const skFotoInput2 = document.getElementById('sk-foto');
+  const skFotoB64_2  = skFotoInput2 && skFotoInput2.dataset.b64 ? skFotoInput2.dataset.b64 : '';
   if (!nama||!jawatan||!sekolah||!userid) { showAlert('sk-su-alert','err','Sila lengkapkan semua maklumat.'); return; }
+  if (!skFotoB64_2) { showAlert('sk-su-alert','err','⚠️ Gambar rasmi pakaian formal WAJIB dimasukkan untuk mendaftar!'); return; }
+  if (!skFotoB64_2) { showAlert('sk-su-alert','err','⚠️ Gambar rasmi WAJIB!'); return; }
   if (!telP||telP.length<10) { showAlert('sk-su-alert','err','Nombor telefon tidak sah.'); return; }
   if (!validatePw(pw,'sk-su-alert')) return;
   if (pw!==pw2) { showAlert('sk-su-alert','err','Kata laluan tidak sepadan.'); return; }
@@ -1572,6 +1626,7 @@ async function doSignupSK() {
       nama, mykad, jawatan, gred,
       sekolahKod: skMatch ? skMatch.code : sekolahName,
       sekolahNama: sekolahName,
+      foto: skFotoB64_2,
       telPeribadi:telP, telSekolah:telS,
       status:'MENUNGGU', submittedAt:new Date().toISOString()
     });
@@ -1793,8 +1848,12 @@ async function loadSKData() {
               const nama    = u.nama    || '—';
               const tugas   = u.tugas   || '—';
               const tel     = u.telefon || '—';
+              const fotoEl = u.foto
+                ? `<img src="${u.foto}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid var(--cyan);flex-shrink:0;cursor:pointer;" onclick="lbShow(['${u.foto}'],0,'GAMBAR RASMI PPS')">`
+                : `<div style="width:50px;height:50px;border-radius:50%;border:2px dashed rgba(0,200,255,0.3);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">👮</div>`;
               return `<div style="background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.2);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;">
-                <div style="font-family:Orbitron,monospace;font-size:16px;font-weight:900;color:var(--cyan);min-width:24px;">${idx+1}</div>
+                ${fotoEl}
+                <div style="font-family:Orbitron,monospace;font-size:14px;font-weight:900;color:var(--cyan);min-width:24px;">${idx+1}</div>
                 <div style="flex:1;">
                   <div style="font-family:Orbitron,monospace;font-size:12px;font-weight:700;color:var(--cyan);">${pangkat} ${badan}</div>
                   <div style="font-size:14px;font-weight:700;color:#fff;margin:2px 0;">${nama}</div>
@@ -1973,10 +2032,13 @@ async function loadAdmPengguna() {
       const badan   = (u.badan||'').replace('RF/','').replace('G/','');
       const nama    = u.nama||'—';
       const key     = u._key;
-      const ppPw = u.passwordPlain || '—';
+      const ppPw   = u.passwordPlain || '—';
+      const ppFoto = u.foto
+        ? '<img src="'+u.foto+'" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--cyan);cursor:pointer;flex-shrink:0;" onclick="lbShow([\''+u.foto+'\'],0,\'GAMBAR RASMI PPS\')">'
+        : '<div style="width:46px;height:46px;border-radius:50%;border:2px dashed rgba(0,200,255,0.3);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👮</div>';
       return '<tr>'+
         '<td>'+(i+1)+'</td>'+
-        '<td><div style="font-size:10px;color:var(--gold);font-weight:700;">'+pangkat+' '+badan+'</div><div style="font-size:12px;color:#fff;font-weight:700;">'+nama+'</div>'+
+        '<td><div style="display:flex;align-items:center;gap:8px;">'+ppFoto+'<div><div style="font-size:10px;color:var(--gold);font-weight:700;">'+pangkat+' '+badan+'</div><div style="font-size:12px;color:#fff;font-weight:700;">'+nama+'</div>'+
           '<div style="margin-top:4px;display:flex;align-items:center;gap:4px;">'+
             '<span style="font-size:9px;color:rgba(255,255,255,0.35);">🔑 KL:</span>'+
             '<span class="pw-toggle" data-pw="'+ppPw+'" style="font-size:10px;color:rgba(255,193,7,0.8);font-family:monospace;cursor:pointer;background:rgba(255,193,7,0.08);padding:1px 6px;border-radius:4px;border:1px solid rgba(255,193,7,0.2);" title="Klik untuk lihat">••••••</span>'+
@@ -1984,7 +2046,8 @@ async function loadAdmPengguna() {
         '<td style="font-size:10px;">'+(u.tugas||'—')+'</td>'+
         '<td style="font-size:10px;">'+(u.sekolahNama||'—')+'</td>'+
         '<td style="font-size:10px;">'+(u.telefon||'—')+'</td>'+
-        '<td><button onclick="resetPwAdmin(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:5px;padding:3px 8px;color:var(--gold);font-size:9px;cursor:pointer;margin-bottom:3px;">🔑 RESET</button>'+
+        '<td><button onclick="editFotoAdmin(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.3);border-radius:5px;padding:3px 8px;color:var(--cyan);font-size:9px;cursor:pointer;margin-bottom:3px;">📷 GAMBAR</button>'+
+        '<button onclick="resetPwAdmin(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:5px;padding:3px 8px;color:var(--gold);font-size:9px;cursor:pointer;margin-bottom:3px;">🔑 RESET</button>'+
         '<button onclick="padamPengguna(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,23,68,0.1);border:1px solid rgba(255,23,68,0.3);border-radius:5px;padding:3px 8px;color:var(--red);font-size:9px;cursor:pointer;">🗑️ PADAM</button></td>'+
         '</tr>';
     }).join('') : '<tr><td colspan="6" style="text-align:center;padding:15px;color:rgba(255,255,255,0.3);">Tiada pengguna PPS.</td></tr>';
@@ -2003,7 +2066,8 @@ async function loadAdmPengguna() {
         '<td style="font-size:10px;">'+(u.sekolahNama||'—')+'</td>'+
         '<td style="font-size:10px;color:var(--cyan);">'+(u.sekolahKod||u._key||'—')+'</td>'+
         '<td style="font-size:10px;">'+(u.telPeribadi||u.telefon||'—')+'</td>'+
-        '<td><button onclick="resetPwAdmin(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:5px;padding:3px 8px;color:var(--gold);font-size:9px;cursor:pointer;margin-bottom:3px;">🔑 RESET</button>'+
+        '<td><button onclick="editFotoAdmin(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.3);border-radius:5px;padding:3px 8px;color:var(--cyan);font-size:9px;cursor:pointer;margin-bottom:3px;">📷 GAMBAR</button>'+
+        '<button onclick="resetPwAdmin(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:5px;padding:3px 8px;color:var(--gold);font-size:9px;cursor:pointer;margin-bottom:3px;">🔑 RESET</button>'+
         '<button onclick="padamPengguna(this.dataset.k)" data-k="'+key+'" style="display:block;width:100%;background:rgba(255,23,68,0.1);border:1px solid rgba(255,23,68,0.3);border-radius:5px;padding:3px 8px;color:var(--red);font-size:9px;cursor:pointer;">🗑️ PADAM</button></td>'+
         '</tr>';
     }).join('') : '<tr><td colspan="6" style="text-align:center;padding:15px;color:rgba(255,255,255,0.3);">Tiada pengguna Sekolah.</td></tr>';
@@ -2954,11 +3018,14 @@ async function simpanPengguna() {
       const userid = badan.replace(/\//g,'_').replace(/[.#$\[\]]/g,'_');
       const existing = await fbGet('/users/'+userid);
       if (existing) { showErr('No. Badan '+badan+' sudah berdaftar!'); btn.disabled=false; btn.textContent='💾 SIMPAN PENGGUNA'; return; }
+      const fotoInput = document.getElementById('m-foto');
+      const fotoB64   = fotoInput && fotoInput.dataset.b64 ? fotoInput.dataset.b64 : '';
       await fbPut('/users/'+userid, {
         role:'PPS', userid, password:hashedPw, passwordPlain:pw,
         nama, pangkat, badan, badanDisplay:pangkat+' '+badan,
         tugas, telefon:tel, sekolahKod:skKod,
         sekolahNama:sch?sch.name:skKod,
+        foto: fotoB64,
         status:'AKTIF', createdAt:new Date().toISOString(),
         approvedBy:'ADMIN-IPDTAWAU'
       });
@@ -2975,10 +3042,13 @@ async function simpanPengguna() {
       const userid = skSel;
       const existing = await fbGet('/users/'+userid);
       if (existing) { showErr('Sekolah '+(sch?sch.name:skSel)+' sudah ada akaun!'); btn.disabled=false; btn.textContent='💾 SIMPAN PENGGUNA'; return; }
+      const skFotoInput = document.getElementById('m-sk-foto');
+      const skFotoB64   = skFotoInput && skFotoInput.dataset.b64 ? skFotoInput.dataset.b64 : '';
       await fbPut('/users/'+userid, {
         role:'SEKOLAH', userid, password:hashedPw, passwordPlain:pw,
         nama, jawatan, gred, sekolahKod:skSel,
         sekolahNama:sch?sch.name:skSel,
+        foto: skFotoB64,
         telPeribadi:tel, status:'AKTIF',
         createdAt:new Date().toISOString(), approvedBy:'ADMIN-IPDTAWAU'
       });
@@ -3147,6 +3217,83 @@ function initLightbox() {
     var diff = _lb.startX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) lbGo(diff>0?1:-1);
   }, {passive:true});
+}
+
+
+// ── AVATAR PREVIEW & COMPRESS ──
+function previewAvatar(inputId, previewId) {
+  const input   = document.getElementById(inputId);
+  const preview = document.getElementById(previewId);
+  if (!input || !input.files || !input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 3 * 1024 * 1024) {
+    alert('Gambar terlalu besar! Sila pilih gambar kurang dari 3MB.');
+    input.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // Compress to 200x200
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const size   = 200;
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      // Crop to square
+      const min = Math.min(img.width, img.height);
+      const sx  = (img.width  - min) / 2;
+      const sy  = (img.height - min) / 2;
+      ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size);
+      const compressed = canvas.toDataURL('image/jpeg', 0.75);
+      // Show preview
+      if (preview) {
+        preview.innerHTML = '<img src="'+compressed+'" style="width:100%;height:100%;object-fit:cover;">';
+      }
+      // Store in input dataset
+      input.dataset.b64 = compressed;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+
+// ── EDIT FOTO ADMIN ──
+function editFotoAdmin(userKey, role) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = async function() {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    if (file.size > 3*1024*1024) { alert('Gambar terlalu besar! Max 3MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+      // Compress
+      const img = new Image();
+      img.onload = async function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 200; canvas.height = 200;
+        const ctx = canvas.getContext('2d');
+        const min = Math.min(img.width, img.height);
+        const sx  = (img.width-min)/2, sy = (img.height-min)/2;
+        ctx.drawImage(img, sx, sy, min, min, 0, 0, 200, 200);
+        const b64 = canvas.toDataURL('image/jpeg', 0.75);
+        // Save to Firebase
+        try {
+          await fbPut('/users/'+userKey+'/foto', b64);
+          alert('✅ Gambar berjaya dikemaskini!');
+          loadAdmPengguna(); // Refresh table
+        } catch(err) {
+          alert('Ralat: '+err.message);
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
 }
 
 window.addEventListener('load', function() {
