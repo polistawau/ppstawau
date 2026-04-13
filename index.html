@@ -1451,11 +1451,11 @@ function handlePhotos(inp) {
       const im = new Image();
       im.onload = () => {
         const cv = document.createElement('canvas');
-        let MX=800, w=im.width, h=im.height;
+        let MX=500, w=im.width, h=im.height;
         if (w>h) { if(w>MX){h=h*(MX/w);w=MX;} } else { if(h>MX){w=w*(MX/h);h=MX;} }
         cv.width=w; cv.height=h;
         cv.getContext('2d').drawImage(im,0,0,w,h);
-        const comp = cv.toDataURL('image/jpeg',0.7);
+        const comp = cv.toDataURL('image/jpeg',0.55);
         visitPhotos.push(comp);
         const th = document.createElement('img');
         th.src = comp;
@@ -3245,7 +3245,7 @@ function previewAvatar(inputId, previewId) {
       const sx  = (img.width  - min) / 2;
       const sy  = (img.height - min) / 2;
       ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size);
-      const compressed = canvas.toDataURL('image/jpeg', 0.75);
+      const compressed = canvas.toDataURL('image/jpeg', 0.65);
       // Show preview
       if (preview) {
         preview.innerHTML = '<img src="'+compressed+'" style="width:100%;height:100%;object-fit:cover;">';
@@ -3279,7 +3279,7 @@ function editFotoAdmin(userKey, role) {
         const min = Math.min(img.width, img.height);
         const sx  = (img.width-min)/2, sy = (img.height-min)/2;
         ctx.drawImage(img, sx, sy, min, min, 0, 0, 200, 200);
-        const b64 = canvas.toDataURL('image/jpeg', 0.75);
+        const b64 = canvas.toDataURL('image/jpeg', 0.65);
         // Save to Firebase
         try {
           await fbPut('/users/'+userKey+'/foto', b64);
@@ -3301,24 +3301,18 @@ window.addEventListener('load', function() {
   const modal = document.getElementById('tambah-modal');
   if (modal && modal.parentElement !== document.body) {
     document.body.appendChild(modal);
-    console.log('Modal dipindah ke body level ✅');
+    
   }
   initLightbox();
-  console.log('Lightbox diinisialisasi ✅');
+  
 
   // Pre-populate all school selects
   populateSelect('pps-sekolah');
   populateSelect('visit-sk');
   populateSelect('plan-sk');
   // Unregister SW lama
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js', {scope: '/'})
-      .then(function(reg) {
-        console.log('✅ SPPS PWA Service Worker berjaya didaftar:', reg.scope);
-      })
-      .catch(function(err) {
-        console.warn('SW gagal daftar:', err);
-      });
+  if ('serviceWorker' in navigator && location.hostname !== 'www.claudeusercontent.com') {
+    navigator.serviceWorker.register('/sw.js', {scope: '/'}).catch(function(){});
   }
   // DB_URL sudah hardcoded - terus sambung
   updateConnBar(true);
