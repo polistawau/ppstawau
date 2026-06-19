@@ -258,6 +258,8 @@ tr:hover td{background:rgba(0,200,255,0.04);}
             <option style="background:#111;color:#fff;">BAHAGIAN INTEGRITI DAN PEMATUHAN STANDARD</option>
             <option style="background:#111;color:#fff;">CAWANGAN KHAS</option>
             <option style="background:#111;color:#fff;">BAHAGIAN LOGISTIK DAN TEKNOLOGI</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN KESELAMATAN DALAM NEGERI &amp; KETENTERAMAN AWAM</option>
+            <option style="background:#111;color:#fff;">BAHAGIAN PENCEGAHAN JENAYAH DAN KESELAMATAN KOMUNITI</option>
           </optgroup>
           <optgroup label="── BALAI POLIS ──" style="background:#041020;color:rgba(255,193,7,0.8);">
             <option style="background:#111;color:#fff;">BALAI POLIS TAWAU</option>
@@ -555,6 +557,7 @@ tr:hover td{background:rgba(0,200,255,0.04);}
     <button class="tab-btn" onclick="showTab('pps','lawatan',this)">📍 LAWATAN</button>
     <button class="tab-btn" onclick="showTab('pps','rekod',this)">📊 REKOD</button>
     <button class="tab-btn" onclick="showTab('pps','jadual',this)">📅 JADUAL</button>
+    <button class="tab-btn" onclick="showTab('pps','cuti',this);loadMyCuti();" id="pps-tab-cuti-btn" style="color:#ffd600;">🟡 CUTI/TUGAS <span id="pps-cuti-badge" style="display:none;background:#ffd600;color:#000;border-radius:10px;padding:1px 5px;font-size:9px;font-weight:700;">!</span></button>
   </div>
   <div class="dash-content">
 
@@ -582,6 +585,7 @@ tr:hover td{background:rgba(0,200,255,0.04);}
         <div class="stat-card"><div class="stat-num" id="pps-stat-sah">-</div><div class="stat-lbl">Disahkan</div></div>
         <div class="stat-card"><div class="stat-num" id="pps-stat-tunggu">-</div><div class="stat-lbl">Menunggu</div></div>
       </div>
+      <div id="pps-cuti-active-banner" style="display:none;background:rgba(255,214,0,0.1);border:1.5px solid rgba(255,214,0,0.4);border-radius:10px;padding:10px 14px;margin-top:8px;font-size:11px;color:rgba(255,255,255,0.8);text-align:center;"></div>
     </div>
 
     <!-- LAWATAN PPS -->
@@ -657,6 +661,54 @@ tr:hover td{background:rgba(0,200,255,0.04);}
       <div class="card">
         <div class="card-title">📋 SENARAI JADUAL</div>
         <div id="plan-list"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- CUTI / TUGAS LUAR PPS -->
+    <div id="pps-cuti" class="tab-pane">
+      <div class="card">
+        <div class="card-title" style="color:#ffd600;">🟡 REKOD KETIDAKHADIRAN BERSEBAB</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-bottom:12px;line-height:1.5;">
+          ⚠️ Gunakan borang ini jika anda <b style="color:#ffd600;">tidak dapat melawat sekolah</b> atas sebab sah (cuti, kursus, tugas luar). Rekod ini akan dikemukakan kepada Ketua BPJKK untuk kelulusan dan sistem tidak akan flag MERAH pada tempoh tersebut.
+        </div>
+        <div id="cuti-alert" class="alert"></div>
+        <div class="grid2">
+          <div class="fg">
+            <label class="fl" style="color:#ffd600;">JENIS KETIDAKHADIRAN</label>
+            <select class="fs" id="cuti-jenis">
+              <option value="">-- Pilih Jenis --</option>
+              <option value="CUTI TAHUNAN">🌴 CUTI TAHUNAN</option>
+              <option value="CUTI SAKIT">🏥 CUTI SAKIT (MC)</option>
+              <option value="KURSUS">📚 KURSUS / LATIHAN</option>
+              <option value="TUGAS LUAR">🚗 TUGAS LUAR / OPERASI</option>
+              <option value="CUTI KECEMASAN">🆘 CUTI KECEMASAN</option>
+              <option value="LAIN-LAIN">📋 LAIN-LAIN</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label class="fl" style="color:#ffd600;">TARIKH MULA</label>
+            <input class="fi" id="cuti-tarikh-mula" type="date">
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="fg">
+            <label class="fl" style="color:#ffd600;">TARIKH TAMAT</label>
+            <input class="fi" id="cuti-tarikh-tamat" type="date">
+          </div>
+          <div class="fg">
+            <label class="fl">NO. RUJUKAN / SURAT (jika ada)</label>
+            <input class="fi" id="cuti-rujukan" placeholder="cth: PDRM/IPD/2025/001">
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">CATATAN / SEBAB LANJUT</label>
+          <input class="fi" id="cuti-catatan" placeholder="Hurai sebab ketidakhadiran dengan jelas">
+        </div>
+        <button class="btn-p" id="cuti-btn" onclick="rekodCuti()" style="background:linear-gradient(135deg,rgba(255,214,0,0.25),rgba(255,193,7,0.15));border:1.5px solid #ffd600;color:#ffd600;">🟡 HANTAR REKOD KETIDAKHADIRAN</button>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <div class="card-title" style="color:rgba(255,255,255,0.6);">📋 REKOD SAYA</div>
+        <div id="cuti-list-saya"><div class="spinner"></div></div>
       </div>
     </div>
 
@@ -818,6 +870,7 @@ tr:hover td{background:rgba(0,200,255,0.04);}
     <button class="tab-btn" onclick="showTab('adm','kes',this)" id="adm-tab-kes-btn">⚠️ KES</button>
     <button class="tab-btn" onclick="showTab('adm','aduan',this)" id="adm-tab-aduan-btn">📢 ADUAN</button>
     <button class="tab-btn" onclick="showTab('adm','pdf',this)" id="adm-tab-pdf-btn">📄 LAPORAN</button>
+    <button class="tab-btn" onclick="showTab('adm','keluar',this);loadAdmKeluar();" id="adm-tab-keluar-btn" style="color:#ffd600;">🟡 KETIDAKHADIRAN <span id="adm-keluar-badge" style="display:none;background:#ffd600;color:#000;border-radius:10px;padding:1px 5px;font-size:9px;font-weight:700;animation:blink 1s infinite;">0</span></button>
   </div>
   <div class="dash-content">
 
@@ -912,9 +965,27 @@ tr:hover td{background:rgba(0,200,255,0.04);}
           <div id="pmt-sk-tiada" style="font-size:10px;max-height:220px;overflow-y:auto;"></div>
         </div>
         <div class="card" style="padding:10px;">
-          <div style="font-size:10px;font-weight:700;color:#ff6b35;margin-bottom:6px;">👮 PPS GAGAL MELAWAT</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <div style="font-size:10px;font-weight:700;color:#ff6b35;">👮 PPS GAGAL / DIKECUALIKAN</div>
+            <button onclick="showTab('adm','keluar',this);loadAdmKeluar();" style="background:rgba(255,214,0,0.1);border:1px solid rgba(255,214,0,0.4);border-radius:5px;padding:2px 7px;color:#ffd600;font-size:9px;font-family:Rajdhani,sans-serif;cursor:pointer;font-weight:700;">🟡 URUSKAN</button>
+          </div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.3);margin-bottom:5px;"><span style="color:#ff6b35;">■</span> MERAH = Gagal tanpa sebab &nbsp; <span style="color:#ffd600;">■</span> KUNING = Dikecualikan (ada sebab sah)</div>
           <div id="pmt-pps-gagal" style="font-size:10px;max-height:220px;overflow-y:auto;"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- KETIDAKHADIRAN BERSEBAB ADMIN -->
+    <div id="adm-keluar" class="tab-pane">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div class="card-title" style="color:#ffd600;margin-bottom:0;">🟡 REKOD KETIDAKHADIRAN PPS</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);">Rekod menunggu kelulusan Admin</div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-bottom:10px;line-height:1.5;background:rgba(255,214,0,0.06);border:1px solid rgba(255,214,0,0.15);border-radius:8px;padding:10px;">
+          ℹ️ <b>Arahan:</b> PPS yang bercuti/kursus/tugas luar perlu rekodkan sebab ketidakhadiran mereka di sini. Admin perlu <b style="color:#ffd600;">LULUS</b> rekod ini supaya sistem tidak flag MERAH pada PPS berkenaan semasa tempoh tersebut. Status akan bertukar <span style="color:#ffd600;font-weight:700;">🟡 KUNING (DIKECUALIKAN)</span> apabila diluluskan.
+        </div>
+        <div id="adm-keluar-list"><div class="spinner"></div></div>
       </div>
     </div>
 
@@ -1190,6 +1261,14 @@ async function fbPut(path, data) {
 async function fbPost(path, data) {
   const r = await fetch(DB_URL + path + '.json', {
     method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(data)
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+async function fbPatch(path, data) {
+  const r = await fetch(DB_URL + path + '.json', {
+    method:'PATCH', headers:{'Content-Type':'application/json'},
     body: JSON.stringify(data)
   });
   if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -1668,8 +1747,26 @@ function initPPSDash() {
   const pd = document.getElementById('plan-date');
   if (pd) pd.min = new Date().toISOString().split('T')[0];
   loadPPSVisits();
+  loadMyCutiSilent();
   if (pollTimer) clearInterval(pollTimer);
   pollTimer = setInterval(loadPPSVisits, 15000);
+}
+async function loadMyCutiSilent() {
+  try {
+    const data = await fbGet('/absences');
+    if (!data) return;
+    const today = new Date().toISOString().slice(0,10);
+    const mine = Object.values(data).filter(a=>a.ppsId===currentUser.userid);
+    const active = mine.find(a=>a.status==='LULUS'&&a.tarikhMula<=today&&a.tarikhTamat>=today);
+    const pending = mine.filter(a=>a.status==='MENUNGGU');
+    const badge = document.getElementById('pps-cuti-badge');
+    if (badge) { badge.style.display = pending.length ? 'inline-block' : 'none'; }
+    // Show banner if active excuse
+    if (active) {
+      const banner = document.getElementById('pps-cuti-active-banner');
+      if (banner) { banner.style.display='block'; banner.innerHTML='🟡 Anda sedang dalam tempoh dikecualikan: <b style="color:#ffd600;">'+active.jenis+'</b> ('+active.tarikhMula+' - '+active.tarikhTamat+')'; }
+    }
+  } catch(e) {}
 }
 async function loadPPSVisits() {
   try {
@@ -1735,6 +1832,134 @@ async function daftarLawatan() {
     btn.disabled=false; btn.innerHTML='✓ DAFTAR LAWATAN';
   }
 }
+// ─── REKOD KETIDAKHADIRAN BERSEBAB ──────────────────────────────────────────
+
+async function rekodCuti() {
+  const jenis  = (document.getElementById('cuti-jenis')||{value:''}).value;
+  const mula   = (document.getElementById('cuti-tarikh-mula')||{value:''}).value;
+  const tamat  = (document.getElementById('cuti-tarikh-tamat')||{value:''}).value;
+  const rujuk  = (document.getElementById('cuti-rujukan')||{value:''}).value.trim();
+  const catat  = (document.getElementById('cuti-catatan')||{value:''}).value.trim();
+  if (!jenis)  { showAlert('cuti-alert','err','Sila pilih jenis ketidakhadiran.'); return; }
+  if (!mula)   { showAlert('cuti-alert','err','Sila masukkan tarikh mula.'); return; }
+  if (!tamat)  { showAlert('cuti-alert','err','Sila masukkan tarikh tamat.'); return; }
+  if (mula > tamat) { showAlert('cuti-alert','err','Tarikh tamat mesti selepas tarikh mula.'); return; }
+  const btn = document.getElementById('cuti-btn');
+  btn.disabled=true; btn.textContent='Menghantar...';
+  try {
+    await fbPost('/absences', {
+      ppsId:      currentUser.userid,
+      ppsNama:    currentUser.nama,
+      ppsPangkat: currentUser.pangkat||'',
+      ppsBadan:   (currentUser.badan||'').replace(/^RF\//, '').replace(/^G\//, ''),
+      jenis, tarikhMula:mula, tarikhTamat:tamat,
+      rujukan:rujuk, catatan:catat,
+      status: 'MENUNGGU',
+      createdAt: new Date().toISOString()
+    });
+    showAlert('cuti-alert','ok','✅ Rekod dihantar! Menunggu kelulusan Admin/Ketua BPJKK.');
+    btn.disabled=false; btn.innerHTML='🟡 HANTAR REKOD KETIDAKHADIRAN';
+    document.getElementById('cuti-jenis').value='';
+    document.getElementById('cuti-tarikh-mula').value='';
+    document.getElementById('cuti-tarikh-tamat').value='';
+    document.getElementById('cuti-rujukan').value='';
+    document.getElementById('cuti-catatan').value='';
+    loadMyCuti();
+  } catch(e) {
+    showAlert('cuti-alert','err','Ralat: '+e.message);
+    btn.disabled=false; btn.innerHTML='🟡 HANTAR REKOD KETIDAKHADIRAN';
+  }
+}
+
+async function loadMyCuti() {
+  const el = document.getElementById('cuti-list-saya');
+  if (!el) return;
+  try {
+    const data = await fbGet('/absences');
+    const all = data ? Object.entries(data).map(([k,v])=>({id:k,...v})) : [];
+    const mine = all.filter(a => a.ppsId===currentUser.userid)
+                    .sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+    if (!mine.length) { el.innerHTML='<div style="text-align:center;padding:15px;color:rgba(255,255,255,0.3);">Tiada rekod ketidakhadiran.</div>'; return; }
+    el.innerHTML = mine.map(a => {
+      const sc = a.status==='LULUS' ? '#00e676' : a.status==='TOLAK' ? '#ff1744' : '#ffd600';
+      const icon = a.status==='LULUS' ? '✅' : a.status==='TOLAK' ? '❌' : '⏳';
+      return `<div style="background:rgba(0,0,0,0.2);border:1px solid ${sc}30;border-radius:8px;padding:10px;margin-bottom:7px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <div style="font-size:11px;color:${sc};font-weight:700;">${icon} ${a.jenis}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.6);">${a.tarikhMula} → ${a.tarikhTamat}</div>
+            ${a.rujukan?`<div style="font-size:9px;color:rgba(255,255,255,0.4);">📄 Rujukan: ${a.rujukan}</div>`:''}
+            ${a.catatan?`<div style="font-size:9px;color:rgba(255,255,255,0.4);">${a.catatan}</div>`:''}
+            ${a.notaAdmin?`<div style="font-size:9px;color:#ffd600;margin-top:3px;">💬 Admin: ${a.notaAdmin}</div>`:''}
+          </div>
+          <span style="background:${sc}20;color:${sc};border:1px solid ${sc}40;border-radius:5px;padding:2px 7px;font-size:9px;font-weight:700;white-space:nowrap;">${a.status}</span>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { el.innerHTML='<div style="color:#ff7070;padding:10px;">Ralat: '+e.message+'</div>'; }
+}
+
+// Check if PPS is excused (has approved absence for today)
+async function isPpsExcused(ppsId) {
+  try {
+    const data = await fbGet('/absences');
+    if (!data) return false;
+    const today = new Date().toISOString().slice(0,10);
+    return Object.values(data).some(a =>
+      a.ppsId === ppsId && a.status === 'LULUS' &&
+      a.tarikhMula <= today && a.tarikhTamat >= today
+    );
+  } catch(e) { return false; }
+}
+
+// ─── ADMIN: URUSKAN KETIDAKHADIRAN ──────────────────────────────────────────
+
+async function loadAdmKeluar() {
+  const el = document.getElementById('adm-keluar-list');
+  if (!el) return;
+  el.innerHTML = '<div class="spinner"></div>';
+  try {
+    const data = await fbGet('/absences');
+    const all = data ? Object.entries(data).map(([k,v])=>({id:k,...v})) : [];
+    all.sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+    // Update badge
+    const pending = all.filter(a=>a.status==='MENUNGGU');
+    const badge = document.getElementById('adm-keluar-badge');
+    if (badge) { badge.textContent=pending.length; badge.style.display=pending.length?'inline-block':'none'; }
+    if (!all.length) { el.innerHTML='<div style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);">Tiada rekod ketidakhadiran.</div>'; return; }
+    el.innerHTML = all.map(a => {
+      const sc = a.status==='LULUS'?'#00e676':a.status==='TOLAK'?'#ff1744':'#ffd600';
+      const icon = a.status==='LULUS'?'✅':a.status==='TOLAK'?'❌':'⏳';
+      const btns = a.status==='MENUNGGU' ? `
+        <div style="display:flex;gap:5px;margin-top:8px;">
+          <button onclick="admLulusKeluar('${a.id}','LULUS')" style="flex:1;background:rgba(0,230,118,0.1);border:1px solid #00e676;border-radius:6px;padding:5px;color:#00e676;font-family:Rajdhani,sans-serif;font-size:10px;font-weight:700;cursor:pointer;">✅ LULUS</button>
+          <button onclick="admLulusKeluar('${a.id}','TOLAK')" style="flex:1;background:rgba(255,23,68,0.1);border:1px solid #ff1744;border-radius:6px;padding:5px;color:#ff1744;font-family:Rajdhani,sans-serif;font-size:10px;font-weight:700;cursor:pointer;">❌ TOLAK</button>
+        </div>` : `<button onclick="admLulusKeluar('${a.id}','MENUNGGU')" style="margin-top:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:5px;padding:3px 8px;color:rgba(255,255,255,0.4);font-size:9px;cursor:pointer;">↩️ Reset ke Menunggu</button>`;
+      return `<div style="background:rgba(0,0,0,0.2);border:1.5px solid ${sc}40;border-radius:10px;padding:12px;margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+          <div>
+            <div style="font-size:11px;color:#fff;font-weight:700;">${icon} ${a.ppsPangkat||''} ${a.ppsBadan||''} ${a.ppsNama||'—'}</div>
+            <div style="font-size:10px;color:${sc};font-weight:700;">${a.jenis}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.6);">📅 ${a.tarikhMula} → ${a.tarikhTamat}</div>
+            ${a.rujukan?`<div style="font-size:9px;color:rgba(255,255,255,0.4);">📄 ${a.rujukan}</div>`:''}
+            ${a.catatan?`<div style="font-size:9px;color:rgba(255,255,255,0.5);">${a.catatan}</div>`:''}
+          </div>
+          <span style="background:${sc}20;color:${sc};border:1px solid ${sc}40;border-radius:5px;padding:3px 8px;font-size:9px;font-weight:700;white-space:nowrap;">${a.status}</span>
+        </div>
+        ${btns}
+      </div>`;
+    }).join('');
+  } catch(e) { el.innerHTML='<div style="color:#ff7070;padding:10px;">Ralat: '+e.message+'</div>'; }
+}
+
+async function admLulusKeluar(id, status) {
+  try {
+    await fbPatch('/absences/'+id, { status, dilulusOleh: currentUser.nama||'Admin', tarikhLulus: new Date().toISOString() });
+    loadAdmKeluar();
+    loadPemantauan && loadPemantauan();
+  } catch(e) { alert('Ralat: '+e.message); }
+}
+
 async function savePlan() {
   const date   = (document.getElementById('plan-date')||{value:''}).value;
   const skKod  = (document.getElementById('plan-sk')||{value:''}).value;
@@ -2644,7 +2869,7 @@ async function loadAdmPemantauan() {
       elSk.innerHTML = html2;
     }
 
-    // PPS GAGAL MELAWAT
+    // PPS GAGAL MELAWAT — dengan semakan rekod ketidakhadiran bersebab
     const gagalEl = document.getElementById('pmt-pps-gagal');
     if (gagalEl) {
       const visitedPps = new Set(visits.filter(v=>v.status==='SAH').map(v=>v.ppsId).filter(Boolean));
@@ -2652,10 +2877,76 @@ async function loadAdmPemantauan() {
       if (!gagal.length) {
         gagalEl.innerHTML = '<div style="color:#00e676;text-align:center;padding:10px;">✅ SEMUA PPS TELAH MEMBUAT LAWATAN</div>';
       } else {
-        gagalEl.innerHTML = gagal.map((p,i)=>'<div style="padding:4px 0;border-bottom:1px solid rgba(255,107,53,0.1);">'+
-          '<div style="font-size:10px;color:#ff6b35;font-weight:700;">'+(i+1)+'. '+(p.pangkat||'')+' '+(p.badan||'')+' '+(p.nama||'—')+'</div>'+
-          '<div style="font-size:9px;color:rgba(255,255,255,0.35);">'+(p.tugas||'—')+' • '+(p.sekolahNama||'—')+'</div>'+
-          '</div>').join('');
+        // Load absence records to check who is excused
+        let absData = {};
+        try { absData = await fbGet('/absences') || {}; } catch(e) {}
+        const today = new Date().toISOString().slice(0,10);
+        const excusedIds = new Set(
+          Object.values(absData)
+            .filter(a => a.status==='LULUS' && a.tarikhMula<=today && a.tarikhTamat>=today)
+            .map(a => a.ppsId)
+        );
+        // Also show pending absences with yellow warning
+        const pendingIds = new Set(
+          Object.values(absData)
+            .filter(a => a.status==='MENUNGGU' && a.tarikhMula<=today && a.tarikhTamat>=today)
+            .map(a => a.ppsId)
+        );
+        // Update admin badge for pending
+        const allPending = Object.values(absData).filter(a=>a.status==='MENUNGGU');
+        const keluarBadge = document.getElementById('adm-keluar-badge');
+        if (keluarBadge) { keluarBadge.textContent=allPending.length; keluarBadge.style.display=allPending.length?'inline-block':'none'; }
+
+        let html = '';
+        let merahCount=0, kuningCount=0;
+        gagal.forEach((p,i) => {
+          const pid = p.userid || p._key;
+          const isExcused = excusedIds.has(pid);
+          const isPending = pendingIds.has(pid);
+          if (isExcused) {
+            kuningCount++;
+            const absRec = Object.values(absData).find(a=>a.ppsId===pid&&a.status==='LULUS'&&a.tarikhMula<=today&&a.tarikhTamat>=today);
+            html += '<div style="padding:5px 0;border-bottom:1px solid rgba(255,214,0,0.1);">'+
+              '<div style="display:flex;justify-content:space-between;align-items:center;">'+
+                '<div style="font-size:10px;color:#ffd600;font-weight:700;">🟡 '+(p.pangkat||'')+' '+(p.badan||'')+' '+(p.nama||'—')+'</div>'+
+                '<span style="background:rgba(255,214,0,0.15);color:#ffd600;border:1px solid rgba(255,214,0,0.4);border-radius:4px;padding:1px 5px;font-size:8px;font-weight:700;">DIKECUALIKAN</span>'+
+              '</div>'+
+              '<div style="font-size:9px;color:rgba(255,255,255,0.35);">'+(p.tugas||'—')+' • '+(p.sekolahNama||'—')+'</div>'+
+              (absRec?'<div style="font-size:9px;color:rgba(255,214,0,0.6);">📋 '+absRec.jenis+' ('+absRec.tarikhMula+' - '+absRec.tarikhTamat+')</div>':'')+
+            '</div>';
+          } else if (isPending) {
+            kuningCount++;
+            html += '<div style="padding:5px 0;border-bottom:1px solid rgba(255,214,0,0.1);">'+
+              '<div style="display:flex;justify-content:space-between;align-items:center;">'+
+                '<div style="font-size:10px;color:#ffab00;font-weight:700;">⏳ '+(p.pangkat||'')+' '+(p.badan||'')+' '+(p.nama||'—')+'</div>'+
+                '<span style="background:rgba(255,171,0,0.15);color:#ffab00;border:1px solid rgba(255,171,0,0.4);border-radius:4px;padding:1px 5px;font-size:8px;font-weight:700;">MENUNGGU LULUS</span>'+
+              '</div>'+
+              '<div style="font-size:9px;color:rgba(255,255,255,0.35);">'+(p.tugas||'—')+' • '+(p.sekolahNama||'—')+'</div>'+
+              '<div style="font-size:9px;color:rgba(255,171,0,0.6);">⚠️ Rekod ketidakhadiran menunggu kelulusan admin</div>'+
+            '</div>';
+          } else {
+            merahCount++;
+            html += '<div style="padding:5px 0;border-bottom:1px solid rgba(255,107,53,0.1);">'+
+              '<div style="display:flex;justify-content:space-between;align-items:center;">'+
+                '<div style="font-size:10px;color:#ff6b35;font-weight:700;">🔴 '+(p.pangkat||'')+' '+(p.badan||'')+' '+(p.nama||'—')+'</div>'+
+                '<span style="background:rgba(255,23,68,0.15);color:#ff1744;border:1px solid rgba(255,23,68,0.4);border-radius:4px;padding:1px 5px;font-size:8px;font-weight:700;">GAGAL</span>'+
+              '</div>'+
+              '<div style="font-size:9px;color:rgba(255,255,255,0.35);">'+(p.tugas||'—')+' • '+(p.sekolahNama||'—')+'</div>'+
+            '</div>';
+          }
+        });
+        // Summary bar
+        const sumBar = '<div style="display:flex;gap:6px;margin-bottom:8px;">'+
+          '<div style="flex:1;text-align:center;background:rgba(255,23,68,0.1);border:1px solid rgba(255,23,68,0.3);border-radius:6px;padding:5px;">'+
+            '<div style="font-size:16px;font-weight:900;color:#ff1744;">'+merahCount+'</div>'+
+            '<div style="font-size:8px;color:rgba(255,255,255,0.4);">GAGAL</div>'+
+          '</div>'+
+          '<div style="flex:1;text-align:center;background:rgba(255,214,0,0.1);border:1px solid rgba(255,214,0,0.3);border-radius:6px;padding:5px;">'+
+            '<div style="font-size:16px;font-weight:900;color:#ffd600;">'+kuningCount+'</div>'+
+            '<div style="font-size:8px;color:rgba(255,255,255,0.4);">DIKECUALIKAN</div>'+
+          '</div>'+
+        '</div>';
+        gagalEl.innerHTML = sumBar + html;
       }
     }
 
